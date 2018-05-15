@@ -44,7 +44,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+//import android.support.v4.widget.DrawerLayout;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -93,7 +94,7 @@ import org.gateshipone.malp.mpdservice.profilemanagement.MPDServerProfile;
 public class MainActivity extends GenericActivity
         implements NavigationView.OnNavigationItemSelectedListener, AlbumsFragment.AlbumSelectedCallback, ArtistsFragment.ArtistSelectedCallback,
         ProfileManageCallbacks, PlaylistCallback,
-        NowPlayingView.NowPlayingDragStatusReceiver, FilesFragment.FilesCallback,
+        FilesFragment.FilesCallback,
         FABFragmentCallback, SettingsFragment.OnArtworkSettingsRequestedCallback {
 
 
@@ -105,13 +106,7 @@ public class MainActivity extends GenericActivity
     private final static String MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_DRAG_STATUS = "MainActivity.NowPlayingDragStatus";
     private final static String MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_VIEW_SWITCHER_CURRENT_VIEW = "MainActivity.NowPlayingViewSwitcherCurrentView";
 
-    private DRAG_STATUS mNowPlayingDragStatus;
-    private DRAG_STATUS mSavedNowPlayingDragStatus = null;
-
     private ActionBarDrawerToggle mDrawerToggle;
-
-    private VIEW_SWITCHER_STATUS mNowPlayingViewSwitcherStatus;
-    private VIEW_SWITCHER_STATUS mSavedNowPlayingViewSwitcherStatus;
 
     private boolean mHeaderImageActive;
 
@@ -124,11 +119,6 @@ public class MainActivity extends GenericActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // restore drag state
-        if (savedInstanceState != null) {
-            mSavedNowPlayingDragStatus = DRAG_STATUS.values()[savedInstanceState.getInt(MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_DRAG_STATUS)];
-            mSavedNowPlayingViewSwitcherStatus = VIEW_SWITCHER_STATUS.values()[savedInstanceState.getInt(MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_VIEW_SWITCHER_CURRENT_VIEW)];
-        }
 
 
         setContentView(R.layout.activity_main);
@@ -147,20 +137,20 @@ public class MainActivity extends GenericActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        /* DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer != null) {
             mDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(mDrawerToggle);
             mDrawerToggle.syncState();
-        }
+        }*/
 
         int navId = getDefaultViewID();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        /*NavigationView navigationView = findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
             navigationView.setCheckedItem(navId);
-        }
+        }*/
 
 
         mFAB = findViewById(R.id.andrompd_play_button);
@@ -217,27 +207,28 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        /*ConstraintLayout drawer = findViewById(R.id.drawer_layout);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        } else  if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
             NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
             if (nowPlayingView != null) {
                 View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
                 coordinatorLayout.setVisibility(View.VISIBLE);
                 nowPlayingView.minimize();
             }
-        } else {
+        } else { */
             super.onBackPressed();
 
             // enable navigation bar when backstack empty
-            if (fragmentManager.getBackStackEntryCount() == 0) {
+            /*if (fragmentManager.getBackStackEntryCount() == 0) {
                 mDrawerToggle.setDrawerIndicatorEnabled(true);
             }
-        }
+        }*/
     }
 
 
@@ -256,11 +247,11 @@ public class MainActivity extends GenericActivity
                 } else {
                     // back stack empty so enable navigation drawer
 
-                    mDrawerToggle.setDrawerIndicatorEnabled(true);
+                    /* mDrawerToggle.setDrawerIndicatorEnabled(true);
 
                     if (mDrawerToggle.onOptionsItemSelected(item)) {
                         return true;
-                    }
+                    } */
                 }
         }
 
@@ -271,7 +262,7 @@ public class MainActivity extends GenericActivity
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.main_listview && mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        if (v.getId() == R.id.main_listview ) {
             int position = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.context_menu_current_playlist_track, menu);
@@ -301,7 +292,7 @@ public class MainActivity extends GenericActivity
 
         CurrentPlaylistView currentPlaylistView = findViewById(R.id.now_playing_playlist);
 
-        if (currentPlaylistView != null && mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        if (currentPlaylistView != null) {
 
             MPDTrack track = (MPDTrack) currentPlaylistView.getItem(info.position);
 
@@ -373,9 +364,9 @@ public class MainActivity extends GenericActivity
         coordinatorLayout.setVisibility(View.VISIBLE);
 
         NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-        if (nowPlayingView != null) {
+        /*if (nowPlayingView != null) {
             nowPlayingView.minimize();
-        }
+        }*/
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -416,8 +407,8 @@ public class MainActivity extends GenericActivity
             fragmentTag = InformationSettingsFragment.class.getSimpleName();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
 
 
         // Do the actual fragment transaction
@@ -435,8 +426,6 @@ public class MainActivity extends GenericActivity
         if (nowPlayingView != null) {
 
 
-            nowPlayingView.registerDragStatusReceiver(this);
-
             /*
              * Check if the activity got an extra in its intend to show the nowplayingview directly.
              * If yes then pre set the dragoffset of the draggable helper.
@@ -444,23 +433,7 @@ public class MainActivity extends GenericActivity
             Intent resumeIntent = getIntent();
             if (resumeIntent != null && resumeIntent.getExtras() != null && resumeIntent.getExtras().getString(MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW) != null &&
                     resumeIntent.getExtras().getString(MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW).equals(MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW_NOWPLAYINGVIEW)) {
-                nowPlayingView.setDragOffset(0.0f);
                 getIntent().removeExtra(MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW);
-            } else {
-                // set drag status
-                if (mSavedNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
-                    nowPlayingView.setDragOffset(0.0f);
-                } else if (mSavedNowPlayingDragStatus == DRAG_STATUS.DRAGGED_DOWN) {
-                    nowPlayingView.setDragOffset(1.0f);
-                }
-                mSavedNowPlayingDragStatus = null;
-
-                // set view switcher status
-                if (mSavedNowPlayingViewSwitcherStatus != null) {
-                    nowPlayingView.setViewSwitcherStatus(mSavedNowPlayingViewSwitcherStatus);
-                    mNowPlayingViewSwitcherStatus = mSavedNowPlayingViewSwitcherStatus;
-                }
-                mSavedNowPlayingViewSwitcherStatus = null;
             }
             nowPlayingView.onResume();
         }
@@ -472,7 +445,6 @@ public class MainActivity extends GenericActivity
 
         NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
         if (nowPlayingView != null) {
-            nowPlayingView.registerDragStatusReceiver(null);
 
             nowPlayingView.onPause();
         }
@@ -522,24 +494,21 @@ public class MainActivity extends GenericActivity
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        // save drag status of the nowplayingview
-        savedInstanceState.putInt(MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_DRAG_STATUS, mNowPlayingDragStatus.ordinal());
 
-        // save the cover/playlist view status of the nowplayingview
-        savedInstanceState.putInt(MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_VIEW_SWITCHER_CURRENT_VIEW, mNowPlayingViewSwitcherStatus.ordinal());
+
     }
 
     @Override
     public void onAlbumSelected(MPDAlbum album, Bitmap bitmap) {
 
-        if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        /*if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
             NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
             if (nowPlayingView != null) {
                 View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
                 coordinatorLayout.setVisibility(View.VISIBLE);
                 nowPlayingView.minimize();
             }
-        }
+        }*/
 
         // Create fragment and give it an argument for the selected article
         AlbumTracksFragment newFragment = new AlbumTracksFragment();
@@ -561,8 +530,8 @@ public class MainActivity extends GenericActivity
         transaction.replace(R.id.fragment_container, newFragment, AlbumTracksFragment.TAG);
         transaction.addToBackStack("AlbumTracksFragment");
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library);
+        /* NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_library); */
 
         // Commit the transaction
         transaction.commit();
@@ -570,14 +539,14 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void onArtistSelected(MPDArtist artist, Bitmap bitmap) {
-        if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        /*if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
             NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
             if (nowPlayingView != null) {
                 View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
                 coordinatorLayout.setVisibility(View.VISIBLE);
                 nowPlayingView.minimize();
             }
-        }
+        }*/
 
         // Create fragment and give it an argument for the selected article
         AlbumsFragment newFragment = new AlbumsFragment();
@@ -602,47 +571,15 @@ public class MainActivity extends GenericActivity
         transaction.replace(R.id.fragment_container, newFragment, AlbumsFragment.TAG);
         transaction.addToBackStack("ArtistAlbumsFragment");
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library);
+        /* NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_library); */
 
         // Commit the transaction
         transaction.commit();
     }
 
-    @Override
-    public void onStatusChanged(DRAG_STATUS status) {
-        mNowPlayingDragStatus = status;
-        if (status == DRAG_STATUS.DRAGGED_UP) {
-            View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-            coordinatorLayout.setVisibility(View.INVISIBLE);
-        }
-    }
 
-    @Override
-    public void onDragPositionChanged(float pos) {
-        if(mHeaderImageActive) {
-            // Get the primary color of the active theme from the helper.
-            int newColor = ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark);
 
-            // Calculate the offset depending on the floating point position (0.0-1.0 of the view)
-            // Shift by 24 bit to set it as the A from ARGB and set all remaining 24 bits to 1 to
-            int alphaOffset = (((255 - (int) (255.0 * pos)) << 24) | 0xFFFFFF);
-            // and with this mask to set the new alpha value.
-            newColor &= (alphaOffset);
-            getWindow().setStatusBarColor(newColor);
-        }
-    }
-
-    @Override
-    public void onSwitchedViews(VIEW_SWITCHER_STATUS view) {
-        mNowPlayingViewSwitcherStatus = view;
-    }
-
-    @Override
-    public void onStartDrag() {
-        View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-        coordinatorLayout.setVisibility(View.VISIBLE);
-    }
 
 
     @Override
@@ -723,7 +660,7 @@ public class MainActivity extends GenericActivity
     @Override
     public void setupToolbar(String title, boolean scrollingEnabled, boolean drawerIndicatorEnabled, boolean showImage) {
         // set drawer state
-        mDrawerToggle.setDrawerIndicatorEnabled(drawerIndicatorEnabled);
+        //mDrawerToggle.setDrawerIndicatorEnabled(drawerIndicatorEnabled);
 
         RelativeLayout collapsingImageLayout = findViewById(R.id.appbar_image_layout);
 
@@ -737,12 +674,7 @@ public class MainActivity extends GenericActivity
                 // Get the primary color of the active theme from the helper.
                 int newColor = ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark);
 
-                // Calculate the offset depending on the floating point position (0.0-1.0 of the view)
-                // Shift by 24 bit to set it as the A from ARGB and set all remaining 24 bits to 1 to
-                int alphaOffset = (((255 - (int) (255.0 * (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP  ? 0.0 : 1.0 ))) << 24) | 0xFFFFFF);
-                // and with this mask to set the new alpha value.
-                newColor &= (alphaOffset);
-                getWindow().setStatusBarColor(newColor);
+
             } else {
                 collapsingImageLayout.setVisibility(View.GONE);
                 mHeaderImageActive = false;
@@ -825,14 +757,14 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void showAlbumsForPath(String path) {
-        if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
+        /* if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
             NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
             if (nowPlayingView != null) {
                 View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
                 coordinatorLayout.setVisibility(View.VISIBLE);
                 nowPlayingView.minimize();
             }
-        }
+        } */
         // Create fragment and give it an argument for the selected article
         AlbumsFragment newFragment = new AlbumsFragment();
         Bundle args = new Bundle();
@@ -851,8 +783,8 @@ public class MainActivity extends GenericActivity
         transaction.replace(R.id.fragment_container, newFragment, AlbumsFragment.TAG);
         transaction.addToBackStack("DirectoryAlbumsFragment");
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library);
+        /* NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_library); */
 
         // Commit the transaction
         transaction.commit();

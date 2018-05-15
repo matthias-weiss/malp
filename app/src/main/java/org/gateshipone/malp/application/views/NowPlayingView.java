@@ -39,7 +39,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ViewDragHelper;
+//import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -91,7 +91,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
     private static final String TAG = NowPlayingView.class.getSimpleName();
 
-    private final ViewDragHelper mDragHelper;
+    //private final ViewDragHelper mDragHelper;
 
     private ServerStatusListener mStateListener;
 
@@ -107,8 +107,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      */
     private View mMainView;
 
-    private LinearLayout mDraggedUpButtons;
-    private LinearLayout mDraggedDownButtons;
+    //private LinearLayout mDraggedUpButtons;
+    //private LinearLayout mDraggedDownButtons;
 
     /**
      * Absolute pixel position of upper layout bound
@@ -118,13 +118,13 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     /**
      * relative dragposition
      */
-    private float mDragOffset;
+    //private float mDragOffset;
 
     /**
      * Height of non-draggable part.
      * (Layout height - draggable part)
      */
-    private int mDragRange;
+    //private int mDragRange;
 
     /**
      * Flag whether the views switches between album cover and artist image
@@ -163,7 +163,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      * This is probably the Activity of which this view is part of.
      * (Used for smooth statusbar transition and state resuming)
      */
-    private NowPlayingDragStatusReceiver mDragStatusReceiver = null;
+    //private NowPlayingDragStatusReceiver mDragStatusReceiver = null;
 
     private StreamingStatusReceiver mStreamingStatusReceiver;
 
@@ -243,26 +243,14 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
     public NowPlayingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mDragHelper = ViewDragHelper.create(this, 1f, new BottomDragCallbackHelper());
+        //mDragHelper = ViewDragHelper.create(this, 1f, new BottomDragCallbackHelper());
         mStateListener = new ServerStatusListener();
         mConnectionStateListener = new ServerConnectionListener(this, getContext().getMainLooper());
         mLastStatus = new MPDCurrentStatus();
         mLastTrack = new MPDTrack("");
     }
 
-    /**
-     * Maximizes this view with an animation.
-     */
-    public void maximize() {
-        smoothSlideTo(0f);
-    }
 
-    /**
-     * Minimizes the view with an animation.
-     */
-    public void minimize() {
-        smoothSlideTo(1f);
-    }
 
     /**
      * Slides the view to the given position.
@@ -270,7 +258,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      * @param slideOffset 0.0 - 1.0 (0.0 is dragged down, 1.0 is dragged up)
      * @return If the move was successful
      */
-    boolean smoothSlideTo(float slideOffset) {
+    /*boolean smoothSlideTo(float slideOffset) {
         final int topBound = getPaddingTop();
         int y = (int) (topBound + slideOffset * mDragRange);
 
@@ -279,7 +267,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
             return true;
         }
         return false;
-    }
+    }*/
 
 
     /**
@@ -288,7 +276,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      *
      * @param offset Offset to position the view to from 0.0 - 1.0 (0.0 dragged up, 1.0 dragged down)
      */
-    public void setDragOffset(float offset) {
+    /* public void setDragOffset(float offset) {
         if (offset > 1.0f || offset < 0.0f) {
             mDragOffset = 1.0f;
         }
@@ -331,7 +319,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
                 mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_DOWN);
             }
         }
-    }
+    }*/
 
     /**
      * Menu click listener. This method gets called when the user selects an item of the popup menu (right top corner).
@@ -551,178 +539,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         }
     }
 
-    /**
-     * Observer class for changes of the drag status.
-     */
-    private class BottomDragCallbackHelper extends ViewDragHelper.Callback {
-
-        /**
-         * Checks if a given child view should act as part of the drag. This is only true for the header
-         * element of this View-class.
-         *
-         * @param child     Child that was touched by the user
-         * @param pointerId Id of the pointer used for touching the view.
-         * @return True if the view should be allowed to be used as dragging part, false otheriwse.
-         */
-        @Override
-        public boolean tryCaptureView(@NonNull View child, int pointerId) {
-            return child == mHeaderView;
-        }
-
-        /**
-         * Called if the position of the draggable view is changed. This rerequests the layout of the view.
-         *
-         * @param changedView The view that was changed.
-         * @param left        Left position of the view (should stay constant in this case)
-         * @param top         Top position of the view
-         * @param dx          Dimension of the width
-         * @param dy          Dimension of the height
-         */
-        @Override
-        public void onViewPositionChanged(@NonNull View changedView, int left, int top, int dx, int dy) {
-            // Save the heighest top position of this view.
-            mTopPosition = top;
-
-            // Calculate the new drag offset
-            mDragOffset = (float) top / mDragRange;
-
-            // Relayout this view
-            requestLayout();
-
-            // Set inverse alpha values for smooth layout transition.
-            // Visibility still needs to be set otherwise parts of the buttons
-            // are not clickable.
-            mDraggedDownButtons.setAlpha(mDragOffset);
-            mDraggedUpButtons.setAlpha(1.0f - mDragOffset);
-
-            // Calculate the margin to smoothly resize text field
-            LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-            layoutParams.setMarginEnd((int) (mTopPlaylistButton.getWidth() * (1.0 - mDragOffset)));
-            mHeaderTextLayout.setLayoutParams(layoutParams);
-
-            if (mDragStatusReceiver != null) {
-                mDragStatusReceiver.onDragPositionChanged(mDragOffset);
-            }
-
-        }
-
-        /**
-         * Called if the user lifts the finger(release the view) with a velocity
-         *
-         * @param releasedChild View that was released
-         * @param xvel          x position of the view
-         * @param yvel          y position of the view
-         */
-        @Override
-        public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
-            int top = getPaddingTop();
-            if (yvel > 0 || (yvel == 0 && mDragOffset > 0.5f)) {
-                top += mDragRange;
-            }
-            // Snap the view to top/bottom position
-            mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
-            invalidate();
-        }
-
-        /**
-         * Returns the range within a view is allowed to be dragged.
-         *
-         * @param child Child to get the dragrange for
-         * @return Dragging range
-         */
-        @Override
-        public int getViewVerticalDragRange(@NonNull View child) {
-            return mDragRange;
-        }
 
 
-        /**
-         * Clamps (limits) the view during dragging to the top or bottom(plus header height)
-         *
-         * @param child Child that is being dragged
-         * @param top   Top position of the dragged view
-         * @param dy    Delta value of the height
-         * @return The limited height value (or valid position inside the clamped range).
-         */
-        @Override
-        public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-            final int topBound = getPaddingTop();
-            int bottomBound = getHeight() - mHeaderView.getHeight() - mHeaderView.getPaddingBottom();
-
-            final int newTop = Math.min(Math.max(top, topBound), bottomBound);
-
-            return newTop;
-        }
-
-        /**
-         * Called when the drag state changed. Informs observers that it is either dragged up or down.
-         * Also sets the visibility of button groups in the header
-         *
-         * @param state New drag state
-         */
-        @Override
-        public void onViewDragStateChanged(int state) {
-            super.onViewDragStateChanged(state);
-
-            // Check if the new state is the idle state. If then notify the observer (if one is registered)
-            if (state == ViewDragHelper.STATE_IDLE) {
-                // Enable scrolling of the text views
-                mTrackName.setSelected(true);
-                mTrackAdditionalInfo.setSelected(true);
-
-                if (mDragOffset == 0.0f) {
-                    // Called when dragged up
-                    mDraggedDownButtons.setVisibility(INVISIBLE);
-                    mDraggedUpButtons.setVisibility(VISIBLE);
-                    if (mDragStatusReceiver != null) {
-                        mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_UP);
-                    }
-                } else {
-                    // Called when dragged down
-                    mDraggedDownButtons.setVisibility(VISIBLE);
-                    mDraggedUpButtons.setVisibility(INVISIBLE);
-                    mCoverImage.setVisibility(INVISIBLE);
-                    if (mDragStatusReceiver != null) {
-                        mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_DOWN);
-                    }
-
-                }
-            } else if (state == ViewDragHelper.STATE_DRAGGING) {
-                /*
-                 * Show both layouts to enable a smooth transition via
-                 * alpha values of the layouts.
-                 */
-                mDraggedDownButtons.setVisibility(VISIBLE);
-                mDraggedUpButtons.setVisibility(VISIBLE);
-                mCoverImage.setVisibility(VISIBLE);
-                // report the change of the view
-                if (mDragStatusReceiver != null) {
-                    // Disable scrolling of the text views
-                    mTrackName.setSelected(false);
-                    mTrackAdditionalInfo.setSelected(false);
-
-                    mDragStatusReceiver.onStartDrag();
-
-                    if (mViewSwitcher.getCurrentView() == mPlaylistView && mDragOffset == 1.0f) {
-                        mPlaylistView.jumpToCurrentSong();
-                    }
-                }
-
-            }
-        }
-    }
-
-    /**
-     * Informs the dragHelper about a scroll movement.
-     */
-    @Override
-    public void computeScroll() {
-        // Continues the movement of the View Drag Helper and sets the invalidation for this View
-        // if the animation is not finished and needs continuation
-        if (mDragHelper.continueSettling(true)) {
-            ViewCompat.postInvalidateOnAnimation(this);
-        }
-    }
 
     /**
      * Handles touch inputs to some views, to make sure, the ViewDragHelper is called.
@@ -733,15 +551,15 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // Call the drag helper
-        mDragHelper.processTouchEvent(ev);
+        //mDragHelper.processTouchEvent(ev);
 
         // Get the position of the new touch event
         final float x = ev.getX();
         final float y = ev.getY();
 
         // Check if the position lies in the bounding box of the header view (which is draggable)
-        boolean isHeaderViewUnder = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
-
+        //boolean isHeaderViewUnder = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
+        boolean isHeaderViewUnder = true;
         // Check if drag is handled by the helper, or the header or mainview. If not notify the system that input is not yet handled.
         return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mMainView, (int) x, (int) y);
     }
@@ -793,7 +611,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Calculate the margin to smoothly resize text field
         LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getMeasuredHeight() * (1.0 - mDragOffset)));
+        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getMeasuredHeight() ));
         mHeaderTextLayout.setLayoutParams(layoutParams);
     }
 
@@ -834,10 +652,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         // view switcher for cover and playlist view
         mViewSwitcher = findViewById(R.id.now_playing_view_switcher);
 
-        // Button container for the buttons shown if dragged up
-        mDraggedUpButtons = findViewById(R.id.now_playing_layout_dragged_up);
-        // Button container for the buttons shown if dragged down
-        mDraggedDownButtons = findViewById(R.id.now_playing_layout_dragged_down);
 
         // textviews
         mTrackName = findViewById(R.id.now_playing_trackName);
@@ -912,11 +726,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mVolumeSeekbarLayout = findViewById(R.id.volume_seekbar_layout);
         mVolumeButtonLayout = findViewById(R.id.volume_button_layout);
 
-        // set dragging part default to bottom
-        mDragOffset = 1.0f;
-        mDraggedUpButtons.setVisibility(INVISIBLE);
-        mDraggedDownButtons.setVisibility(VISIBLE);
-        mDraggedUpButtons.setAlpha(0.0f);
 
         // add listener to top playpause button
         mTopPlayPauseButton.setOnClickListener(arg0 -> MPDCommandHandler.togglePause());
@@ -938,18 +747,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
             // toggle between cover and playlistview
             mViewSwitcher.showNext();
 
-            // report the change of the view
-            if (mDragStatusReceiver != null) {
-                // set view status
-                if (mViewSwitcher.getDisplayedChild() == 0) {
-                    // cover image is shown
-                    mDragStatusReceiver.onSwitchedViews(NowPlayingDragStatusReceiver.VIEW_SWITCHER_STATUS.COVER_VIEW);
-                } else {
-                    // playlist view is shown
-                    mDragStatusReceiver.onSwitchedViews(NowPlayingDragStatusReceiver.VIEW_SWITCHER_STATUS.PLAYLIST_VIEW);
-                    mPlaylistView.jumpToCurrentSong();
-                }
-            }
+
         });
 
         // Add listener to top menu button
@@ -1058,15 +856,10 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         // Calculate the maximal range that the view is allowed to be dragged
-        mDragRange = (getMeasuredHeight() - mHeaderView.getMeasuredHeight());
 
         // New temporary top position, to fix the view at top or bottom later if state is idle.
         int newTop = mTopPosition;
 
-        // fix height at top or bottom if state idle
-        if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE) {
-            newTop = (int) (mDragRange * mDragOffset);
-        }
 
         // Request the upper part of the NowPlayingView (header)
         mHeaderView.layout(
@@ -1314,7 +1107,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Calculate the margin to avoid cut off textviews
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
-        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getWidth() * (1.0 - mDragOffset)));
+        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getWidth() ));
         mHeaderTextLayout.setLayoutParams(layoutParams);
 
         mTrackURI.setText(track.getPath());
@@ -1327,63 +1120,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         mLastTrack = track;
 
-    }
-
-
-    /**
-     * Can be used to register an observer to this view, that is notified when a change of the dragstatus,offset happens.
-     *
-     * @param receiver Observer to register, only one observer at a time is possible.
-     */
-    public void registerDragStatusReceiver(NowPlayingDragStatusReceiver receiver) {
-        mDragStatusReceiver = receiver;
-        // Initial status notification
-        if (mDragStatusReceiver != null) {
-
-            // set drag status
-            if (mDragOffset == 0.0f) {
-                // top
-                mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_UP);
-            } else {
-                // bottom
-                mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_DOWN);
-            }
-
-            // set view status
-            if (mViewSwitcher.getDisplayedChild() == 0) {
-                // cover image is shown
-                mDragStatusReceiver.onSwitchedViews(NowPlayingDragStatusReceiver.VIEW_SWITCHER_STATUS.COVER_VIEW);
-            } else {
-                // playlist view is shown
-                mDragStatusReceiver.onSwitchedViews(NowPlayingDragStatusReceiver.VIEW_SWITCHER_STATUS.PLAYLIST_VIEW);
-            }
-        }
-    }
-
-
-    /**
-     * Set the viewswitcher of cover/playlist view to the requested state.
-     *
-     * @param view the view which should be displayed.
-     */
-    public void setViewSwitcherStatus(NowPlayingDragStatusReceiver.VIEW_SWITCHER_STATUS view) {
-        int color = 0;
-
-        switch (view) {
-            case COVER_VIEW:
-                // change the view only if the requested view is not displayed
-                mViewSwitcher.setDisplayedChild(0);
-                color = ThemeUtils.getThemeColor(getContext(), android.R.attr.textColor);
-                break;
-            case PLAYLIST_VIEW:
-                // change the view only if the requested view is not displayed
-                mViewSwitcher.setDisplayedChild(1);
-                color = ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent);
-                break;
-        }
-
-        // tint the button according to the requested view
-        mTopPlaylistButton.setImageTintList(ColorStateList.valueOf(color));
     }
 
 
@@ -1408,32 +1144,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         getContext().startActivity(Intent.createChooser(shareIntent, getContext().getString(R.string.dialog_share_song_details)));
     }
 
-    /**
-     * Public interface used by observers to be notified about a change in drag state or drag position.
-     */
-    public interface NowPlayingDragStatusReceiver {
-        // Possible values for DRAG_STATUS (up,down)
-        enum DRAG_STATUS {
-            DRAGGED_UP, DRAGGED_DOWN
-        }
 
-        // Possible values for the view in the viewswitcher (cover, playlist)
-        enum VIEW_SWITCHER_STATUS {
-            COVER_VIEW, PLAYLIST_VIEW
-        }
-
-        // Called when the whole view is either completely dragged up or down
-        void onStatusChanged(DRAG_STATUS status);
-
-        // Called continuously during dragging.
-        void onDragPositionChanged(float pos);
-
-        // Called when the view switcher switches between cover and playlist view
-        void onSwitchedViews(VIEW_SWITCHER_STATUS view);
-
-        // Called when the user starts the drag
-        void onStartDrag();
-    }
 
     private class ServerStatusListener extends MPDStatusChangeHandler {
 
