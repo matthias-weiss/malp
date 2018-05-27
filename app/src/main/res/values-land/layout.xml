@@ -22,5 +22,5 @@
   -->
 
 <resources>
-    <item name="now_playing_layout" type="layout">@layout/view_now_playing_single_pane_land</item>
+    <item name="now_playing_layout" type="layout">@layout/view_now_playing_double_pane_land</item>
 </resources>
