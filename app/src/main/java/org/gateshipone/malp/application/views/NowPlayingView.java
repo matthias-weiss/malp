@@ -172,19 +172,15 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     /**
      * Top buttons in the draggable header part.
      */
-    private ImageButton mTopPlayPauseButton;
-    private ImageButton mTopPlaylistButton;
     private ImageButton mTopMenuButton;
 
     /**
      * Buttons in the bottom part of the view
      */
-    private ImageButton mBottomRepeatButton;
     private ImageButton mBottomPreviousButton;
     private ImageButton mBottomPlayPauseButton;
     private ImageButton mBottomStopButton;
     private ImageButton mBottomNextButton;
-    private ImageButton mBottomRandomButton;
 
     /**
      * Seekbar used for seeking and informing the user of the current playback position.
@@ -250,76 +246,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mLastTrack = new MPDTrack("");
     }
 
-
-
-    /**
-     * Slides the view to the given position.
-     *
-     * @param slideOffset 0.0 - 1.0 (0.0 is dragged down, 1.0 is dragged up)
-     * @return If the move was successful
-     */
-    /*boolean smoothSlideTo(float slideOffset) {
-        final int topBound = getPaddingTop();
-        int y = (int) (topBound + slideOffset * mDragRange);
-
-        if (mDragHelper.smoothSlideViewTo(mHeaderView, mHeaderView.getLeft(), y)) {
-            ViewCompat.postInvalidateOnAnimation(this);
-            return true;
-        }
-        return false;
-    }*/
-
-
-    /**
-     * Set the position of the draggable view to the given offset. This is done without an animation.
-     * Can be used to resume a certain state of the view (e.g. on resuming an activity)
-     *
-     * @param offset Offset to position the view to from 0.0 - 1.0 (0.0 dragged up, 1.0 dragged down)
-     */
-    /* public void setDragOffset(float offset) {
-        if (offset > 1.0f || offset < 0.0f) {
-            mDragOffset = 1.0f;
-        }
-        mDragOffset = offset;
-
-        invalidate();
-        requestLayout();
-
-
-        // Set inverse alpha values for smooth layout transition.
-        // Visibility still needs to be set otherwise parts of the buttons
-        // are not clickable.
-        mDraggedDownButtons.setAlpha(mDragOffset);
-        mDraggedUpButtons.setAlpha(1.0f - mDragOffset);
-
-        // Calculate the margin to smoothly resize text field
-        LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getWidth() * (1.0 - mDragOffset)));
-        mHeaderTextLayout.setLayoutParams(layoutParams);
-
-        // Notify the observers about the change
-        if (mDragStatusReceiver != null) {
-            mDragStatusReceiver.onDragPositionChanged(offset);
-        }
-
-        if (mDragOffset == 0.0f) {
-            // top
-            mDraggedDownButtons.setVisibility(INVISIBLE);
-            mDraggedUpButtons.setVisibility(VISIBLE);
-            mCoverImage.setVisibility(VISIBLE);
-            if (mDragStatusReceiver != null) {
-                mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_UP);
-            }
-        } else {
-            // bottom
-            mDraggedDownButtons.setVisibility(VISIBLE);
-            mDraggedUpButtons.setVisibility(INVISIBLE);
-            mCoverImage.setVisibility(INVISIBLE);
-            if (mDragStatusReceiver != null) {
-                mDragStatusReceiver.onStatusChanged(NowPlayingDragStatusReceiver.DRAG_STATUS.DRAGGED_DOWN);
-            }
-        }
-    }*/
 
     /**
      * Menu click listener. This method gets called when the user selects an item of the popup menu (right top corner).
@@ -611,7 +537,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Calculate the margin to smoothly resize text field
         LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getMeasuredHeight() ));
         mHeaderTextLayout.setLayoutParams(layoutParams);
     }
 
@@ -629,17 +554,13 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mMainView = findViewById(R.id.now_playing_bodyLayout);
 
         // header buttons
-        mTopPlayPauseButton = findViewById(R.id.now_playing_topPlayPauseButton);
-        mTopPlaylistButton = findViewById(R.id.now_playing_topPlaylistButton);
         mTopMenuButton = findViewById(R.id.now_playing_topMenuButton);
 
         // bottom buttons
-        mBottomRepeatButton = findViewById(R.id.now_playing_bottomRepeatButton);
         mBottomPreviousButton = findViewById(R.id.now_playing_bottomPreviousButton);
         mBottomPlayPauseButton = findViewById(R.id.now_playing_bottomPlayPauseButton);
         mBottomStopButton = findViewById(R.id.now_playing_bottomStopButton);
         mBottomNextButton = findViewById(R.id.now_playing_bottomNextButton);
-        mBottomRandomButton = findViewById(R.id.now_playing_bottomRandomButton);
 
         // Main cover image
         mCoverImage = findViewById(R.id.now_playing_cover);
@@ -727,42 +648,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mVolumeButtonLayout = findViewById(R.id.volume_button_layout);
 
 
-        // add listener to top playpause button
-        mTopPlayPauseButton.setOnClickListener(arg0 -> MPDCommandHandler.togglePause());
-
-        // Add listeners to top playlist button
-        mTopPlaylistButton.setOnClickListener(v -> {
-
-            // get color for playlist button
-            int color;
-            if (mViewSwitcher.getCurrentView() != mPlaylistView) {
-                color = ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent);
-            } else {
-                color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent);
-            }
-
-            // tint the button
-            mTopPlaylistButton.setImageTintList(ColorStateList.valueOf(color));
-
-            // toggle between cover and playlistview
-            mViewSwitcher.showNext();
-
-
-        });
-
         // Add listener to top menu button
         mTopMenuButton.setOnClickListener(this::showAdditionalOptionsMenu);
-
-        // Add listener to bottom repeat button
-        mBottomRepeatButton.setOnClickListener(arg0 -> {
-            if (null != mLastStatus) {
-                if (mLastStatus.getRepeat() == 0) {
-                    MPDCommandHandler.setRepeat(true);
-                } else {
-                    MPDCommandHandler.setRepeat(false);
-                }
-            }
-        });
 
         // Add listener to bottom previous button
         mBottomPreviousButton.setOnClickListener(arg0 -> MPDCommandHandler.previousSong());
@@ -774,17 +661,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Add listener to bottom next button
         mBottomNextButton.setOnClickListener(arg0 -> MPDCommandHandler.nextSong());
-
-        // Add listener to bottom random button
-        mBottomRandomButton.setOnClickListener(arg0 -> {
-            if (null != mLastStatus) {
-                if (mLastStatus.getRandom() == 0) {
-                    MPDCommandHandler.setRandom(true);
-                } else {
-                    MPDCommandHandler.setRandom(false);
-                }
-            }
-        });
 
         mCoverImage.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FanartActivity.class);
@@ -955,40 +831,15 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         // update play buttons
         switch (state) {
             case MPD_PLAYING:
-                mTopPlayPauseButton.setImageResource(R.drawable.ic_pause_48dp);
                 mBottomPlayPauseButton.setImageResource(R.drawable.ic_pause_circle_fill_48dp);
 
 
                 break;
             case MPD_PAUSING:
             case MPD_STOPPED:
-                mTopPlayPauseButton.setImageResource(R.drawable.ic_play_arrow_48dp);
                 mBottomPlayPauseButton.setImageResource(R.drawable.ic_play_circle_fill_48dp);
 
 
-                break;
-        }
-
-        // update repeat button
-        // FIXME with single playback
-        switch (status.getRepeat()) {
-            case 0:
-                mBottomRepeatButton.setImageResource(R.drawable.ic_repeat_24dp);
-                mBottomRepeatButton.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
-                break;
-            case 1:
-                mBottomRepeatButton.setImageResource(R.drawable.ic_repeat_24dp);
-                mBottomRepeatButton.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), android.R.attr.colorAccent)));
-                break;
-        }
-
-        // update random button
-        switch (status.getRandom()) {
-            case 0:
-                mBottomRandomButton.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
-                break;
-            case 1:
-                mBottomRandomButton.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), android.R.attr.colorAccent)));
                 break;
         }
 
@@ -1107,7 +958,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Calculate the margin to avoid cut off textviews
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
-        layoutParams.setMarginEnd((int) (mTopPlaylistButton.getWidth() ));
         mHeaderTextLayout.setLayoutParams(layoutParams);
 
         mTrackURI.setText(track.getPath());

@@ -132,24 +132,6 @@
                     android:tint="?attr/malp_color_text_accent" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/now_playing_layout_dragged_down"
-                android:layout_width="48dp"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_alignEnd="@+id/now_playing_layout_dragged_up">
-
-                <ImageButton
-                    android:id="@+id/now_playing_topPlayPauseButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:background="?android:selectableItemBackground"
-                    android:baselineAlignBottom="false"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_play_arrow_48dp"
-                    android:tint="?attr/malp_color_text_accent" />
-            </LinearLayout>
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -341,6 +323,82 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/volume_control_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/volume_seekbar_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/material_screen_edge_spacing"
+                        android:paddingStart="@dimen/material_screen_edge_spacing"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/volume_icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_volume_high_black_48dp"
+                            android:tint="?android:textColor" />
+
+                        <SeekBar
+                            android:id="@+id/volume_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/volume_button_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingEnd="@dimen/material_screen_edge_spacing"
+                        android:paddingStart="@dimen/material_screen_edge_spacing">
+
+                        <ImageButton
+                            android:id="@+id/volume_button_minus"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="?android:selectableItemBackground"
+                            android:src="@drawable/ic_minus_black_48dp"
+                            android:tint="?attr/malp_color_text_accent" />
+
+                        <ImageView
+                            android:id="@+id/volume_icon_buttons"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_volume_high_black_48dp"
+                            android:tint="?android:textColor" />
+
+                        <TextView
+                            android:id="@+id/volume_button_text"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4dp"
+                            android:gravity="center"
+                            android:text="100%"
+                            android:textColor="?attr/malp_color_text_accent" />
+
+                        <ImageButton
+                            android:id="@+id/volume_button_plus"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="?android:selectableItemBackground"
+                            android:src="@drawable/ic_plus_black_48dp"
+                            android:tint="?attr/malp_color_text_accent" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -353,16 +411,6 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:paddingBottom="@dimen/material_content_spacing">
-
-                        <ImageButton
-                            android:id="@+id/now_playing_bottomRepeatButton"
-                            android:layout_width="0px"
-                            android:layout_height="48dp"
-                            android:layout_weight="1"
-                            android:background="?android:selectableItemBackground"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_repeat_24dp"
-                            android:tint="?attr/malp_color_text_accent" />
 
                         <ImageButton
                             android:id="@+id/now_playing_bottomPreviousButton"
@@ -404,92 +452,6 @@
                             android:src="@drawable/ic_skip_next_48dp"
                             android:tint="?attr/malp_color_text_accent" />
 
-                        <ImageButton
-                            android:id="@+id/now_playing_bottomRandomButton"
-                            android:layout_width="0px"
-                            android:layout_height="48dp"
-                            android:layout_weight="1"
-                            android:background="?android:selectableItemBackground"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_shuffle_24dp"
-                            android:tint="?attr/malp_color_text_accent" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/volume_control_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/volume_seekbar_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingEnd="@dimen/material_screen_edge_spacing"
-                            android:paddingStart="@dimen/material_screen_edge_spacing"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/volume_icon"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:src="@drawable/ic_volume_high_black_48dp"
-                                android:tint="?android:textColor" />
-
-                            <SeekBar
-                                android:id="@+id/volume_seekbar"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/volume_button_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:paddingEnd="@dimen/material_screen_edge_spacing"
-                            android:paddingStart="@dimen/material_screen_edge_spacing">
-
-                            <ImageButton
-                                android:id="@+id/volume_button_minus"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="?android:selectableItemBackground"
-                                android:src="@drawable/ic_minus_black_48dp"
-                                android:tint="?attr/malp_color_text_accent" />
-
-                            <ImageView
-                                android:id="@+id/volume_icon_buttons"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/ic_volume_high_black_48dp"
-                                android:tint="?android:textColor" />
-
-                            <TextView
-                                android:id="@+id/volume_button_text"
-                                android:layout_width="48dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="4dp"
-                                android:gravity="center"
-                                android:text="100%"
-                                android:textColor="?attr/malp_color_text_accent" />
-
-                            <ImageButton
-                                android:id="@+id/volume_button_plus"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="?android:selectableItemBackground"
-                                android:src="@drawable/ic_plus_black_48dp"
-                                android:tint="?attr/malp_color_text_accent" />
-
-                        </LinearLayout>
                     </LinearLayout>
 
 
