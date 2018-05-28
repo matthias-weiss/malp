@@ -112,8 +112,6 @@ public class MainActivity extends GenericActivity
 
     private boolean mUseArtistSort;
 
-    private FloatingActionButton mFAB;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,25 +122,18 @@ public class MainActivity extends GenericActivity
         setContentView(R.layout.activity_main);
 
         // restore elevation behaviour as pre 24 support lib
-        AppBarLayout layout = findViewById(R.id.appbar);
-        layout.setStateListAnimator(null);
-        ViewCompat.setElevation(layout, 0);
+        //AppBarLayout layout = findViewById(R.id.appbar);
+        //layout.setStateListAnimator(null);
+        //ViewCompat.setElevation(layout, 0);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         // enable back navigation
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        //final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
-        if (actionBar != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        /* DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer != null) {
-            mDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(mDrawerToggle);
-            mDrawerToggle.syncState();
-        }*/
+        //if (actionBar != null) {
+        //    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //}
 
         int navId = getDefaultViewID();
 
@@ -152,8 +143,6 @@ public class MainActivity extends GenericActivity
             navigationView.setCheckedItem(navId);
         }*/
 
-
-        mFAB = findViewById(R.id.andrompd_play_button);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mUseArtistSort = sharedPref.getBoolean(getString(R.string.pref_use_artist_sort_key), getResources().getBoolean(R.bool.pref_use_artist_sort_default));
@@ -207,28 +196,9 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void onBackPressed() {
-        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        /*ConstraintLayout drawer = findViewById(R.id.drawer_layout);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        super.onBackPressed();
 
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else  if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
-            NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-            if (nowPlayingView != null) {
-                View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-                coordinatorLayout.setVisibility(View.VISIBLE);
-                nowPlayingView.minimize();
-            }
-        } else { */
-            super.onBackPressed();
-
-            // enable navigation bar when backstack empty
-            /*if (fragmentManager.getBackStackEntryCount() == 0) {
-                mDrawerToggle.setDrawerIndicatorEnabled(true);
-            }
-        }*/
     }
 
 
@@ -363,11 +333,6 @@ public class MainActivity extends GenericActivity
         View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
         coordinatorLayout.setVisibility(View.VISIBLE);
 
-        NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-        /*if (nowPlayingView != null) {
-            nowPlayingView.minimize();
-        }*/
-
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         // clear backstack
@@ -406,10 +371,6 @@ public class MainActivity extends GenericActivity
             fragment = new InformationSettingsFragment();
             fragmentTag = InformationSettingsFragment.class.getSimpleName();
         }
-
-        //DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        //drawer.closeDrawer(GravityCompat.START);
-
 
         // Do the actual fragment transaction
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -501,15 +462,6 @@ public class MainActivity extends GenericActivity
     @Override
     public void onAlbumSelected(MPDAlbum album, Bitmap bitmap) {
 
-        /*if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
-            NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-            if (nowPlayingView != null) {
-                View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-                coordinatorLayout.setVisibility(View.VISIBLE);
-                nowPlayingView.minimize();
-            }
-        }*/
-
         // Create fragment and give it an argument for the selected article
         AlbumTracksFragment newFragment = new AlbumTracksFragment();
         Bundle args = new Bundle();
@@ -539,14 +491,6 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void onArtistSelected(MPDArtist artist, Bitmap bitmap) {
-        /*if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
-            NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-            if (nowPlayingView != null) {
-                View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-                coordinatorLayout.setVisibility(View.VISIBLE);
-                nowPlayingView.minimize();
-            }
-        }*/
 
         // Create fragment and give it an argument for the selected article
         AlbumsFragment newFragment = new AlbumsFragment();
@@ -645,16 +589,6 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void setupFAB(boolean active, View.OnClickListener listener) {
-        mFAB = findViewById(R.id.andrompd_play_button);
-        if (null == mFAB) {
-            return;
-        }
-        if (active) {
-            mFAB.show();
-        } else {
-            mFAB.hide();
-        }
-        mFAB.setOnClickListener(listener);
     }
 
     @Override
@@ -690,7 +624,7 @@ public class MainActivity extends GenericActivity
             getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark));
         }
         // set scrolling behaviour
-        CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
+        /*CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.height = -1;
 
@@ -709,7 +643,7 @@ public class MainActivity extends GenericActivity
             toolbar.setTitleEnabled(false);
             setTitle(title);
             params.setScrollFlags(0);
-        }
+        }*/
     }
 
     public void setupToolbarImage(Bitmap bm) {
@@ -718,14 +652,14 @@ public class MainActivity extends GenericActivity
             collapsingImage.setImageBitmap(bm);
             
             // FIXME DIRTY HACK: Manually fix the toolbar size to the screen width
-            CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
-            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+            //CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
+            //AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
 
-            params.height = getWindow().getDecorView().getMeasuredWidth();
+            //params.height = getWindow().getDecorView().getMeasuredWidth();
 
             // Always expand the toolbar to show the complete image
-            AppBarLayout appbar = findViewById(R.id.appbar);
-            appbar.setExpanded(true,false);
+            //AppBarLayout appbar = findViewById(R.id.appbar);
+            //appbar.setExpanded(true,false);
         }
     }
 
@@ -757,14 +691,7 @@ public class MainActivity extends GenericActivity
 
     @Override
     public void showAlbumsForPath(String path) {
-        /* if (mNowPlayingDragStatus == DRAG_STATUS.DRAGGED_UP) {
-            NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
-            if (nowPlayingView != null) {
-                View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-                coordinatorLayout.setVisibility(View.VISIBLE);
-                nowPlayingView.minimize();
-            }
-        } */
+
         // Create fragment and give it an argument for the selected article
         AlbumsFragment newFragment = new AlbumsFragment();
         Bundle args = new Bundle();

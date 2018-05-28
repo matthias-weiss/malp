@@ -84,7 +84,7 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
 
 
         // create tabs
-        TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
+        /*TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
 
         // Icons
         final ColorStateList tabColors = tabLayout.getTabTextColors();
@@ -102,13 +102,13 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
             tabLayout.addTab(tabLayout.newTab().setIcon(icon));
         }
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);*/
 
         mViewPager = rootView.findViewById(R.id.my_music_viewpager);
         mMyMusicPagerAdapter = new MyMusicPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mMyMusicPagerAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(this);
+        //mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //tabLayout.setOnTabSelectedListener(this);
 
         // set start page
         Bundle args = getArguments();
