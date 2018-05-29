@@ -110,18 +110,6 @@
                 android:layout_alignParentEnd="true">
 
                 <ImageButton
-                    android:id="@+id/now_playing_topPlaylistButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:background="?android:selectableItemBackground"
-                    android:baselineAlignBottom="false"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_queue_music_24dp"
-                    android:tint="?attr/malp_color_text_accent"
-                    android:visibility="gone" />
-
-                <ImageButton
                     android:id="@+id/now_playing_topMenuButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
