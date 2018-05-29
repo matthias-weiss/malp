@@ -33,6 +33,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -43,6 +44,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -136,7 +138,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     /**
      * Main cover imageview
      */
-    private AlbumArtistView mCoverImage;
+    //private AlbumArtistView mCoverImage;
 
     /**
      * Small cover image, part of the draggable header
@@ -151,7 +153,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     /**
      * ViewSwitcher used for switching between the main cover image and the playlist
      */
-    private ViewSwitcher mViewSwitcher;
+    //private ViewSwitcher mViewSwitcher;
 
     /**
      * Asynchronous loader for coverimages for TrackItems.
@@ -217,11 +219,11 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     private TextView mElapsedTime;
     private TextView mDuration;
 
-    private TextView mTrackNo;
-    private TextView mPlaylistNo;
-    private TextView mBitrate;
-    private TextView mAudioProperties;
-    private TextView mTrackURI;
+    //private TextView mTrackNo;
+    //private TextView mPlaylistNo;
+    //private TextView mBitrate;
+    //private TextView mAudioProperties;
+    //private TextView mTrackURI;
 
 
     private MPDCurrentStatus mLastStatus;
@@ -401,7 +403,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     @Override
     public void newAlbumImage(MPDAlbum album) {
         if (mLastTrack.getTrackAlbum().equals(album.getName())) {
-            mCoverLoader.getImage(mLastTrack, true, mCoverImage.getWidth(), mCoverImage.getHeight());
+            //mCoverLoader.getImage(mLastTrack, true, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
     }
 
@@ -416,10 +418,10 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
             // Show artist image if artwork is requested
             if (mShowArtistImage) {
-                mCoverLoader.getArtistImage(mLastTrack, true, mCoverImage.getWidth(), mCoverImage.getHeight());
+                //mCoverLoader.getArtistImage(mLastTrack, true, mCoverImage.getWidth(), mCoverImage.getHeight());
             } else {
                 // Hide artist image
-                mCoverImage.clearArtistImage();
+                //mCoverImage.clearArtistImage();
             }
         } else if (key.equals(getContext().getString(R.string.pref_volume_steps_key))) {
             setVolumeControlSetting();
@@ -461,7 +463,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     @Override
     public void newArtistImage(MPDArtist artist) {
         if (mShowArtistImage && mLastTrack.getTrackArtist().equals(artist.getArtistName())) {
-            mCoverLoader.getArtistImage(artist, false, mCoverImage.getWidth(), mCoverImage.getHeight());
+            //mCoverLoader.getArtistImage(artist, false, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
     }
 
@@ -529,10 +531,10 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, 0),
                 resolveSizeAndState(maxHeight, heightMeasureSpec, 0));
 
-        ViewGroup.LayoutParams imageParams = mCoverImage.getLayoutParams();
-        imageParams.height = mViewSwitcher.getHeight();
-        mCoverImage.setLayoutParams(imageParams);
-        mCoverImage.requestLayout();
+        //ViewGroup.LayoutParams imageParams = mCoverImage.getLayoutParams();
+        //imageParams.height = mViewSwitcher.getHeight();
+        //mCoverImage.setLayoutParams(imageParams);
+        //mCoverImage.requestLayout();
 
 
         // Calculate the margin to smoothly resize text field
@@ -563,7 +565,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mBottomNextButton = findViewById(R.id.now_playing_bottomNextButton);
 
         // Main cover image
-        mCoverImage = findViewById(R.id.now_playing_cover);
+        //mCoverImage = findViewById(R.id.now_playing_cover);
         // Small header cover image
         mTopCoverImage = findViewById(R.id.now_playing_topCover);
 
@@ -571,7 +573,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mPlaylistView = findViewById(R.id.now_playing_playlist);
 
         // view switcher for cover and playlist view
-        mViewSwitcher = findViewById(R.id.now_playing_view_switcher);
+        //mViewSwitcher = findViewById(R.id.now_playing_view_switcher);
 
 
         // textviews
@@ -582,11 +584,11 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         // For marquee scrolling the TextView need selected == true
         mTrackAdditionalInfo.setSelected(true);
 
-        mTrackNo = findViewById(R.id.now_playing_text_track_no);
-        mPlaylistNo = findViewById(R.id.now_playing_text_playlist_no);
-        mBitrate = findViewById(R.id.now_playing_text_bitrate);
-        mAudioProperties = findViewById(R.id.now_playing_text_audio_properties);
-        mTrackURI = findViewById(R.id.now_playing_text_track_uri);
+        //mTrackNo = findViewById(R.id.now_playing_text_track_no);
+        //mPlaylistNo = findViewById(R.id.now_playing_text_playlist_no);
+        //mBitrate = findViewById(R.id.now_playing_text_bitrate);
+        //mAudioProperties = findViewById(R.id.now_playing_text_audio_properties);
+        //mTrackURI = findViewById(R.id.now_playing_text_track_uri);
 
         // Textviews directly under the seekbar
         mElapsedTime = findViewById(R.id.now_playing_elapsedTime);
@@ -662,11 +664,11 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         // Add listener to bottom next button
         mBottomNextButton.setOnClickListener(arg0 -> MPDCommandHandler.nextSong());
 
-        mCoverImage.setOnClickListener(v -> {
+/*        mCoverImage.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FanartActivity.class);
             getContext().startActivity(intent);
         });
-        mCoverImage.setVisibility(INVISIBLE);
+        mCoverImage.setVisibility(INVISIBLE);*/
 
         mCoverLoader = new CoverBitmapLoader(getContext(), new CoverReceiverClass());
     }
@@ -677,6 +679,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      * @param v
      */
     private void showAdditionalOptionsMenu(View v) {
+        String TAG = "Matthias";
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
         // Inflate the menu from a menu xml file
         popupMenu.inflate(R.menu.popup_menu_nowplaying);
@@ -696,10 +699,12 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         // Check if the current view is the cover or the playlist. If it is the playlist hide its actions.
         // If the viewswitcher only has one child the dual pane layout is used
+/*
         if (mViewSwitcher.getDisplayedChild() == 0 && (mViewSwitcher.getChildCount() > 1)) {
             menu.setGroupEnabled(R.id.group_playlist_actions, false);
             menu.setGroupVisible(R.id.group_playlist_actions, false);
         }
+*/
 
         // Check if streaming is configured for the current server
         boolean streamingEnabled = ConnectionManager.getInstance(getContext().getApplicationContext()).getStreamingEnabled();
@@ -876,12 +881,12 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         mVolumeText.setText(String.valueOf(volume) + '%');
 
-        mPlaylistNo.setText(String.valueOf(status.getCurrentSongIndex() + 1) + getResources().getString(R.string.track_number_album_count_separator) +
-                String.valueOf(status.getPlaylistLength()));
+        //mPlaylistNo.setText(String.valueOf(status.getCurrentSongIndex() + 1) + getResources().getString(R.string.track_number_album_count_separator) +
+        //        String.valueOf(status.getPlaylistLength()));
 
         mLastStatus = status;
 
-        mBitrate.setText(status.getBitrate() + getResources().getString(R.string.bitrate_unit_kilo_bits));
+        //mBitrate.setText(status.getBitrate() + getResources().getString(R.string.bitrate_unit_kilo_bits));
 
         // Set audio properties string
         String properties = status.getSamplerate() + getResources().getString(R.string.samplerate_unit_hertz) + ' ';
@@ -907,7 +912,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
 
         properties += status.getChannelCount() + getResources().getString(R.string.channel_count_unit);
-        mAudioProperties.setText(properties);
+        //mAudioProperties.setText(properties);
     }
 
     private void updateMPDCurrentTrack(MPDTrack track) {
@@ -935,7 +940,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
             DrawableCompat.setTint(drawable, tintColor);
 
             // Show the placeholder image until the cover fetch process finishes
-            mCoverImage.clearAlbumImage();
+            //mCoverImage.clearAlbumImage();
 
             tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent);
 
@@ -947,26 +952,26 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
             // The same for the small header image
             mTopCoverImage.setImageDrawable(drawable);
             // Start the cover loader
-            mCoverLoader.getImage(track, true, mCoverImage.getWidth(), mCoverImage.getHeight());
+            //mCoverLoader.getImage(track, true, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
 
         if (mShowArtistImage && (null == mLastTrack || !track.getTrackArtist().equals(mLastTrack.getTrackArtist()) || !track.getTrackArtistMBID().equals(mLastTrack.getTrackAlbumArtistMBID()) )) {
-            mCoverImage.clearArtistImage();
+            //mCoverImage.clearArtistImage();
 
-            mCoverLoader.getArtistImage(track, true, mCoverImage.getWidth(), mCoverImage.getHeight());
+            //mCoverLoader.getArtistImage(track, true, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
 
         // Calculate the margin to avoid cut off textviews
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
         mHeaderTextLayout.setLayoutParams(layoutParams);
 
-        mTrackURI.setText(track.getPath());
-        if (track.getAlbumTrackCount() != 0) {
+        //mTrackURI.setText(track.getPath());
+/*        if (track.getAlbumTrackCount() != 0) {
             mTrackNo.setText(String.valueOf(track.getTrackNumber()) + getResources().getString(R.string.track_number_album_count_separator) +
                     String.valueOf(track.getAlbumTrackCount()));
         } else {
             mTrackNo.setText(String.valueOf(track.getTrackNumber()));
-        }
+        }*/
 
         mLastTrack = track;
 
@@ -1135,11 +1140,11 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
                     activity.runOnUiThread(() -> {
                         if (type == CoverBitmapLoader.IMAGE_TYPE.ALBUM_IMAGE) {
                             // Set the main cover image
-                            mCoverImage.setAlbumImage(bm);
+                            //mCoverImage.setAlbumImage(bm);
                             // Set the small header image
                             mTopCoverImage.setImageBitmap(bm);
                         } else if (type == CoverBitmapLoader.IMAGE_TYPE.ARTIST_IMAGE) {
-                            mCoverImage.setArtistImage(bm);
+                            //mCoverImage.setArtistImage(bm);
                         }
                     });
                 }

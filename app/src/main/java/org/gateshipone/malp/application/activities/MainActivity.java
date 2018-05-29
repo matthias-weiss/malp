@@ -38,6 +38,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.MenuInflater;
@@ -117,9 +118,22 @@ public class MainActivity extends GenericActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_main);
+
+//        String TAG = "Matthias";
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
+//        Log.d(TAG, "getchildcount()");
 
         // restore elevation behaviour as pre 24 support lib
         //AppBarLayout layout = findViewById(R.id.appbar);
