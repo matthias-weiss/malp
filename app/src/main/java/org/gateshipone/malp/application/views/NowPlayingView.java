@@ -729,7 +729,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      * @param r       Right position
      * @param b       Bottom position
      */
-    @Override
+/*    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         // Calculate the maximal range that the view is allowed to be dragged
 
@@ -738,7 +738,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
 
         // Request the upper part of the NowPlayingView (header)
-/*        mHeaderView.layout(
+*//*        mHeaderView.layout(
                 0,
                 newTop,
                 r,
@@ -749,8 +749,8 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
                 0,
                 newTop + mHeaderView.getMeasuredHeight(),
                 r,
-                newTop + b);*/
-    }
+                newTop + b);*//*
+    }*/
 
     /**
      * Stop the refresh timer when the view is not visible to the user anymore.
