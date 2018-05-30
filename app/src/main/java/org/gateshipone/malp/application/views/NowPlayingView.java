@@ -38,6 +38,7 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 //import android.support.v4.widget.ViewDragHelper;
@@ -54,11 +55,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
-
+//import android.widget.ViewSwitcher;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.activities.FanartActivity;
@@ -88,12 +87,10 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
+public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = NowPlayingView.class.getSimpleName();
-
-    //private final ViewDragHelper mDragHelper;
 
     private ServerStatusListener mStateListener;
 
@@ -102,12 +99,12 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     /**
      * Upper view part which is dragged up & down
      */
-    private View mHeaderView;
+    //private View mHeaderView;
 
     /**
      * Main view of draggable part
      */
-    private View mMainView;
+    //private View mMainView;
 
     //private LinearLayout mDraggedUpButtons;
     //private LinearLayout mDraggedDownButtons;
@@ -116,17 +113,6 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
      * Absolute pixel position of upper layout bound
      */
     private int mTopPosition;
-
-    /**
-     * relative dragposition
-     */
-    //private float mDragOffset;
-
-    /**
-     * Height of non-draggable part.
-     * (Layout height - draggable part)
-     */
-    //private int mDragRange;
 
     /**
      * Flag whether the views switches between album cover and artist image
@@ -204,7 +190,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
     private VolumeButtonLongClickListener mPlusListener;
     private VolumeButtonLongClickListener mMinusListener;
 
-    private LinearLayout mHeaderTextLayout;
+    //private LinearLayout mHeaderTextLayout;
 
     private LinearLayout mVolumeSeekbarLayout;
     private LinearLayout mVolumeButtonLayout;
@@ -435,6 +421,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
         LinearLayout volLayout = findViewById(R.id.volume_control_layout);
 
+
+/*
         if (volumeControlView.equals(getContext().getString(R.string.pref_volume_control_view_off_key))) {
             if (volLayout != null) {
                 volLayout.setVisibility(GONE);
@@ -454,6 +442,12 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
             mVolumeSeekbarLayout.setVisibility(GONE);
             mVolumeButtonLayout.setVisibility(VISIBLE);
         }
+*/
+        if (volLayout != null) {
+            volLayout.setVisibility(VISIBLE);
+        }
+        mVolumeSeekbarLayout.setVisibility(GONE);
+        mVolumeButtonLayout.setVisibility(VISIBLE);
 
         mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
         mPlusListener.setVolumeStepSize(mVolumeStepSize);
@@ -489,7 +483,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         //boolean isHeaderViewUnder = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
         boolean isHeaderViewUnder = true;
         // Check if drag is handled by the helper, or the header or mainview. If not notify the system that input is not yet handled.
-        return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mMainView, (int) x, (int) y);
+        //return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mMainView, (int) x, (int) y);
+        return true;
     }
 
 
@@ -538,8 +533,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
 
         // Calculate the margin to smoothly resize text field
-        LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-        mHeaderTextLayout.setLayoutParams(layoutParams);
+        //LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
+        //mHeaderTextLayout.setLayoutParams(layoutParams);
     }
 
 
@@ -552,8 +547,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         super.onFinishInflate();
 
         // Get both main views (header and bottom part)
-        mHeaderView = findViewById(R.id.now_playing_headerLayout);
-        mMainView = findViewById(R.id.now_playing_bodyLayout);
+        //mHeaderView = findViewById(R.id.now_playing_headerLayout);
+        //mMainView = findViewById(R.id.now_playing_bodyLayout);
 
         // header buttons
         mTopMenuButton = findViewById(R.id.now_playing_topMenuButton);
@@ -594,13 +589,13 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mElapsedTime = findViewById(R.id.now_playing_elapsedTime);
         mDuration = findViewById(R.id.now_playing_duration);
 
-        mHeaderTextLayout = findViewById(R.id.now_playing_header_textLayout);
+        //mHeaderTextLayout = findViewById(R.id.now_playing_header_textLayout);
 
         // seekbar (position)
         mPositionSeekbar = findViewById(R.id.now_playing_seekBar);
         mPositionSeekbar.setOnSeekBarChangeListener(new PositionSeekbarListener());
 
-        mVolumeSeekbar = findViewById(R.id.volume_seekbar);
+/*        mVolumeSeekbar = findViewById(R.id.volume_seekbar);
         mVolumeIcon = findViewById(R.id.volume_icon);
         mVolumeIcon.setOnClickListener(view -> MPDCommandHandler.setVolume(0));
 
@@ -612,7 +607,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         });
 
         mVolumeSeekbar.setMax(100);
-        mVolumeSeekbar.setOnSeekBarChangeListener(new VolumeSeekBarListener());
+        mVolumeSeekbar.setOnSeekBarChangeListener(new VolumeSeekBarListener());*/
 
 
         /* Volume control buttons */
@@ -743,7 +738,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
 
         // Request the upper part of the NowPlayingView (header)
-        mHeaderView.layout(
+/*        mHeaderView.layout(
                 0,
                 newTop,
                 r,
@@ -754,7 +749,7 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
                 0,
                 newTop + mHeaderView.getMeasuredHeight(),
                 r,
-                newTop + b);
+                newTop + b);*/
     }
 
     /**
@@ -962,8 +957,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         }
 
         // Calculate the margin to avoid cut off textviews
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
-        mHeaderTextLayout.setLayoutParams(layoutParams);
+        //RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
+        //mHeaderTextLayout.setLayoutParams(layoutParams);
 
         //mTrackURI.setText(track.getPath());
 /*        if (track.getAlbumTrackCount() != 0) {
