@@ -1,223 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (C) 2018 Team Gateship-One
+  ~  (Hendrik Borghorst & Frederik Luetkes)
+  ~
+  ~  The AUTHORS.md file contains a detailed contributors list:
+  ~  <https://github.com/gateship-one/malp/blob/master/AUTHORS.md>
+  ~
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
 
 <org.gateshipone.malp.application.views.NowPlayingView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/now_playing_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorPrimary">
-
-    <!-- Header -->
-    <ImageView
-        android:id="@+id/now_playing_topCover"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cover_placeholder_128dp" />
-
-    <TextView
-        android:id="@+id/now_playing_trackName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:fontFamily="sans-serif-medium"
-        android:marqueeRepeatLimit="3"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="track name"
-        android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toTopOf="@+id/now_playing_track_additional_info"
-        app:layout_constraintEnd_toStartOf="@+id/now_playing_topMenuButto"
-        app:layout_constraintHorizontal_bias="0.01"
-        app:layout_constraintStart_toEndOf="@+id/now_playing_topCover" />
-
-    <TextView
-        android:id="@+id/now_playing_track_additional_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="track additional info"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:fontFamily="sans-serif-regular"
-        android:marqueeRepeatLimit="3"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_topCover"
-        app:layout_constraintStart_toStartOf="@+id/now_playing_trackName" />
-
-    <ImageButton
-        android:id="@+id/now_playing_topMenuButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:srcCompat="@drawable/ic_more_vert_24dp"
-        android:scaleType="centerInside"
-        android:tint="?attr/malp_color_text_accent"
-        android:background="?android:selectableItemBackground"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_topCover"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Prev / Play / Next -->
-    <ImageButton
-        android:id="@+id/now_playing_bottomPreviousButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:background="?android:selectableItemBackground"
-        android:scaleType="fitCenter"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/now_playing_bottomPlayPauseButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_skip_previous_48dp" />
-
-    <ImageButton
-        android:id="@+id/now_playing_bottomPlayPauseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_play_circle_fill_48dp"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintEnd_toStartOf="@+id/now_playing_bottomStopButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/now_playing_bottomPreviousButton" />
-
-    <ImageButton
-        android:id="@+id/now_playing_bottomStopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_stop_black_48dp"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintEnd_toStartOf="@+id/now_playing_bottomNextButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/now_playing_bottomPlayPauseButton" />
-
-    <ImageButton
-        android:id="@+id/now_playing_bottomNextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:background="?android:selectableItemBackground"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_skip_next_48dp"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintEnd_toStartOf="@+id/volume_button_minus"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/now_playing_bottomStopButton" />
-
-    <ImageButton
-        android:id="@+id/volume_button_minus"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="16dp"
-        android:background="?android:selectableItemBackground"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toBottomOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_minus_black_48dp" />
-
-    <TextView
-        android:id="@+id/volume_button_text"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="100%"
-        android:textAlignment="center"
-        android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toTopOf="@+id/volume_button_minus"
-        app:layout_constraintStart_toStartOf="@+id/volume_button_minus"
-        app:layout_constraintEnd_toEndOf="@+id/volume_button_minus" />
-
-    <ImageView
-        android:id="@+id/volume_icon_buttons"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="8dp"
-        android:tint="?android:textColor"
-        app:layout_constraintBottom_toTopOf="@+id/volume_button_text"
-        app:layout_constraintStart_toStartOf="@+id/volume_button_minus"
-        app:layout_constraintEnd_toEndOf="@+id/volume_button_minus"
-        app:srcCompat="@drawable/ic_volume_high_black_48dp" />
-
-    <ImageButton
-        android:id="@+id/volume_button_plus"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        app:srcCompat="@drawable/ic_plus_black_48dp"
-        android:tint="?attr/malp_color_text_accent"
-        android:background="?android:selectableItemBackground"
-        app:layout_constraintBottom_toTopOf="@+id/volume_icon_buttons"
-        app:layout_constraintStart_toStartOf="@+id/volume_button_minus"
-        app:layout_constraintEnd_toEndOf="@+id/volume_button_minus" />
-
-    <TextView
-        android:id="@+id/now_playing_elapsedTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintStart_toStartOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_seekBar" />
-
-    <TextView
-        android:id="@+id/now_playing_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintEnd_toEndOf="@+id/now_playing_bottomNextButton"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_seekBar" />
-
-    <SeekBar
-        android:id="@+id/now_playing_seekBar"
-        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/now_playing_bottomNextButton"
-        app:layout_constraintStart_toStartOf="@+id/now_playing_bottomPreviousButton"
-        app:layout_constraintTop_toTopOf="@+id/volume_button_plus" />
+    android:layout_height="match_parent">
 
     <org.gateshipone.malp.application.views.CurrentPlaylistView
         android:id="@+id/now_playing_playlist"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="8dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/volume_button_plus"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/now_playing_topCover" />
+        android:layout_height="470dp"
+        android:background="#000000" />
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/play_controll_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <SeekBar
+            android:id="@+id/now_playing_seekBar"
+            style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/now_playing_elapsedTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/now_playing_elapsedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toTopOf="@+id/now_playing_topCover"
+            app:layout_constraintStart_toStartOf="@+id/now_playing_seekBar" />
+
+        <TextView
+            android:id="@+id/now_playing_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toTopOf="@+id/now_playing_topMenuButton"
+            app:layout_constraintEnd_toEndOf="@+id/now_playing_seekBar" />
+
+        <ImageView
+            android:id="@+id/now_playing_topCover"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/now_playing_bottomPreviousButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/cover_placeholder_128dp" />
+
+        <TextView
+            android:id="@+id/now_playing_trackArtist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:fontFamily="sans-serif-regular"
+            android:marqueeRepeatLimit="3"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="asdfasdf"
+            android:textColor="?attr/malp_color_text_accent"
+            android:textSize="@dimen/material_font_style_size_title"
+            app:layout_constraintStart_toEndOf="@+id/now_playing_topCover"
+            app:layout_constraintTop_toTopOf="@+id/now_playing_topCover" />
+
+        <TextView
+            android:id="@+id/now_playing_trackAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:marqueeRepeatLimit="3"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="asdfasdf"
+            android:textColor="?attr/malp_color_text_accent"
+            android:textSize="@dimen/material_font_style_size_subheading"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@+id/now_playing_trackArtist"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_trackArtist" />
+
+        <TextView
+            android:id="@+id/now_playing_trackName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:marqueeRepeatLimit="3"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="asdfasdf"
+            android:textColor="?attr/malp_color_text_accent"
+            android:textSize="@dimen/material_font_style_size_headline"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/now_playing_topCover"
+            app:layout_constraintStart_toStartOf="@+id/now_playing_trackArtist" />
+
+        <ImageButton
+            android:id="@+id/now_playing_topMenuButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="Open Menu"
+            android:scaleType="centerInside"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/now_playing_topCover"
+            app:srcCompat="@drawable/ic_more_vert_24dp" />
+
+        <ImageButton
+            android:id="@+id/now_playing_bottomPreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="Go to previous song"
+            android:scaleType="fitCenter"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_skip_previous_48dp" />
+
+        <ImageButton
+            android:id="@+id/now_playing_bottomPlayPauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="Play/pause current song"
+            android:scaleType="fitCenter"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/now_playing_bottomPreviousButton"
+            app:srcCompat="@drawable/ic_play_circle_fill_48dp" />
+
+
+        <ImageButton
+            android:id="@+id/now_playing_bottomNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="Go to next song"
+            android:scaleType="fitCenter"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/now_playing_bottomPlayPauseButton"
+            app:srcCompat="@drawable/ic_skip_next_48dp" />
+
+        <ImageButton
+            android:id="@+id/volume_button_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="reduce volume"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/volume_button_text"
+            app:srcCompat="@drawable/ic_minus_black_48dp" />
+
+        <TextView
+            android:id="@+id/volume_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textAlignment="center"
+            android:textColor="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="@+id/volume_button_plus"
+            app:layout_constraintEnd_toStartOf="@+id/volume_button_plus"
+            app:layout_constraintTop_toTopOf="@+id/volume_button_plus" />
+
+        <ImageButton
+            android:id="@+id/volume_button_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="increas volume"
+            android:tint="?attr/malp_color_text_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_plus_black_48dp" />
+
+
+    </android.support.constraint.ConstraintLayout>
 
 </org.gateshipone.malp.application.views.NowPlayingView>

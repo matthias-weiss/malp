@@ -24,6 +24,7 @@ package org.gateshipone.malp.application.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,15 +39,22 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDFileEntry;
 
 public class CurrentPlaylistView extends LinearLayout implements AdapterView.OnItemClickListener {
     Context mContext;
-
+    private int mWidth;
+    private int mHeight;
 
     /**
      * Adapter used by the ListView
      */
     private CurrentPlaylistAdapter mPlaylistAdapter;
 
+    public CurrentPlaylistView(Context context) {
+        this(context, null, 0);
+    }
     public CurrentPlaylistView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+    public CurrentPlaylistView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         // Inflate the layout for this fragment
         LayoutInflater.from(context).inflate(R.layout.listview_layout, this, true);
 
@@ -61,6 +69,9 @@ public class CurrentPlaylistView extends LinearLayout implements AdapterView.OnI
 
         // Return the ready inflated and configured fragment view.
         mContext = context;
+        mWidth = getWidth();
+        mHeight = getHeight();
+
     }
 
     /**
@@ -70,6 +81,45 @@ public class CurrentPlaylistView extends LinearLayout implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MPDCommandHandler.playSongIndex(position);
     }
+
+/*    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
+        super.onLayout(changed, l, t, r, b);
+
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
+
+        if (mHeight == 0 || mWidth == 0){
+            if (mWidth == 0) {
+                mWidth = r - l;
+            }
+            if (mHeight == 0){
+                mHeight = b - t;
+            }
+            setMeasuredDimension(mWidth, mHeight);
+        }
+        Log.d("-------------DEBUG-----------onLayout", "heigth " + mHeight);
+        Log.d("-------------DEBUG-----------onLayout", "width " + mWidth);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int size = 0;
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+        Log.d("-------------DEBUG-----------onMeasure", "measured heigth " + height);
+        Log.d("-------------DEBUG-----------onMeasure", "measured width " + width);
+
+        if (height == 0 || width == 0){
+            setMeasuredDimension(mWidth, mHeight);
+        }
+        width = getMeasuredWidth();
+        height = getMeasuredHeight();
+        Log.d("-------------DEBUG-----------onMeasure", "updated heigth " + height);
+        Log.d("-------------DEBUG-----------onMeasure", "updated width " + width);
+    }*/
 
     public void onResume() {
         mPlaylistAdapter.onResume();
@@ -102,3 +152,5 @@ public class CurrentPlaylistView extends LinearLayout implements AdapterView.OnI
     }
 
 }
+
+

@@ -37,11 +37,7 @@ import android.os.Debug;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewCompat;
-//import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -50,14 +46,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
-//import android.widget.ViewSwitcher;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.activities.FanartActivity;
@@ -87,7 +81,7 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
+public class NowPlayingView extends LinearLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = NowPlayingView.class.getSimpleName();
@@ -95,19 +89,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private ServerStatusListener mStateListener;
 
     private ServerConnectionListener mConnectionStateListener;
-
-    /**
-     * Upper view part which is dragged up & down
-     */
-    //private View mHeaderView;
-
-    /**
-     * Main view of draggable part
-     */
-    //private View mMainView;
-
-    //private LinearLayout mDraggedUpButtons;
-    //private LinearLayout mDraggedDownButtons;
 
     /**
      * Absolute pixel position of upper layout bound
@@ -137,21 +118,9 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private CurrentPlaylistView mPlaylistView;
 
     /**
-     * ViewSwitcher used for switching between the main cover image and the playlist
-     */
-    //private ViewSwitcher mViewSwitcher;
-
-    /**
      * Asynchronous loader for coverimages for TrackItems.
      */
     private CoverBitmapLoader mCoverLoader = null;
-
-    /**
-     * Observer for information about the state of the draggable part of this view.
-     * This is probably the Activity of which this view is part of.
-     * (Used for smooth statusbar transition and state resuming)
-     */
-    //private NowPlayingDragStatusReceiver mDragStatusReceiver = null;
 
     private StreamingStatusReceiver mStreamingStatusReceiver;
 
@@ -167,7 +136,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      */
     private ImageButton mBottomPreviousButton;
     private ImageButton mBottomPlayPauseButton;
-    private ImageButton mBottomStopButton;
     private ImageButton mBottomNextButton;
 
     /**
@@ -175,12 +143,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      */
     private SeekBar mPositionSeekbar;
 
-    /**
-     * Seekbar used for volume control of host
-     */
-    //private SeekBar mVolumeSeekbar;
-    //private ImageView mVolumeIcon;
-    private ImageView mVolumeIconButtons;
+    //private ImageView mVolumeIconButtons;
 
     private TextView mVolumeText;
 
@@ -190,27 +153,16 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private VolumeButtonLongClickListener mPlusListener;
     private VolumeButtonLongClickListener mMinusListener;
 
-    //private LinearLayout mHeaderTextLayout;
-
-    //private LinearLayout mVolumeSeekbarLayout;
-    //private LinearLayout mVolumeButtonLayout;
-
     private int mVolumeStepSize;
 
     /**
      * Various textviews for track information
      */
     private TextView mTrackName;
-    private TextView mTrackAdditionalInfo;
+    private TextView mTrackArtist;
+    private TextView mTrackAlbum;
     private TextView mElapsedTime;
     private TextView mDuration;
-
-    //private TextView mTrackNo;
-    //private TextView mPlaylistNo;
-    //private TextView mBitrate;
-    //private TextView mAudioProperties;
-    //private TextView mTrackURI;
-
 
     private MPDCurrentStatus mLastStatus;
     private MPDTrack mLastTrack;
@@ -227,7 +179,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
     public NowPlayingView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        //mDragHelper = ViewDragHelper.create(this, 1f, new BottomDragCallbackHelper());
         mStateListener = new ServerStatusListener();
         mConnectionStateListener = new ServerConnectionListener(this, getContext().getMainLooper());
         mLastStatus = new MPDCurrentStatus();
@@ -418,38 +369,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String volumeControlView = sharedPref.getString(getContext().getString(R.string.pref_volume_controls_key), getContext().getString(R.string.pref_volume_control_view_default));
 
-        //LinearLayout volLayout = findViewById(R.id.volume_control_layout);
-
-
-/*
-        if (volumeControlView.equals(getContext().getString(R.string.pref_volume_control_view_off_key))) {
-            if (volLayout != null) {
-                volLayout.setVisibility(GONE);
-            }
-            mVolumeSeekbarLayout.setVisibility(GONE);
-            mVolumeButtonLayout.setVisibility(GONE);
-        } else if (volumeControlView.equals(getContext().getString(R.string.pref_volume_control_view_seekbar_key))) {
-            if (volLayout != null) {
-                volLayout.setVisibility(VISIBLE);
-            }
-            mVolumeSeekbarLayout.setVisibility(VISIBLE);
-            mVolumeButtonLayout.setVisibility(GONE);
-        } else if (volumeControlView.equals(getContext().getString(R.string.pref_volume_control_view_buttons_key))) {
-            if (volLayout != null) {
-                volLayout.setVisibility(VISIBLE);
-            }
-            mVolumeSeekbarLayout.setVisibility(GONE);
-            mVolumeButtonLayout.setVisibility(VISIBLE);
-        }
-
-        if (volLayout != null) {
-            volLayout.setVisibility(VISIBLE);
-        }
-        mVolumeSeekbarLayout.setVisibility(GONE);
-        mVolumeButtonLayout.setVisibility(VISIBLE); */
-
-        //mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
-        mVolumeStepSize = 5;
+        mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
         mPlusListener.setVolumeStepSize(mVolumeStepSize);
         mMinusListener.setVolumeStepSize(mVolumeStepSize);
     }
@@ -546,17 +466,13 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        // Get both main views (header and bottom part)
-        //mHeaderView = findViewById(R.id.now_playing_headerLayout);
-        //mMainView = findViewById(R.id.now_playing_bodyLayout);
-
         // header buttons
         mTopMenuButton = findViewById(R.id.now_playing_topMenuButton);
 
         // bottom buttons
         mBottomPreviousButton = findViewById(R.id.now_playing_bottomPreviousButton);
         mBottomPlayPauseButton = findViewById(R.id.now_playing_bottomPlayPauseButton);
-        mBottomStopButton = findViewById(R.id.now_playing_bottomStopButton);
+        //mBottomStopButton = findViewById(R.id.now_playing_bottomStopButton);
         mBottomNextButton = findViewById(R.id.now_playing_bottomNextButton);
 
         // Main cover image
@@ -567,59 +483,23 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         // View with the ListView of the playlist
         mPlaylistView = findViewById(R.id.now_playing_playlist);
 
-        // view switcher for cover and playlist view
-        //mViewSwitcher = findViewById(R.id.now_playing_view_switcher);
-
-
-        // textviews
+        // For marquee scrolling the TextView need selected == true
         mTrackName = findViewById(R.id.now_playing_trackName);
-        // For marquee scrolling the TextView need selected == true
         mTrackName.setSelected(true);
-        mTrackAdditionalInfo = findViewById(R.id.now_playing_track_additional_info);
-        // For marquee scrolling the TextView need selected == true
-        mTrackAdditionalInfo.setSelected(true);
 
-        //mTrackNo = findViewById(R.id.now_playing_text_track_no);
-        //mPlaylistNo = findViewById(R.id.now_playing_text_playlist_no);
-        //mBitrate = findViewById(R.id.now_playing_text_bitrate);
-        //mAudioProperties = findViewById(R.id.now_playing_text_audio_properties);
-        //mTrackURI = findViewById(R.id.now_playing_text_track_uri);
+        mTrackArtist = findViewById(R.id.now_playing_trackArtist);
+        mTrackArtist.setSelected(true);
+
+        mTrackAlbum = findViewById(R.id.now_playing_trackAlbum);
+        mTrackAlbum.setSelected(true);
 
         // Textviews directly under the seekbar
         mElapsedTime = findViewById(R.id.now_playing_elapsedTime);
         mDuration = findViewById(R.id.now_playing_duration);
 
-        //mHeaderTextLayout = findViewById(R.id.now_playing_header_textLayout);
-
         // seekbar (position)
         mPositionSeekbar = findViewById(R.id.now_playing_seekBar);
         mPositionSeekbar.setOnSeekBarChangeListener(new PositionSeekbarListener());
-
-/*        mVolumeSeekbar = findViewById(R.id.volume_seekbar);
-        mVolumeIcon = findViewById(R.id.volume_icon);
-        mVolumeIcon.setOnClickListener(view -> MPDCommandHandler.setVolume(0));
-
-        mVolumeIcon.setOnLongClickListener(view -> {
-
-            MPDQueryHandler.getOutputs(new OutputResponseMenuHandler(getContext(), view));
-
-            return true;
-        });
-
-        mVolumeSeekbar.setMax(100);
-        mVolumeSeekbar.setOnSeekBarChangeListener(new VolumeSeekBarListener());*/
-
-
-        /* Volume control buttons */
-        mVolumeIconButtons = findViewById(R.id.volume_icon_buttons);
-        mVolumeIconButtons.setOnClickListener(view -> MPDCommandHandler.setVolume(10));
-
-        mVolumeIconButtons.setOnLongClickListener(view -> {
-
-            MPDQueryHandler.getOutputs(new OutputResponseMenuHandler(getContext(), view));
-
-            return true;
-        });
 
         mVolumeText = findViewById(R.id.volume_button_text);
 
@@ -643,9 +523,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mVolumePlus.setOnLongClickListener(mPlusListener);
         mVolumePlus.setOnTouchListener(mPlusListener);
 
-        //mVolumeSeekbarLayout = findViewById(R.id.volume_seekbar_layout);
-        //mVolumeButtonLayout = findViewById(R.id.volume_button_layout);
-
 
         // Add listener to top menu button
         mTopMenuButton.setOnClickListener(this::showAdditionalOptionsMenu);
@@ -655,8 +532,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         // Add listener to bottom playpause button
         mBottomPlayPauseButton.setOnClickListener(arg0 -> MPDCommandHandler.togglePause());
-
-        mBottomStopButton.setOnClickListener(view -> MPDCommandHandler.stop());
 
         // Add listener to bottom next button
         mBottomNextButton.setOnClickListener(arg0 -> MPDCommandHandler.nextSong());
@@ -710,15 +585,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             MenuItem consumeItem = menu.findItem(R.id.action_toggle_consume_mode);
             consumeItem.setChecked(mLastStatus.getConsume() == 1);
         }
-
-        // Check if the current view is the cover or the playlist. If it is the playlist hide its actions.
-        // If the viewswitcher only has one child the dual pane layout is used
-/*
-        if (mViewSwitcher.getDisplayedChild() == 0 && (mViewSwitcher.getChildCount() > 1)) {
-            menu.setGroupEnabled(R.id.group_playlist_actions, false);
-            menu.setGroupVisible(R.id.group_playlist_actions, false);
-        }
-*/
 
         // Check if streaming is configured for the current server
         boolean streamingEnabled = ConnectionManager.getInstance(getContext().getApplicationContext()).getStreamingEnabled();
@@ -807,11 +673,15 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             mTrackName.setSelected(true);
         }
 
-        if (mTrackAdditionalInfo != null) {
-            mTrackAdditionalInfo.setSelected(true);
+        if (mTrackArtist != null) {
+            mTrackArtist.setSelected(true);
         }
 
-        if (mStreamingStatusReceiver == null) {
+        if (mTrackAlbum != null) {
+            mTrackAlbum.setSelected(true);
+        }
+
+/*        if (mStreamingStatusReceiver == null) {
             mStreamingStatusReceiver = new StreamingStatusReceiver();
         }
 
@@ -822,7 +692,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(BackgroundService.ACTION_STREAMING_STATUS_CHANGED);
-        getContext().getApplicationContext().registerReceiver(mStreamingStatusReceiver, filter);
+        getContext().getApplicationContext().registerReceiver(mStreamingStatusReceiver, filter);*/
 
         // Register with MPDStateMonitoring system
         MPDStateMonitoringHandler.getHandler().registerStatusListener(mStateListener);
@@ -873,60 +743,10 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         // Update volume seekbar
         int volume = status.getVolume();
-        /*if (!mVolumeSeekbar.isPressed()) {
-            mVolumeSeekbar.setProgress(volume);
-        }*/
-
-        if (volume >= 70) {
-            //mVolumeIcon.setImageResource(R.drawable.ic_volume_high_black_48dp);
-            mVolumeIconButtons.setImageResource(R.drawable.ic_volume_high_black_48dp);
-        } else if (volume >= 30 && volume < 70) {
-            //mVolumeIcon.setImageResource(R.drawable.ic_volume_medium_black_48dp);
-            mVolumeIconButtons.setImageResource(R.drawable.ic_volume_medium_black_48dp);
-        } else if (volume > 0 && volume < 30) {
-            //mVolumeIcon.setImageResource(R.drawable.ic_volume_low_black_48dp);
-            mVolumeIconButtons.setImageResource(R.drawable.ic_volume_low_black_48dp);
-        } else {
-            //mVolumeIcon.setImageResource(R.drawable.ic_volume_mute_black_48dp);
-            mVolumeIconButtons.setImageResource(R.drawable.ic_volume_mute_black_48dp);
-        }
-        //mVolumeIcon.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
-        mVolumeIconButtons.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
 
         mVolumeText.setText(String.valueOf(volume) + '%');
 
-        //mPlaylistNo.setText(String.valueOf(status.getCurrentSongIndex() + 1) + getResources().getString(R.string.track_number_album_count_separator) +
-        //        String.valueOf(status.getPlaylistLength()));
-
         mLastStatus = status;
-
-        //mBitrate.setText(status.getBitrate() + getResources().getString(R.string.bitrate_unit_kilo_bits));
-
-        // Set audio properties string
-        String properties = status.getSamplerate() + getResources().getString(R.string.samplerate_unit_hertz) + ' ';
-
-        // Check for fancy new formats here (dsd, float = f)
-        String sampleFormat = status.getBitDepth();
-
-        // 16bit is the most probable sample format
-        switch (sampleFormat) {
-            case "16":
-            case "24":
-            case "8":
-            case "32":
-                properties += sampleFormat + getResources().getString(R.string.bitcount_unit) + ' ';
-                break;
-            case "f":
-                properties += "float ";
-                break;
-            default:
-                properties += sampleFormat + ' ';
-                break;
-        }
-
-
-        properties += status.getChannelCount() + getResources().getString(R.string.channel_count_unit);
-        //mAudioProperties.setText(properties);
     }
 
     private void updateMPDCurrentTrack(MPDTrack track) {
@@ -935,14 +755,15 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mTrackName.setText(title);
 
 
-        if (!track.getTrackArtist().isEmpty() && !track.getTrackAlbum().isEmpty()) {
-            mTrackAdditionalInfo.setText(track.getTrackArtist() + getResources().getString(R.string.track_item_separator) + track.getTrackAlbum());
-        } else if (track.getTrackArtist().isEmpty() && !track.getTrackAlbum().isEmpty()) {
-            mTrackAdditionalInfo.setText(track.getTrackAlbum());
-        } else if (track.getTrackAlbum().isEmpty() && !track.getTrackArtist().isEmpty()) {
-            mTrackAdditionalInfo.setText(track.getTrackArtist());
+        if (!track.getTrackArtist().isEmpty()) {
+            mTrackArtist.setText(track.getTrackArtist());
         } else {
-            mTrackAdditionalInfo.setText(track.getPath());
+            mTrackArtist.setText(track.getPath());
+        }
+        if (!track.getTrackAlbum().isEmpty()) {
+            mTrackAlbum.setText(track.getTrackAlbum());
+        } else {
+            mTrackAlbum.setText("");
         }
 
         if (null == mLastTrack || !track.getTrackAlbum().equals(mLastTrack.getTrackAlbum()) || !track.getTrackAlbumMBID().equals(mLastTrack.getTrackAlbumMBID())) {
@@ -974,18 +795,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
             //mCoverLoader.getArtistImage(track, true, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
-
-        // Calculate the margin to avoid cut off textviews
-        //RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mHeaderTextLayout.getLayoutParams();
-        //mHeaderTextLayout.setLayoutParams(layoutParams);
-
-        //mTrackURI.setText(track.getPath());
-/*        if (track.getAlbumTrackCount() != 0) {
-            mTrackNo.setText(String.valueOf(track.getTrackNumber()) + getResources().getString(R.string.track_number_album_count_separator) +
-                    String.valueOf(track.getAlbumTrackCount()));
-        } else {
-            mTrackNo.setText(String.valueOf(track.getTrackNumber()));
-        }*/
 
         mLastTrack = track;
 
@@ -1087,61 +896,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             // TODO Auto-generated method stub
         }
     }
-
-/*
-    private class VolumeSeekBarListener implements SeekBar.OnSeekBarChangeListener {
-        */
-/**
-         * Called if the user drags the seekbar to a new position or the seekbar is altered from
-         * outside. Just do some seeking, if the action is done by the user.
-         *
-         * @param seekBar  Seekbar of which the progress was changed.
-         * @param progress The new position of the seekbar.
-         * @param fromUser If the action was initiated by the user.
-         *//*
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                MPDCommandHandler.setVolume(progress);
-
-                if (progress >= 70) {
-                    mVolumeIcon.setImageResource(R.drawable.ic_volume_high_black_48dp);
-                } else if (progress >= 30 && progress < 70) {
-                    mVolumeIcon.setImageResource(R.drawable.ic_volume_medium_black_48dp);
-                } else if (progress > 0 && progress < 30) {
-                    mVolumeIcon.setImageResource(R.drawable.ic_volume_low_black_48dp);
-                } else {
-                    mVolumeIcon.setImageResource(R.drawable.ic_volume_mute_black_48dp);
-                }
-            }
-        }
-
-        */
-/**
-         * Called if the user starts moving the seekbar. We do not handle this for now.
-         *
-         * @param seekBar SeekBar that is used for dragging.
-         *//*
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-        }
-
-        */
-/**
-         * Called if the user ends moving the seekbar. We do not handle this for now.
-         *
-         * @param seekBar SeekBar that is used for dragging.
-         *//*
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-        }
-    }
-*/
 
     /**
      * Private class that handles when the CoverGenerator finishes its fetching of cover images.
