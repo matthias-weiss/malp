@@ -178,8 +178,8 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     /**
      * Seekbar used for volume control of host
      */
-    private SeekBar mVolumeSeekbar;
-    private ImageView mVolumeIcon;
+    //private SeekBar mVolumeSeekbar;
+    //private ImageView mVolumeIcon;
     private ImageView mVolumeIconButtons;
 
     private TextView mVolumeText;
@@ -192,8 +192,8 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
     //private LinearLayout mHeaderTextLayout;
 
-    private LinearLayout mVolumeSeekbarLayout;
-    private LinearLayout mVolumeButtonLayout;
+    //private LinearLayout mVolumeSeekbarLayout;
+    //private LinearLayout mVolumeButtonLayout;
 
     private int mVolumeStepSize;
 
@@ -233,7 +233,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mLastStatus = new MPDCurrentStatus();
         mLastTrack = new MPDTrack("");
     }
-
 
     /**
      * Menu click listener. This method gets called when the user selects an item of the popup menu (right top corner).
@@ -419,7 +418,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String volumeControlView = sharedPref.getString(getContext().getString(R.string.pref_volume_controls_key), getContext().getString(R.string.pref_volume_control_view_default));
 
-        LinearLayout volLayout = findViewById(R.id.volume_control_layout);
+        //LinearLayout volLayout = findViewById(R.id.volume_control_layout);
 
 
 /*
@@ -442,14 +441,15 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             mVolumeSeekbarLayout.setVisibility(GONE);
             mVolumeButtonLayout.setVisibility(VISIBLE);
         }
-*/
+
         if (volLayout != null) {
             volLayout.setVisibility(VISIBLE);
         }
         mVolumeSeekbarLayout.setVisibility(GONE);
-        mVolumeButtonLayout.setVisibility(VISIBLE);
+        mVolumeButtonLayout.setVisibility(VISIBLE); */
 
-        mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
+        //mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
+        mVolumeStepSize = 5;
         mPlusListener.setVolumeStepSize(mVolumeStepSize);
         mMinusListener.setVolumeStepSize(mVolumeStepSize);
     }
@@ -612,7 +612,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         /* Volume control buttons */
         mVolumeIconButtons = findViewById(R.id.volume_icon_buttons);
-        mVolumeIconButtons.setOnClickListener(view -> MPDCommandHandler.setVolume(0));
+        mVolumeIconButtons.setOnClickListener(view -> MPDCommandHandler.setVolume(10));
 
         mVolumeIconButtons.setOnLongClickListener(view -> {
 
@@ -624,6 +624,8 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mVolumeText = findViewById(R.id.volume_button_text);
 
         mVolumeMinus = findViewById(R.id.volume_button_minus);
+
+        mVolumeStepSize = 3;
 
         mVolumeMinus.setOnClickListener(v -> MPDCommandHandler.decreaseVolume(mVolumeStepSize));
 
@@ -641,8 +643,8 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mVolumePlus.setOnLongClickListener(mPlusListener);
         mVolumePlus.setOnTouchListener(mPlusListener);
 
-        mVolumeSeekbarLayout = findViewById(R.id.volume_seekbar_layout);
-        mVolumeButtonLayout = findViewById(R.id.volume_button_layout);
+        //mVolumeSeekbarLayout = findViewById(R.id.volume_seekbar_layout);
+        //mVolumeButtonLayout = findViewById(R.id.volume_button_layout);
 
 
         // Add listener to top menu button
@@ -666,6 +668,24 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mCoverImage.setVisibility(INVISIBLE);*/
 
         mCoverLoader = new CoverBitmapLoader(getContext(), new CoverReceiverClass());
+
+        // Register with MPDStateMonitoring system
+        MPDStateMonitoringHandler.getHandler().registerStatusListener(mStateListener);
+        MPDInterface.mInstance.addMPDConnectionStateChangeListener(mConnectionStateListener);
+
+        mPlaylistView.onResume();
+        ArtworkManager.getInstance(getContext().getApplicationContext()).registerOnNewAlbumImageListener(this);
+        ArtworkManager.getInstance(getContext().getApplicationContext()).registerOnNewArtistImageListener(this);
+
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPref.registerOnSharedPreferenceChangeListener(this);
+
+        setVolumeControlSetting();
+
+        mUseEnglishWikipedia = sharedPref.getBoolean(getContext().getString(R.string.pref_use_english_wikipedia_key), getContext().getResources().getBoolean(R.bool.pref_use_english_wikipedia_default));
+
+        mShowArtistImage = sharedPref.getBoolean(getContext().getString(R.string.pref_show_npv_artist_image_key), getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
     }
 
     /**
@@ -674,7 +694,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      * @param v
      */
     private void showAdditionalOptionsMenu(View v) {
-        String TAG = "Matthias";
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
         // Inflate the menu from a menu xml file
         popupMenu.inflate(R.menu.popup_menu_nowplaying);
@@ -854,24 +873,24 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         // Update volume seekbar
         int volume = status.getVolume();
-        if (!mVolumeSeekbar.isPressed()) {
+        /*if (!mVolumeSeekbar.isPressed()) {
             mVolumeSeekbar.setProgress(volume);
-        }
+        }*/
 
         if (volume >= 70) {
-            mVolumeIcon.setImageResource(R.drawable.ic_volume_high_black_48dp);
+            //mVolumeIcon.setImageResource(R.drawable.ic_volume_high_black_48dp);
             mVolumeIconButtons.setImageResource(R.drawable.ic_volume_high_black_48dp);
         } else if (volume >= 30 && volume < 70) {
-            mVolumeIcon.setImageResource(R.drawable.ic_volume_medium_black_48dp);
+            //mVolumeIcon.setImageResource(R.drawable.ic_volume_medium_black_48dp);
             mVolumeIconButtons.setImageResource(R.drawable.ic_volume_medium_black_48dp);
         } else if (volume > 0 && volume < 30) {
-            mVolumeIcon.setImageResource(R.drawable.ic_volume_low_black_48dp);
+            //mVolumeIcon.setImageResource(R.drawable.ic_volume_low_black_48dp);
             mVolumeIconButtons.setImageResource(R.drawable.ic_volume_low_black_48dp);
         } else {
-            mVolumeIcon.setImageResource(R.drawable.ic_volume_mute_black_48dp);
+            //mVolumeIcon.setImageResource(R.drawable.ic_volume_mute_black_48dp);
             mVolumeIconButtons.setImageResource(R.drawable.ic_volume_mute_black_48dp);
         }
-        mVolumeIcon.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
+        //mVolumeIcon.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
         mVolumeIconButtons.setImageTintList(ColorStateList.valueOf(ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent)));
 
         mVolumeText.setText(String.valueOf(volume) + '%');
@@ -1069,15 +1088,18 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         }
     }
 
+/*
     private class VolumeSeekBarListener implements SeekBar.OnSeekBarChangeListener {
-        /**
+        */
+/**
          * Called if the user drags the seekbar to a new position or the seekbar is altered from
          * outside. Just do some seeking, if the action is done by the user.
          *
          * @param seekBar  Seekbar of which the progress was changed.
          * @param progress The new position of the seekbar.
          * @param fromUser If the action was initiated by the user.
-         */
+         *//*
+
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser) {
@@ -1095,26 +1117,31 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             }
         }
 
-        /**
+        */
+/**
          * Called if the user starts moving the seekbar. We do not handle this for now.
          *
          * @param seekBar SeekBar that is used for dragging.
-         */
+         *//*
+
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
             // TODO Auto-generated method stub
         }
 
-        /**
+        */
+/**
          * Called if the user ends moving the seekbar. We do not handle this for now.
          *
          * @param seekBar SeekBar that is used for dragging.
-         */
+         *//*
+
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             // TODO Auto-generated method stub
         }
     }
+*/
 
     /**
      * Private class that handles when the CoverGenerator finishes its fetching of cover images.
