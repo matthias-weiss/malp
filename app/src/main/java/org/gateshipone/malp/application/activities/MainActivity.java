@@ -113,27 +113,15 @@ public class MainActivity extends GenericActivity
 
     private boolean mUseArtistSort;
 
+    private View mDecorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        mDecorView = getWindow().getDecorView();
 
-//        String TAG = "Matthias";
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
-//        Log.d(TAG, "getchildcount()");
+        setContentView(R.layout.activity_main);
 
         // restore elevation behaviour as pre 24 support lib
         //AppBarLayout layout = findViewById(R.id.appbar);
@@ -205,7 +193,21 @@ public class MainActivity extends GenericActivity
             transaction.replace(R.id.fragment_container, fragment);
             transaction.commit();
         }
+        hideSystemUI();
+    }
 
+    // This snippet hides the system bars.
+    private void hideSystemUI() {
+        // Set the IMMERSIVE flag.
+        // Set the content to appear under the system bars so that the content
+        // doesn't resize when the system bars hide and show.
+        mDecorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     @Override
@@ -412,6 +414,7 @@ public class MainActivity extends GenericActivity
             }
             nowPlayingView.onResume();
         }
+        hideSystemUI();
     }
 
     @Override
