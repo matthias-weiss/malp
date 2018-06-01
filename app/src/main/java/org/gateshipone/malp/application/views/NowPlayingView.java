@@ -37,6 +37,7 @@ import android.os.Debug;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +49,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,7 +63,6 @@ import org.gateshipone.malp.application.fragments.TextDialog;
 import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
 import org.gateshipone.malp.application.utils.CoverBitmapLoader;
 import org.gateshipone.malp.application.utils.FormatHelper;
-import org.gateshipone.malp.application.utils.OutputResponseMenuHandler;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.application.utils.VolumeButtonLongClickListener;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
@@ -81,7 +80,7 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-public class NowPlayingView extends LinearLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
+public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = NowPlayingView.class.getSimpleName();
@@ -426,37 +425,6 @@ public class NowPlayingView extends LinearLayout implements PopupMenu.OnMenuItem
         return screenX >= viewLocation[0] && screenX < viewLocation[0] + view.getWidth() &&
                 screenY >= viewLocation[1] && screenY < viewLocation[1] + view.getHeight();
     }
-
-    /**
-     * Asks the ViewGroup about the size of all its children and paddings around.
-     *
-     * @param widthMeasureSpec  The width requirements for this view
-     * @param heightMeasureSpec The height requirements for this view
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        // FIXME check why super.onMeasure(widthMeasureSpec, heightMeasureSpec); causes
-        // problems with scrolling header view.
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        int maxWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
-
-        setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, 0),
-                resolveSizeAndState(maxHeight, heightMeasureSpec, 0));
-
-        //ViewGroup.LayoutParams imageParams = mCoverImage.getLayoutParams();
-        //imageParams.height = mViewSwitcher.getHeight();
-        //mCoverImage.setLayoutParams(imageParams);
-        //mCoverImage.requestLayout();
-
-
-        // Calculate the margin to smoothly resize text field
-        //LayoutParams layoutParams = (LayoutParams) mHeaderTextLayout.getLayoutParams();
-        //mHeaderTextLayout.setLayoutParams(layoutParams);
-    }
-
 
     /**
      * Called after the layout inflater is finished.
