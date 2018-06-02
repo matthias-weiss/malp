@@ -31,7 +31,6 @@
 
 
     <include
-        android:id="@+id/now_playing_dragger"
         layout="@layout/now_playing_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
