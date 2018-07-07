@@ -60,6 +60,7 @@ import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.CurrentPlaylistAdapter;
 import org.gateshipone.malp.application.fragments.ArtworkSettingsFragment;
 import org.gateshipone.malp.application.fragments.InformationSettingsFragment;
+import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ServerPropertiesFragment;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.callbacks.AddPathToPlaylist;
@@ -74,7 +75,7 @@ import org.gateshipone.malp.application.fragments.serverfragments.AlbumsFragment
 import org.gateshipone.malp.application.fragments.serverfragments.ArtistsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
 import org.gateshipone.malp.application.fragments.serverfragments.FilesFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.MyMusicTabsFragment;
+//import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.PlaylistTracksFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.SavedPlaylistsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.SearchFragment;
@@ -167,32 +168,16 @@ public class MainActivity extends GenericActivity
             dialog.show();
         }
 
-        if (findViewById(R.id.fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            
-            Fragment fragment = null;
+        Fragment fragment = new AudioSourceTabsFragment();
+        //AudioSourceTabsFragment.DEFAULTTAB defaultTab = getDefaultTab();
+        //Bundle args = new Bundle();
+        //args.putInt(AudioSourceTabsFragment.MY_MUSIC_REQUESTED_TAB, defaultTab.ordinal());
+        //fragment.setArguments(args);
 
-            if (navId == R.id.nav_library) {
-                fragment = new MyMusicTabsFragment();
-                MyMusicTabsFragment.DEFAULTTAB defaultTab = getDefaultTab();
-                Bundle args = new Bundle();
-                args.putInt(MyMusicTabsFragment.MY_MUSIC_REQUESTED_TAB, defaultTab.ordinal());
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
 
-                fragment.setArguments(args);
-            } else if (navId == R.id.nav_saved_playlists) {
-                fragment = new SavedPlaylistsFragment();
-            } else if (navId == R.id.nav_files) {
-                fragment = new FilesFragment();
-            } else if (navId == R.id.nav_profiles) {
-                fragment = new ProfilesFragment();
-            }
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.commit();
-        }
         hideSystemUI();
     }
 
@@ -341,8 +326,11 @@ public class MainActivity extends GenericActivity
         return false;
     }
 
-
     @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+/*    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -359,8 +347,8 @@ public class MainActivity extends GenericActivity
 
         if (id == R.id.nav_library) {
             // Handle the camera action
-            fragment = new MyMusicTabsFragment();
-            fragmentTag = MyMusicTabsFragment.TAG;
+            fragment = new AudioSourceTabsFragment();
+            fragmentTag = AudioSourceTabsFragment.TAG;
         } else if (id == R.id.nav_saved_playlists) {
             fragment = new SavedPlaylistsFragment();
             fragmentTag = SavedPlaylistsFragment.TAG;
@@ -394,7 +382,7 @@ public class MainActivity extends GenericActivity
         transaction.commit();
 
         return true;
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -766,18 +754,18 @@ public class MainActivity extends GenericActivity
         transaction.commit();
     }
 
-    private MyMusicTabsFragment.DEFAULTTAB getDefaultTab() {
+    private AudioSourceTabsFragment.DEFAULTTAB getDefaultTab() {
         // Read default view preference
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultView = sharedPref.getString(getString(R.string.pref_start_view_key), getString(R.string.pref_view_default));
 
         // the default tab for mymusic
-        MyMusicTabsFragment.DEFAULTTAB defaultTab = MyMusicTabsFragment.DEFAULTTAB.ALBUMS;
+        AudioSourceTabsFragment.DEFAULTTAB defaultTab = AudioSourceTabsFragment.DEFAULTTAB.ALBUMS;
 
         if (defaultView.equals(getString(R.string.pref_view_my_music_artists_key))) {
-            defaultTab = MyMusicTabsFragment.DEFAULTTAB.ARTISTS;
+            defaultTab = AudioSourceTabsFragment.DEFAULTTAB.ARTISTS;
         } else if (defaultView.equals(getString(R.string.pref_view_my_music_albums_key))) {
-            defaultTab = MyMusicTabsFragment.DEFAULTTAB.ALBUMS;
+            defaultTab = AudioSourceTabsFragment.DEFAULTTAB.ALBUMS;
         }
 
         return defaultTab;
