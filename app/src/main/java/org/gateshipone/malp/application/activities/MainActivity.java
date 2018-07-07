@@ -60,6 +60,7 @@ import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.CurrentPlaylistAdapter;
 import org.gateshipone.malp.application.fragments.ArtworkSettingsFragment;
 import org.gateshipone.malp.application.fragments.InformationSettingsFragment;
+import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ServerPropertiesFragment;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.callbacks.AddPathToPlaylist;
@@ -167,32 +168,16 @@ public class MainActivity extends GenericActivity
             dialog.show();
         }
 
-        if (findViewById(R.id.fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            
-            Fragment fragment = null;
+        Fragment fragment = new AudioSourceTabsFragment();
+        //MyMusicTabsFragment.DEFAULTTAB defaultTab = getDefaultTab();
+        //Bundle args = new Bundle();
+        //args.putInt(MyMusicTabsFragment.MY_MUSIC_REQUESTED_TAB, defaultTab.ordinal());
+        //fragment.setArguments(args);
 
-            if (navId == R.id.nav_library) {
-                fragment = new MyMusicTabsFragment();
-                MyMusicTabsFragment.DEFAULTTAB defaultTab = getDefaultTab();
-                Bundle args = new Bundle();
-                args.putInt(MyMusicTabsFragment.MY_MUSIC_REQUESTED_TAB, defaultTab.ordinal());
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
 
-                fragment.setArguments(args);
-            } else if (navId == R.id.nav_saved_playlists) {
-                fragment = new SavedPlaylistsFragment();
-            } else if (navId == R.id.nav_files) {
-                fragment = new FilesFragment();
-            } else if (navId == R.id.nav_profiles) {
-                fragment = new ProfilesFragment();
-            }
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.commit();
-        }
         hideSystemUI();
     }
 
@@ -341,8 +326,11 @@ public class MainActivity extends GenericActivity
         return false;
     }
 
-
     @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+/*    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -394,7 +382,7 @@ public class MainActivity extends GenericActivity
         transaction.commit();
 
         return true;
-    }
+    }*/
 
     @Override
     protected void onResume() {

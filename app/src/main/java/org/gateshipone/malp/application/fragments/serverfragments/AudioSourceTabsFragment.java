@@ -1,30 +1,28 @@
 /*
  *  Copyright (C) 2018 Team Gateship-One
  *  (Hendrik Borghorst & Frederik Luetkes)
- *
+ *  
  *  The AUTHORS.md file contains a detailed contributors list:
  *  <https://github.com/gateship-one/malp/blob/master/AUTHORS.md>
- *
+ *  
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- *
+ *  
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *
+ *  
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ *  
  */
 
 package org.gateshipone.malp.application.fragments.serverfragments;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,11 +44,11 @@ import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 
-public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSelectedListener {
-    public final static String TAG = MyMusicTabsFragment.class.getSimpleName();
+public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+    public final static String TAG = AudioSourceTabsFragment.class.getSimpleName();
     public final static String MY_MUSIC_REQUESTED_TAB = "ARG_REQUESTED_TAB";
 
-    private MyMusicPagerAdapter mMyMusicPagerAdapter;
+    private AudioSourcePagerAdapter mAudioSourcePagerAdapter;
 
     public enum DEFAULTTAB {
         ARTISTS, ALBUMS
@@ -105,32 +103,12 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);*/
 
         mViewPager = rootView.findViewById(R.id.my_music_viewpager);
-        mMyMusicPagerAdapter = new MyMusicPagerAdapter(getChildFragmentManager());
-        mViewPager.setAdapter(mMyMusicPagerAdapter);
+        mAudioSourcePagerAdapter = new AudioSourcePagerAdapter(getChildFragmentManager());
+        mViewPager.setAdapter(mAudioSourcePagerAdapter);
         //mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         //tabLayout.setOnTabSelectedListener(this);
 
-        // set start page
-        Bundle args = getArguments();
-
-        DEFAULTTAB tab = DEFAULTTAB.ALBUMS;
-
-        if (args != null && savedInstanceState == null) {
-            tab = DEFAULTTAB.values()[args.getInt(MY_MUSIC_REQUESTED_TAB)];
-            switch (tab) {
-                case ARTISTS:
-                    mViewPager.setCurrentItem(0);
-                    break;
-                case ALBUMS:
-                    mViewPager.setCurrentItem(1);
-                    break;
-            }
-        }
-
-        // try to resume the saved search string
-        if (savedInstanceState != null) {
-            mSearchString = savedInstanceState.getString(MYMUSICFRAGMENT_SAVED_INSTANCE_SEARCH_STRING);
-        }
+        mViewPager.setCurrentItem(0);
 
         setHasOptionsMenu(true);
         return rootView;
@@ -220,7 +198,7 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
             // Set the query string
             mSearchView.setQuery(mSearchString, false);
 
-            GenericMPDFragment fragment = mMyMusicPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
+            GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
             // Notify the adapter
             fragment.applyFilter(mSearchString);
         }
@@ -232,7 +210,7 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-        GenericMPDFragment fragment = mMyMusicPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
+        GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
         if ( null != fragment ) {
             fragment.removeFilter();
         }
@@ -244,12 +222,12 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
 
     }
 
-    private class MyMusicPagerAdapter extends FragmentStatePagerAdapter {
+    private class AudioSourcePagerAdapter extends FragmentStatePagerAdapter {
         static final int NUMBER_OF_PAGES = 2;
 
         private SparseArray<GenericMPDFragment> mRegisteredFragments;
 
-        public MyMusicPagerAdapter(FragmentManager fm) {
+        public AudioSourcePagerAdapter(FragmentManager fm) {
             super(fm);
             mRegisteredFragments = new SparseArray<>();
         }
@@ -312,7 +290,7 @@ public class MyMusicTabsFragment extends Fragment implements TabLayout.OnTabSele
         }
 
         private void applyFilter(String filter) {
-            GenericMPDFragment fragment = mMyMusicPagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
+            GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
             if (filter.isEmpty()) {
                 mSearchString = null;
                 fragment.removeFilter();
