@@ -27,10 +27,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import org.gateshipone.malp.application.adapters.LibraryItem;
+
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
-public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelable {
+public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
+
     public enum MPD_ALBUM_SORT_ORDER {
         TITLE, // Default value
         DATE
@@ -44,24 +49,23 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
     @NonNull
     private String mMBID;
 
-    /* Artists name (if any) */
+    /* Artists */
     @NonNull
-    private String mArtistName;
-
-    @NonNull
-    private String mArtistSortName;
+    private MPDArtist mArtist;
 
     @NonNull
     private Date mDate;
 
     private boolean mImageFetching;
 
-    public MPDAlbum(@NonNull String name) {
+    public static final int  VIEW_TYPE = 1;
+    private boolean mExpanded = false;
+
+    public MPDAlbum(@NonNull String name, @NonNull MPDArtist artist) {
         mName = name;
         mMBID = "";
-        mArtistName = "";
-        mArtistSortName = "";
         mDate = new Date(0);
+        mArtist = artist;
     }
 
     /* Getters */
@@ -69,8 +73,6 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
     protected MPDAlbum(Parcel in) {
         mName = in.readString();
         mMBID = in.readString();
-        mArtistName = in.readString();
-        mArtistSortName = in.readString();
         mImageFetching = in.readByte() != 0;
         mDate = (Date) in.readSerializable();
     }
@@ -99,21 +101,7 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
 
     @NonNull
     public String getArtistName() {
-        return mArtistName;
-    }
-
-
-    public void setArtistName(@NonNull String artistName) {
-        mArtistName = artistName;
-    }
-
-    @NonNull
-    public String getArtistSortName() {
-        return mArtistSortName;
-    }
-
-    public void setArtistSortName(@NonNull String artistSortName) {
-        mArtistSortName = artistSortName;
+        return mArtist.getArtistName();
     }
 
     public void setMBID(@NonNull String mbid) {
@@ -129,19 +117,13 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
     }
 
     @Override
-    @NonNull
-    public String getSectionTitle() {
-        return mName;
-    }
-
-    @Override
     public boolean equals(Object object) {
         if (!(object instanceof MPDAlbum)) {
             return false;
         }
 
         MPDAlbum album = (MPDAlbum) object;
-        return (mName.equals(album.mName)) && (mArtistName.equals(album.mArtistName)) &&
+        return (mName.equals(album.mName)) && (mArtist.getArtistName().equals(album.getArtistName())) &&
                 (mMBID.equals(album.mMBID)) && (mDate.equals(album.mDate));
     }
 
@@ -155,7 +137,7 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
 
     @Override
     public int hashCode() {
-        return (mName + mArtistName + mMBID).hashCode();
+        return (mName + mArtist.getArtistName() + mMBID).hashCode();
     }
 
     public synchronized void setFetching(boolean fetching) {
@@ -173,17 +155,16 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
 
     @Override
     public String toString() {
-        return mName + "_" + mArtistName + "_" + mMBID + "_" + mDate;
+        return mName + "_" + mArtist.getArtistName() + "_" + mMBID + "_" + mDate;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
         dest.writeString(mMBID);
-        dest.writeString(mArtistName);
-        dest.writeString(mArtistSortName);
         dest.writeByte((byte) (mImageFetching ? 1 : 0));
         dest.writeSerializable(mDate);
+        //dest.writeSerializable(mArtist);
     }
 
     public static class MPDAlbumDateComparator implements Comparator<MPDAlbum> {
@@ -201,4 +182,41 @@ public class MPDAlbum implements MPDGenericItem, Comparable<MPDAlbum>, Parcelabl
             return obj instanceof MPDAlbum && obj.equals(this);
         }
     }
+
+    public String getMainText() {
+        return mName;
+    }
+
+    public String getPostfixText() {
+        return mDate.toString();
+    }
+
+    public String getPrefixText() {
+        return null;
+    }
+
+    public int getKidCount() {
+        return getKidItems().size();
+    }
+
+
+    public List<LibraryItem> getKidItems() {
+        List<LibraryItem> list = new ArrayList<>();
+
+        for (Song song : mAlbum.getSortedSongs()) {
+            list.add(new SongItem(this, song));
+        }
+
+        return list;
+    }
+
+    public int getLevel(){ return MPDAlbum.VIEW_TYPE;}
+
+    public LibraryItem getParentItem() { return mArtist; }
+
+    public boolean isExpanded() { return mExpanded;}
+
+    public void setExpanded(boolean expanded) { mExpanded = expanded; }
+
+    public int getViewType() { return MPDAlbum.VIEW_TYPE; }
 }

@@ -75,10 +75,6 @@ import org.gateshipone.malp.application.fragments.serverfragments.AlbumsFragment
 import org.gateshipone.malp.application.fragments.serverfragments.ArtistsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
 import org.gateshipone.malp.application.fragments.serverfragments.FilesFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.MyMusicTabsFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.PlaylistTracksFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.SavedPlaylistsFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.SearchFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.SongDetailsDialog;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.application.views.CurrentPlaylistView;
@@ -94,10 +90,8 @@ import org.gateshipone.malp.mpdservice.profilemanagement.MPDProfileManager;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDServerProfile;
 
 public class MainActivity extends GenericActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AlbumsFragment.AlbumSelectedCallback, ArtistsFragment.ArtistSelectedCallback,
-        ProfileManageCallbacks, PlaylistCallback,
-        FilesFragment.FilesCallback,
-        FABFragmentCallback, SettingsFragment.OnArtworkSettingsRequestedCallback {
+        implements ProfileManageCallbacks,
+        SettingsFragment.OnArtworkSettingsRequestedCallback {
 
 
     private static final String TAG = "MainActivity";
@@ -124,27 +118,7 @@ public class MainActivity extends GenericActivity
 
         setContentView(R.layout.activity_main);
 
-        // restore elevation behaviour as pre 24 support lib
-        //AppBarLayout layout = findViewById(R.id.appbar);
-        //layout.setStateListAnimator(null);
-        //ViewCompat.setElevation(layout, 0);
-
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        // enable back navigation
-        //final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-
-        //if (actionBar != null) {
-        //    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //}
-
         int navId = getDefaultViewID();
-
-        /*NavigationView navigationView = findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(this);
-            navigationView.setCheckedItem(navId);
-        }*/
 
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -168,15 +142,11 @@ public class MainActivity extends GenericActivity
             dialog.show();
         }
 
-        Fragment fragment = new AudioSourceTabsFragment();
-        //MyMusicTabsFragment.DEFAULTTAB defaultTab = getDefaultTab();
-        //Bundle args = new Bundle();
-        //args.putInt(MyMusicTabsFragment.MY_MUSIC_REQUESTED_TAB, defaultTab.ordinal());
-        //fragment.setArguments(args);
+        //Fragment fragment = new AudioSourceTabsFragment();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
+        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //transaction.replace(R.id.fragment_container, fragment);
+        //transaction.commit();
 
         hideSystemUI();
     }
@@ -288,11 +258,11 @@ public class MainActivity extends GenericActivity
                     currentPlaylistView.removeAlbumFrom(info.position);
                     return true;
                 case R.id.action_show_artist:
-                    if (mUseArtistSort) {
-                        onArtistSelected(new MPDArtist(track.getTrackArtistSort()), null);
-                    } else {
-                        onArtistSelected(new MPDArtist(track.getTrackArtist()), null);
-                    }
+                    //if (mUseArtistSort) {
+                    //    onArtistSelected(new MPDArtist(track.getTrackArtistSort()), null);
+                    //} else {
+                    //    onArtistSelected(new MPDArtist(track.getTrackArtist()), null);
+                    //}
                     return true;
                 case R.id.action_show_album:
                     MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum());
@@ -311,7 +281,7 @@ public class MainActivity extends GenericActivity
                     }
 
                     tmpAlbum.setMBID(track.getTrackAlbumMBID());
-                    onAlbumSelected(tmpAlbum, null);
+                    //onAlbumSelected(tmpAlbum, null);
                     return true;
                 case R.id.action_show_details:
                     // Open song details dialog
@@ -326,10 +296,6 @@ public class MainActivity extends GenericActivity
         return false;
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return true;
-    }
 /*    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -459,77 +425,7 @@ public class MainActivity extends GenericActivity
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
-
-
     }
-
-    @Override
-    public void onAlbumSelected(MPDAlbum album, Bitmap bitmap) {
-
-        // Create fragment and give it an argument for the selected article
-        AlbumTracksFragment newFragment = new AlbumTracksFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(AlbumTracksFragment.BUNDLE_STRING_EXTRA_ALBUM, album);
-        if (bitmap != null) {
-            args.putParcelable(AlbumTracksFragment.BUNDLE_STRING_EXTRA_BITMAP, bitmap);
-        }
-
-        newFragment.setArguments(args);
-
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // Replace whatever is in the fragment_container view with this
-        // fragment,
-        // and add the transaction to the back stack so the user can navigate
-        // back
-        newFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-        newFragment.setExitTransition(new Slide(Gravity.TOP));
-        transaction.replace(R.id.fragment_container, newFragment, AlbumTracksFragment.TAG);
-        transaction.addToBackStack("AlbumTracksFragment");
-
-        /* NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library); */
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
-    @Override
-    public void onArtistSelected(MPDArtist artist, Bitmap bitmap) {
-
-        // Create fragment and give it an argument for the selected article
-        AlbumsFragment newFragment = new AlbumsFragment();
-        Bundle args = new Bundle();
-        args.putString(AlbumsFragment.BUNDLE_STRING_EXTRA_ARTISTNAME, artist.getArtistName());
-        args.putParcelable(AlbumsFragment.BUNDLE_STRING_EXTRA_ARTIST, artist);
-
-        // Transfer the bitmap to the next fragment
-        if (bitmap != null) {
-            args.putParcelable(AlbumsFragment.BUNDLE_STRING_EXTRA_BITMAP, bitmap);
-        }
-
-        newFragment.setArguments(args);
-
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        newFragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-        newFragment.setExitTransition(new Slide(Gravity.TOP));
-        // Replace whatever is in the fragment_container view with this
-        // fragment,
-        // and add the transaction to the back stack so the user can navigate
-        // back
-        transaction.replace(R.id.fragment_container, newFragment, AlbumsFragment.TAG);
-        transaction.addToBackStack("ArtistAlbumsFragment");
-
-        /* NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library); */
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
-
-
-
 
     @Override
     public void editProfile(MPDServerProfile profile) {
@@ -556,7 +452,7 @@ public class MainActivity extends GenericActivity
         // fragment,
         // and add the transaction to the back stack so the user can navigate
         // back
-        transaction.replace(R.id.fragment_container, newFragment, EditProfileFragment.TAG);
+        //transaction.replace(R.id.fragment_container, newFragment, EditProfileFragment.TAG);
         transaction.addToBackStack("EditProfileFragment");
 
 
@@ -565,91 +461,6 @@ public class MainActivity extends GenericActivity
     }
 
 
-
-    @Override
-    public void openPlaylist(String name) {
-        // Create fragment and give it an argument for the selected article
-        PlaylistTracksFragment newFragment = new PlaylistTracksFragment();
-        Bundle args = new Bundle();
-        args.putString(PlaylistTracksFragment.EXTRA_PLAYLIST_NAME, name);
-
-
-        newFragment.setArguments(args);
-
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        newFragment.setEnterTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.START, getResources().getConfiguration().getLayoutDirection())));
-        newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
-        // Replace whatever is in the fragment_container view with this
-        // fragment,
-        // and add the transaction to the back stack so the user can navigate
-        // back
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("PlaylistTracksFragment");
-
-        // Commit the transaction
-        transaction.commit();
-
-    }
-
-
-    @Override
-    public void setupFAB(boolean active, View.OnClickListener listener) {
-    }
-
-    @Override
-    public void setupToolbar(String title, boolean scrollingEnabled, boolean drawerIndicatorEnabled, boolean showImage) {
-        // set drawer state
-        //mDrawerToggle.setDrawerIndicatorEnabled(drawerIndicatorEnabled);
-
-        RelativeLayout collapsingImageLayout = findViewById(R.id.appbar_image_layout);
-
-        ImageView collapsingImage = findViewById(R.id.collapsing_image);
-
-        if (collapsingImage != null) {
-            if (showImage) {
-                collapsingImageLayout.setVisibility(View.VISIBLE);
-                mHeaderImageActive = true;
-
-                // Get the primary color of the active theme from the helper.
-                int newColor = ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark);
-
-
-            } else {
-                collapsingImageLayout.setVisibility(View.GONE);
-                mHeaderImageActive = false;
-
-                // Get the primary color of the active theme from the helper.
-                getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark));
-            }
-        } else {
-            // If in portrait mode (no collapsing image exists), the status bar also needs dark coloring
-            mHeaderImageActive = false;
-
-            // Get the primary color of the active theme from the helper.
-            getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this, R.attr.colorPrimaryDark));
-        }
-        // set scrolling behaviour
-        /*CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        params.height = -1;
-
-        if (scrollingEnabled && !showImage) {
-            toolbar.setTitleEnabled(false);
-            setTitle(title);
-
-            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL + AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED + AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
-        } else if (!scrollingEnabled && showImage && collapsingImage != null) {
-            toolbar.setTitleEnabled(true);
-            toolbar.setTitle(title);
-
-
-            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED + AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL);
-        } else {
-            toolbar.setTitleEnabled(false);
-            setTitle(title);
-            params.setScrollFlags(0);
-        }*/
-    }
 
     public void setupToolbarImage(Bitmap bm) {
         ImageView collapsingImage = findViewById(R.id.collapsing_image);
@@ -666,60 +477,6 @@ public class MainActivity extends GenericActivity
             //AppBarLayout appbar = findViewById(R.id.appbar);
             //appbar.setExpanded(true,false);
         }
-    }
-
-
-
-    @Override
-    public void openPath(String path) {
-        // Create fragment and give it an argument for the selected directory
-        FilesFragment newFragment = new FilesFragment();
-        Bundle args = new Bundle();
-        args.putString(FilesFragment.EXTRA_FILENAME, path);
-
-        newFragment.setArguments(args);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        newFragment.setEnterTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.START, getResources().getConfiguration().getLayoutDirection())));
-        newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
-
-        transaction.addToBackStack("FilesFragment" + path);
-        transaction.replace(R.id.fragment_container, newFragment);
-
-        // Commit the transaction
-        transaction.commit();
-
-    }
-
-    @Override
-    public void showAlbumsForPath(String path) {
-
-        // Create fragment and give it an argument for the selected article
-        AlbumsFragment newFragment = new AlbumsFragment();
-        Bundle args = new Bundle();
-        args.putString(AlbumsFragment.BUNDLE_STRING_EXTRA_PATH, path);
-
-
-        newFragment.setArguments(args);
-
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        newFragment.setEnterTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.START, getResources().getConfiguration().getLayoutDirection())));
-        newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
-        // Replace whatever is in the fragment_container view with this
-        // fragment,
-        // and add the transaction to the back stack so the user can navigate
-        // back
-        transaction.replace(R.id.fragment_container, newFragment, AlbumsFragment.TAG);
-        transaction.addToBackStack("DirectoryAlbumsFragment");
-
-        /* NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_library); */
-
-        // Commit the transaction
-        transaction.commit();
     }
 
     public void setNavbarHeader(String text) {
@@ -748,27 +505,10 @@ public class MainActivity extends GenericActivity
         newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
 
         transaction.addToBackStack("ArtworkSettingsFragment");
-        transaction.replace(R.id.fragment_container, newFragment);
+        //transaction.replace(R.id.fragment_container, newFragment);
 
         // Commit the transaction
         transaction.commit();
-    }
-
-    private MyMusicTabsFragment.DEFAULTTAB getDefaultTab() {
-        // Read default view preference
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultView = sharedPref.getString(getString(R.string.pref_start_view_key), getString(R.string.pref_view_default));
-
-        // the default tab for mymusic
-        MyMusicTabsFragment.DEFAULTTAB defaultTab = MyMusicTabsFragment.DEFAULTTAB.ALBUMS;
-
-        if (defaultView.equals(getString(R.string.pref_view_my_music_artists_key))) {
-            defaultTab = MyMusicTabsFragment.DEFAULTTAB.ARTISTS;
-        } else if (defaultView.equals(getString(R.string.pref_view_my_music_albums_key))) {
-            defaultTab = MyMusicTabsFragment.DEFAULTTAB.ALBUMS;
-        }
-
-        return defaultTab;
     }
 
     private int getDefaultViewID() {

@@ -29,6 +29,6 @@
     android:fitsSystemWindows="true">
 
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/audio_sources_layout" />
 
 </android.support.design.widget.CoordinatorLayout>

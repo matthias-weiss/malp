@@ -27,9 +27,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
+import org.gateshipone.malp.application.adapters.LibraryAdapter;
+import org.gateshipone.malp.application.adapters.LibraryItem;
+import org.gateshipone.malp.application.loaders.AlbumsLoader;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseAlbumList;
+import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
-public class MPDArtist implements MPDGenericItem, Comparable<MPDArtist>, Parcelable {
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MPDArtist implements LibraryItem, Comparable<MPDArtist>, Parcelable {
     /* Artist properties */
     @NonNull
     private String pArtistName;
@@ -40,9 +49,31 @@ public class MPDArtist implements MPDGenericItem, Comparable<MPDArtist>, Parcela
 
     private boolean mImageFetching;
 
+    public static final int  VIEW_TYPE = 0;
+    private boolean          mExpanded = false;
+    private List<LibraryItem>   pAlbums;
+    private AlbumResponseHandler pAlbumsResponseHandler;
+
+    private static class AlbumResponseHandler extends MPDResponseAlbumList {
+        private WeakReference<MPDArtist> mArtist;
+
+        private AlbumResponseHandler(MPDArtist artist) {
+            mArtist = new WeakReference<>(artist);
+        }
+
+        @Override
+        public void handleAlbums(List<MPDAlbum> albumList) {
+            MPDArtist artist = mArtist.get();
+
+            if (artist != null) {
+                artist.setAlbumList(albumList);
+            }
+        }
+    }
+
     public MPDArtist(@NonNull String name) {
         pArtistName = name;
-        pMBIDs = new ArrayList<>();
+        pAlbumsResponseHandler = new MPDArtist.AlbumResponseHandler(this);
     }
 
     protected MPDArtist(Parcel in) {
@@ -85,12 +116,6 @@ public class MPDArtist implements MPDGenericItem, Comparable<MPDArtist>, Parcela
         pMBIDs.add(mbid);
     }
 
-
-    @Override
-    @NonNull
-    public String getSectionTitle() {
-        return pArtistName;
-    }
 
     @Override
     public boolean equals(Object object) {
@@ -152,6 +177,7 @@ public class MPDArtist implements MPDGenericItem, Comparable<MPDArtist>, Parcela
 
     @Override
     public int describeContents() {
+
         return 0;
     }
 
@@ -171,4 +197,47 @@ public class MPDArtist implements MPDGenericItem, Comparable<MPDArtist>, Parcela
         dest.writeStringArray(mbids);
         dest.writeByte(mImageFetching ? (byte) 1 : (byte) 0);
     }
+
+    public void setAlbumList(List<MPDAlbum> albumList) {
+        pAlbums.clear();
+        pAlbums.addAll(albumList);
+    }
+
+    public String getMainText() {
+        return pArtistName;
+    }
+
+    public String getPrefixText() {
+        return null;
+    }
+
+    public String getPostfixText() {
+        return null;
+    }
+
+    public int getKidCount() {
+        return getKidItems().size();
+    }
+
+
+    public List<LibraryItem> getKidItems() {
+
+        //if (!mUseArtistSort) {
+        //    MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, pArtistName);
+        //} else {
+            MPDQueryHandler.getArtistSortAlbums(pAlbumsResponseHandler, pArtistName);
+        //}
+
+        return pAlbums;
+    }
+
+    public int getLevel(){ return MPDArtist.VIEW_TYPE;}
+
+    public LibraryItem getParentItem() { return null; }
+
+    public boolean isExpanded() { return mExpanded;}
+
+    public void setExpanded(boolean expanded) { mExpanded = expanded; }
+
+    public int getViewType() { return MPDArtist.VIEW_TYPE; }
 }

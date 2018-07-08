@@ -32,40 +32,35 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
+import org.gateshipone.malp.application.fragments.AudioSourceViewPager;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 
-public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AudioSourceTabsFragment extends Fragment {
     public final static String TAG = AudioSourceTabsFragment.class.getSimpleName();
     public final static String MY_MUSIC_REQUESTED_TAB = "ARG_REQUESTED_TAB";
 
     private AudioSourcePagerAdapter mAudioSourcePagerAdapter;
 
-    public enum DEFAULTTAB {
-        ARTISTS, ALBUMS
-    }
-
     private FABFragmentCallback mFABCallback = null;
 
-    private ViewPager mViewPager;
-
-    private SearchView mSearchView;
+    private AudioSourceViewPager mViewPager;
 
     private Menu mOptionMenu;
 
-    /**
-     * Saved search string when user rotates devices
-     */
-    private String mSearchString;
 
     /**
      * Constant for state saving
@@ -79,7 +74,6 @@ public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTab
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_tab_pager, container, false);
-
 
         // create tabs
         /*TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
@@ -102,33 +96,20 @@ public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTab
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);*/
 
-        mViewPager = rootView.findViewById(R.id.my_music_viewpager);
+        mViewPager = rootView.findViewById(R.id.audio_source_viewpager);
         mAudioSourcePagerAdapter = new AudioSourcePagerAdapter(getChildFragmentManager());
-        mViewPager.setAdapter(mAudioSourcePagerAdapter);
-        //mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        //tabLayout.setOnTabSelectedListener(this);
 
-        mViewPager.setCurrentItem(0);
+        mAudioSourcePagerAdapter.addFragment(new LibraryFragment(), "Library");
+        //mAudioSourcePagerAdapter.addFragment(new WebradioFragment(), "Webradio");
+        //mAudioSourcePagerAdapter.addFragment(new PodcastFragment(), "Podcasts");
+
+        mViewPager.setAdapter(mAudioSourcePagerAdapter);
+
+        TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);
 
         setHasOptionsMenu(true);
         return rootView;
-    }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        View view = this.getView();
-
-        if (view != null ) {
-            // dismiss searchview
-            if (mSearchView != null && mOptionMenu != null && !mSearchView.isIconified()) {
-                mSearchView.setIconified(true);
-                mOptionMenu.findItem(R.id.action_search).collapseActionView();
-            }
-
-
-            ViewPager myMusicViewPager = view.findViewById(R.id.my_music_viewpager);
-            myMusicViewPager.setCurrentItem(tab.getPosition());
-        }
     }
 
     @Override
@@ -161,9 +142,6 @@ public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTab
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        // save the already typed search string (or null if nothing is entered)
-        outState.putString(MYMUSICFRAGMENT_SAVED_INSTANCE_SEARCH_STRING, mSearchString);
     }
 
     /**
@@ -188,116 +166,36 @@ public class AudioSourceTabsFragment extends Fragment implements TabLayout.OnTab
         DrawableCompat.setTint(drawable, tintColor);
         menu.findItem(R.id.action_search).setIcon(drawable);
 
-        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
-        // Check if a search string is saved from before
-        if (mSearchString != null) {
-            // Expand the view
-            mSearchView.setIconified(false);
-            menu.findItem(R.id.action_search).expandActionView();
-            // Set the query string
-            mSearchView.setQuery(mSearchString, false);
-
-            GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
-            // Notify the adapter
-            fragment.applyFilter(mSearchString);
-        }
-
-        mSearchView.setOnQueryTextListener(new SearchTextObserver());
-
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
-        if ( null != fragment ) {
-            fragment.removeFilter();
-        }
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-
-    }
 
     private class AudioSourcePagerAdapter extends FragmentStatePagerAdapter {
-        static final int NUMBER_OF_PAGES = 2;
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        private SparseArray<GenericMPDFragment> mRegisteredFragments;
-
-        public AudioSourcePagerAdapter(FragmentManager fm) {
-            super(fm);
-            mRegisteredFragments = new SparseArray<>();
+        public AudioSourcePagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override
-        public int getItemPosition(@NonNull Object object) {
-            return POSITION_NONE;
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            GenericMPDFragment fragment = (GenericMPDFragment) super.instantiateItem(container, position);
-            mRegisteredFragments.put(position, fragment);
-            return fragment;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            mRegisteredFragments.remove(position);
-            super.destroyItem(container, position, object);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            switch (i) {
-                case 0:
-                    return new ArtistsFragment();
-                case 1:
-                    return new AlbumsFragment();
-                default:
-                    return null;
-            }
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            // this is done in order to reload all tabs
-            return NUMBER_OF_PAGES;
+            return mFragmentList.size();
         }
 
-        public GenericMPDFragment getRegisteredFragment(int position) {
-            return mRegisteredFragments.get(position);
-        }
-    }
-
-    private class SearchTextObserver implements SearchView.OnQueryTextListener {
-
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            applyFilter(query);
-
-            return false;
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
         }
 
         @Override
-        public boolean onQueryTextChange(String newText) {
-            applyFilter(newText);
-            return true;
-        }
-
-        private void applyFilter(String filter) {
-            GenericMPDFragment fragment = mAudioSourcePagerAdapter.getRegisteredFragment(mViewPager.getCurrentItem());
-            if (filter.isEmpty()) {
-                mSearchString = null;
-                fragment.removeFilter();
-            } else {
-                mSearchString = filter;
-                fragment.applyFilter(filter);
-            }
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }
