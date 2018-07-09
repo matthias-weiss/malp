@@ -28,13 +28,18 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import org.gateshipone.malp.application.adapters.LibraryItem;
+import org.gateshipone.malp.application.loaders.AlbumTracksLoader;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseFileList;
+import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
+public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbum>, Parcelable {
 
     public enum MPD_ALBUM_SORT_ORDER {
         TITLE, // Default value
@@ -60,12 +65,40 @@ public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
 
     public static final int  VIEW_TYPE = 1;
     private boolean mExpanded = false;
+    private List<LibraryItem> pTrackList;
+    private MPDAlbum.TrackResponseHandler pTrackResponseHandler;
+
+    private static class TrackResponseHandler extends MPDResponseFileList {
+        private WeakReference<MPDAlbum> mAlbum;
+
+        private TrackResponseHandler(MPDAlbum album) {
+            mAlbum = new WeakReference<>(album);
+        }
+
+
+        @Override
+        public void handleTracks(List<MPDFileEntry> fileList, int start, int end) {
+            MPDAlbum album = mAlbum.get();
+            List<MPDTrack> tracklist = new ArrayList<>();
+
+            for(MPDFileEntry file: fileList) {
+                if (file instanceof MPDTrack) {
+                    tracklist.add((MPDTrack)file);
+                }
+            }
+
+            if (album != null && tracklist.size() > 0) {
+                album.setTrackList(tracklist);
+            }
+        }
+    }
 
     public MPDAlbum(@NonNull String name, @NonNull MPDArtist artist) {
         mName = name;
         mMBID = "";
         mDate = new Date(0);
         mArtist = artist;
+        pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
     }
 
     /* Getters */
@@ -75,6 +108,7 @@ public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
         mMBID = in.readString();
         mImageFetching = in.readByte() != 0;
         mDate = (Date) in.readSerializable();
+        pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
     }
 
     public static final Creator<MPDAlbum> CREATOR = new Creator<MPDAlbum>() {
@@ -101,6 +135,14 @@ public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
 
     @NonNull
     public String getArtistName() {
+        return mArtist.getArtistName();
+    }
+
+    public void setArtistName(String name) {
+        return;
+    }
+
+    public String getArtistSortName() {
         return mArtist.getArtistName();
     }
 
@@ -183,6 +225,16 @@ public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
         }
     }
 
+    @Override
+    public String getSectionTitle() {
+        return null;
+    }
+
+    public void setTrackList(List<MPDTrack> trackList) {
+        pTrackList.clear();
+        pTrackList.addAll(trackList);
+    }
+
     public String getMainText() {
         return mName;
     }
@@ -201,13 +253,14 @@ public class MPDAlbum implements LibraryItem, Comparable<MPDAlbum>, Parcelable {
 
 
     public List<LibraryItem> getKidItems() {
-        List<LibraryItem> list = new ArrayList<>();
 
-        for (Song song : mAlbum.getSortedSongs()) {
-            list.add(new SongItem(this, song));
-        }
+        //if (mUseArtistSort && !mArtistSortName.isEmpty()) {
+            MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mName, mArtist.getArtistName(), null);
+        //} else {
+        //    MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mAlbumMBID);
+        //}
 
-        return list;
+        return pTrackList;
     }
 
     public int getLevel(){ return MPDAlbum.VIEW_TYPE;}

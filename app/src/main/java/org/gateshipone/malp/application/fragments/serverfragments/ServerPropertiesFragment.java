@@ -63,7 +63,7 @@ public class ServerPropertiesFragment extends Fragment implements TabLayout.OnTa
         // create tabs
         TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
 
-        mViewPager = rootView.findViewById(R.id.my_music_viewpager);
+        //mViewPager = rootView.findViewById(R.id.my_music_viewpager);
         mTabAdapter = new ServerPropertiesTabAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -127,8 +127,8 @@ public class ServerPropertiesFragment extends Fragment implements TabLayout.OnTa
         View view = this.getView();
 
         if (view != null ) {
-            ViewPager myMusicViewPager = view.findViewById(R.id.my_music_viewpager);
-            myMusicViewPager.setCurrentItem(tab.getPosition());
+            //ViewPager myMusicViewPager = view.findViewById(R.id.my_music_viewpager);
+            //myMusicViewPager.setCurrentItem(tab.getPosition());
 
             if (null != mFABCallback) {
                 if (tab.getPosition() == 0) {

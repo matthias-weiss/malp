@@ -186,9 +186,9 @@ public class FileAdapter extends GenericSectionAdapter<MPDFileEntry> {
 
                 // This will prepare the view for fetching the image from the internet if not already saved in local database.
                 // Dummy MPDAlbum
-                MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum());
+                MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum(), null);
                 tmpAlbum.setMBID(track.getTrackAlbumMBID());
-                ((FileListItem) convertView).prepareArtworkFetching(ArtworkManager.getInstance(mContext.getApplicationContext()), tmpAlbum);
+                //((FileListItem) convertView).prepareArtworkFetching(ArtworkManager.getInstance(mContext.getApplicationContext()), tmpAlbum);
 
                 // Start async image loading if not scrolling at the moment. Otherwise the ScrollSpeedListener
                 // starts the loading.

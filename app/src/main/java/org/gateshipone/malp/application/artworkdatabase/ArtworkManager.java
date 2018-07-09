@@ -557,7 +557,7 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
      */
     public void fetchAlbumImage(final MPDTrack track) {
         // Create a dummy album
-        MPDAlbum album = new MPDAlbum(track.getTrackAlbum());
+        MPDAlbum album = new MPDAlbum(track.getTrackAlbum(), null);
         album.setMBID(track.getTrackAlbumMBID());
         album.setArtistName(track.getTrackAlbumArtist());
 
@@ -573,7 +573,7 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
                 @Override
                 public void fetchVolleyError(MPDTrack track, VolleyError error) {
                     Log.v(TAG,"Local HTTP download failed, try user-selected download provider");
-                    MPDAlbum album = new MPDAlbum(track.getTrackAlbum());
+                    MPDAlbum album = new MPDAlbum(track.getTrackAlbum(), null);
                     album.setMBID(track.getTrackAlbumMBID());
                     album.setArtistName(track.getTrackAlbumArtist());
                     fetchAlbumImage(album);
@@ -887,7 +887,7 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
                 fetchNextBulkTrackAlbum();
             }
 
-            MPDAlbum fakeAlbum = new MPDAlbum(response.track.getTrackAlbum());
+            MPDAlbum fakeAlbum = new MPDAlbum(response.track.getTrackAlbum(), null);
             fakeAlbum.setArtistName(response.track.getTrackAlbumArtist());
             fakeAlbum.setMBID(response.track.getTrackAlbumMBID());
 

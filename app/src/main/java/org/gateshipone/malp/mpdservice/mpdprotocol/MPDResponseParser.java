@@ -71,7 +71,7 @@ class MPDResponseParser {
                     albumList.add(tempAlbum);
                 }
                 albumName = responseString.substring(MPDResponses.MPD_RESPONSE_ALBUM_NAME.length());
-                tempAlbum = new MPDAlbum(albumName);
+                tempAlbum = new MPDAlbum(albumName, null);
             }
             if (tempAlbum != null) {
                 if (responseString.startsWith(MPDResponses.MPD_RESPONSE_ALBUM_MBID)) {
@@ -81,7 +81,7 @@ class MPDResponseParser {
                     tempAlbum.setArtistName(responseString.substring(MPDResponses.MPD_RESPONSE_ALBUMARTIST_NAME.length()));
                 } else if (responseString.startsWith(MPDResponses.MPD_RESPONSE_ALBUMARTIST_SORT_NAME)) {
                 /* Check if the responseString is a album artist. */
-                    tempAlbum.setArtistSortName(responseString.substring(MPDResponses.MPD_RESPONSE_ALBUMARTIST_SORT_NAME.length()));
+                    tempAlbum.setArtistName(responseString.substring(MPDResponses.MPD_RESPONSE_ALBUMARTIST_SORT_NAME.length()));
                 } else if (responseString.startsWith(MPDResponses.MPD_RESPONSE_DATE)) {
                     // Try to parse Date
                     String dateString = responseString.substring(MPDResponses.MPD_RESPONSE_DATE.length());

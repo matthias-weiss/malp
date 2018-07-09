@@ -376,7 +376,7 @@ public class AlbumsFragment extends GenericMPDFragment<List<MPDAlbum>> implement
         // support group commands and therefore do not provide artist tags for albums)
         if (mArtist != null && !mArtist.getArtistName().isEmpty() && album.getArtistName().isEmpty()) {
             album.setArtistName(mArtist.getArtistName());
-            album.setArtistSortName(mArtist.getArtistName());
+            //album.setArtistSortName(mArtist.getArtistName());
         }
 
         // Check if the album already has an artist set. If not use the artist of the fragment
@@ -474,7 +474,7 @@ public class AlbumsFragment extends GenericMPDFragment<List<MPDAlbum>> implement
         // support group commands and therefore do not provide artist tags for albums)
         if (mArtist != null && !mArtist.getArtistName().isEmpty() && album.getArtistName().isEmpty()) {
             album.setArtistName(mArtist.getArtistName());
-            album.setArtistSortName(mArtist.getArtistName());
+            //album.setArtistSortName(mArtist.getArtistName());
         }
 
         MPDQueryHandler.addArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
@@ -491,7 +491,7 @@ public class AlbumsFragment extends GenericMPDFragment<List<MPDAlbum>> implement
         // support group commands and therefore do not provide artist tags for albums)
         if (mArtist != null && !mArtist.getArtistName().isEmpty() && album.getArtistName().isEmpty()) {
             album.setArtistName(mArtist.getArtistName());
-            album.setArtistSortName(mArtist.getArtistName());
+            //album.setArtistSortName(mArtist.getArtistName());
         }
 
         MPDQueryHandler.playArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());

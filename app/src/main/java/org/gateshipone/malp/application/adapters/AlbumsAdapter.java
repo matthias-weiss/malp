@@ -84,7 +84,7 @@ public class AlbumsAdapter extends GenericSectionAdapter<MPDAlbum> implements Ar
             }
 
             // This will prepare the view for fetching the image from the internet if not already saved in local database.
-            listItem.prepareArtworkFetching(mArtworkManager, album);
+            //listItem.prepareArtworkFetching(mArtworkManager, album);
 
             // Check if the scroll speed currently is already 0, then start the image task right away.
             if (mScrollSpeed == 0) {
@@ -113,7 +113,7 @@ public class AlbumsAdapter extends GenericSectionAdapter<MPDAlbum> implements Ar
             gridItem.setLayoutParams(layoutParams);
 
             // This will prepare the view for fetching the image from the internet if not already saved in local database.
-            gridItem.prepareArtworkFetching(mArtworkManager, album);
+            //gridItem.prepareArtworkFetching(mArtworkManager, album);
 
             // Check if the scroll speed currently is already 0, then start the image task right away.
             if (mScrollSpeed == 0) {

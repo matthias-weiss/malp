@@ -27,12 +27,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import org.gateshipone.malp.application.adapters.LibraryItem;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents an MPDTrack. This is the same type for tracks and files.
  * This is used for tracks in playlist, album, search results,... and for music files when
  * retrieving an directory listing from the mpd server.
  */
-public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable {
+public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
 
 
     /**
@@ -145,6 +150,10 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
      * image is already being fetchted from the internet for this item
      */
     private boolean pImageFetching;
+
+    public static final int  VIEW_TYPE = 3;
+    public MPDAlbum          mAlbum;
+    public boolean           mExpanded = false;
 
     /**
      * Create empty MPDTrack (track). Fill it with setter methods during
@@ -472,4 +481,43 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
 
         return title.toLowerCase().compareTo(anotherTitle.toLowerCase());
     }
+
+    public String getMainText() {
+        return pTrackTitle;
+    }
+
+    public String getPostfixText() {
+        int seconds = pLength % 60;
+        int temp = pLength / 60;
+        int minutes = temp % 60;
+        int hours = temp / 60;
+
+        if (hours != 0) {
+            return hours + ":" + minutes + ":" + seconds;
+        } else {
+            return minutes + ":" + seconds;
+        }
+    }
+
+    public String getPrefixText() {
+        return Integer.toString(pTrackNumber);
+    }
+
+    public int getKidCount() {
+        return 0;
+    }
+
+    public List<LibraryItem> getKidItems() {
+        return new ArrayList<>();
+    }
+
+    public int getLevel(){ return MPDTrack.VIEW_TYPE;}
+
+    public LibraryItem getParentItem() { return mAlbum; }
+
+    public boolean isExpanded() { return mExpanded;}
+
+    public void setExpanded(boolean expanded) { mExpanded = expanded; }
+
+    public int getViewType() { return MPDTrack.VIEW_TYPE; }
 }

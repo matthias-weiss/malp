@@ -265,7 +265,7 @@ public class MainActivity extends GenericActivity
                     //}
                     return true;
                 case R.id.action_show_album:
-                    MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum());
+                    MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum(), null);
                     // Set album artist
                     if (!track.getTrackAlbumArtist().isEmpty()) {
                         tmpAlbum.setArtistName(track.getTrackAlbumArtist());
@@ -274,11 +274,11 @@ public class MainActivity extends GenericActivity
                     }
 
                     // Set albumartistsort
-                    if (!track.getTrackAlbumArtistSort().isEmpty()) {
-                        tmpAlbum.setArtistSortName(track.getTrackAlbumArtistSort());
-                    } else {
-                        tmpAlbum.setArtistSortName(track.getTrackArtistSort());
-                    }
+                    //if (!track.getTrackAlbumArtistSort().isEmpty()) {
+                    //    tmpAlbum.setArtistSortName(track.getTrackAlbumArtistSort());
+                    //} else {
+                    //    tmpAlbum.setArtistSortName(track.getTrackArtistSort());
+                    //}
 
                     tmpAlbum.setMBID(track.getTrackAlbumMBID());
                     //onAlbumSelected(tmpAlbum, null);

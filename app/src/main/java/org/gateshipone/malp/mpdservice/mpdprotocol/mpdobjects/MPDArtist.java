@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MPDArtist implements LibraryItem, Comparable<MPDArtist>, Parcelable {
+public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArtist>, Parcelable {
     /* Artist properties */
     @NonNull
     private String pArtistName;
@@ -196,6 +196,11 @@ public class MPDArtist implements LibraryItem, Comparable<MPDArtist>, Parcelable
         String[] mbids = pMBIDs.toArray(new String[pMBIDs.size()]);
         dest.writeStringArray(mbids);
         dest.writeByte(mImageFetching ? (byte) 1 : (byte) 0);
+    }
+
+    @Override
+    public String getSectionTitle() {
+        return null;
     }
 
     public void setAlbumList(List<MPDAlbum> albumList) {
