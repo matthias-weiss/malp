@@ -59,6 +59,7 @@ import android.widget.TextView;
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.CurrentPlaylistAdapter;
 import org.gateshipone.malp.application.fragments.ArtworkSettingsFragment;
+import org.gateshipone.malp.application.fragments.AudioSourceViewPager;
 import org.gateshipone.malp.application.fragments.InformationSettingsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ServerPropertiesFragment;
@@ -120,11 +121,8 @@ public class MainActivity extends GenericActivity
 
         int navId = getDefaultViewID();
 
-
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mUseArtistSort = sharedPref.getBoolean(getString(R.string.pref_use_artist_sort_key), getResources().getBoolean(R.bool.pref_use_artist_sort_default));
-
-
 
         registerForContextMenu(findViewById(R.id.main_listview));
 
@@ -142,6 +140,12 @@ public class MainActivity extends GenericActivity
             dialog.show();
         }
 
+
+        if (savedInstanceState == null) {
+            Fragment audioSourceTabsFragment = new AudioSourceTabsFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.audio_sources_view, audioSourceTabsFragment).commit();
+        }
         //Fragment fragment = new AudioSourceTabsFragment();
 
         //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
