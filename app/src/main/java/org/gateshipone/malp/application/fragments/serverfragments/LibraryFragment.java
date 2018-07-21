@@ -115,8 +115,9 @@ public class LibraryFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
-        mLibraryAdapter = new LibraryAdapter(getContext(), mRecyclerView);
+        boolean useAlbumArtists = sharedPref.getBoolean(getString(R.string.pref_use_album_artists_key), getResources().getBoolean(R.bool.pref_use_album_artists_default));
+        boolean useArtistSort   = sharedPref.getBoolean(getString(R.string.pref_use_artist_sort_key), getResources().getBoolean(R.bool.pref_use_artist_sort_default));
+        mLibraryAdapter = new LibraryAdapter(getContext(), mRecyclerView, useAlbumArtists, useArtistSort);
         mRecyclerView.setAdapter(mLibraryAdapter);
 
         return rootView;

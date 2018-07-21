@@ -28,16 +28,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.artworkdatabase.ArtworkManager;
-import org.gateshipone.malp.application.listviewitems.GenericGridItem;
-import org.gateshipone.malp.application.listviewitems.ImageListItem;
-import org.gateshipone.malp.application.loaders.ArtistsLoader;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseArtistList;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
@@ -53,6 +48,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         implements ArtworkManager.onNewArtistImageListener {
 
     private boolean mUseAlbumArtists;
+    private boolean mUseArtistSort;
     private int     mListItemHeight;
 
     private MPDResponseArtistList pArtistResponseHandler;
@@ -136,13 +132,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     }
 
-    public LibraryAdapter(Context context, RecyclerView recyclerView) {
+    public LibraryAdapter(Context context, RecyclerView recyclerView, boolean useAlbumArtists, boolean useArtistSort) {
         super();
 
         mContext             = context;
         mRecyclerView        = recyclerView;
         mLevelIndicatorWidth = 48;
-        mUseAlbumArtists     = true;
+        mUseAlbumArtists     = useAlbumArtists;
+        mUseArtistSort       = useArtistSort;
 
         mListItemHeight = (int)context.getResources().getDimension(R.dimen.material_list_item_height);
 
@@ -154,10 +151,18 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
     public void loadArtists() {
-        if(mUseAlbumArtists) {
-            MPDQueryHandler.getAlbumArtistSort(pArtistResponseHandler);
+        if( !mUseAlbumArtists) {
+            if(!mUseArtistSort) {
+                MPDQueryHandler.getArtists(pArtistResponseHandler);
+            } else {
+                MPDQueryHandler.getArtistSort(pArtistResponseHandler);
+            }
         } else {
-            MPDQueryHandler.getArtistSort(pArtistResponseHandler);
+            if(!mUseArtistSort) {
+                MPDQueryHandler.getAlbumArtists(pArtistResponseHandler);
+            } else {
+                MPDQueryHandler.getAlbumArtistSort(pArtistResponseHandler);
+            }
         }
     }
 
