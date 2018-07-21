@@ -63,6 +63,7 @@ import org.gateshipone.malp.application.fragments.AudioSourceViewPager;
 import org.gateshipone.malp.application.fragments.InformationSettingsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ServerPropertiesFragment;
+import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.callbacks.AddPathToPlaylist;
 import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
@@ -151,6 +152,8 @@ public class MainActivity extends GenericActivity
         //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //transaction.replace(R.id.fragment_container, fragment);
         //transaction.commit();
+
+        App.setContext(this);
 
         hideSystemUI();
     }

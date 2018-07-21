@@ -23,13 +23,17 @@
 package org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects;
 
 
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.LibraryAdapter;
 import org.gateshipone.malp.application.adapters.LibraryItem;
 import org.gateshipone.malp.application.loaders.AlbumsLoader;
+import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseAlbumList;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
@@ -49,10 +53,11 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     private boolean mImageFetching;
 
-    public static final int  VIEW_TYPE = 0;
-    private boolean          mExpanded = false;
-    private List<LibraryItem>   pAlbums;
+    public static final int      VIEW_TYPE = 0;
+    private boolean              mExpanded = false;
+    private List<LibraryItem>    pAlbums;
     private AlbumResponseHandler pAlbumsResponseHandler;
+    private boolean              mUseArtistSort;
 
     private static class AlbumResponseHandler extends MPDResponseAlbumList {
         private WeakReference<MPDArtist> mArtist;
@@ -74,7 +79,11 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
     public MPDArtist(@NonNull String name) {
         pArtistName = name;
         pMBIDs = new ArrayList<>();
+        pAlbums = new ArrayList<>();
         pAlbumsResponseHandler = new MPDArtist.AlbumResponseHandler(this);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        mUseArtistSort =  sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
     }
 
     protected MPDArtist(Parcel in) {
@@ -228,11 +237,11 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     public List<LibraryItem> getKidItems() {
 
-        //if (!mUseArtistSort) {
-        //    MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, pArtistName);
-        //} else {
+        if (mUseArtistSort) {
             MPDQueryHandler.getArtistSortAlbums(pAlbumsResponseHandler, pArtistName);
-        //}
+        } else {
+            MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, pArtistName);
+        }
 
         return pAlbums;
     }
