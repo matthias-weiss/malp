@@ -64,12 +64,6 @@ public interface LibraryItem {
     int getLevel();
 
     /**
-     * Gets parent item if any
-     * @return parent item or null
-     */
-    LibraryItem getParentItem();
-
-    /**
      * Checks if the children of this item are expanded
      * @return true if expanded, false otherwise
      */

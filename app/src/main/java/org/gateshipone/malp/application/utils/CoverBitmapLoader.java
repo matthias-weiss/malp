@@ -109,7 +109,7 @@ public class CoverBitmapLoader {
          */
         @Override
         public void run() {
-            MPDAlbum tempAlbum = new MPDAlbum(mTrack.getTrackAlbum(), null);
+            MPDAlbum tempAlbum = new MPDAlbum(mTrack.getTrackAlbum());
             tempAlbum.setMBID(mTrack.getTrackAlbumMBID());
             tempAlbum.setArtistName(mTrack.getTrackAlbumArtist());
 

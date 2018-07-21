@@ -248,8 +248,6 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     public int getLevel(){ return MPDArtist.VIEW_TYPE;}
 
-    public LibraryItem getParentItem() { return null; }
-
     public boolean isExpanded() { return mExpanded;}
 
     public void setExpanded(boolean expanded) { mExpanded = expanded; }

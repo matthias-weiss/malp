@@ -513,8 +513,6 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
 
     public int getLevel(){ return MPDTrack.VIEW_TYPE;}
 
-    public LibraryItem getParentItem() { return mAlbum; }
-
     public boolean isExpanded() { return mExpanded;}
 
     public void setExpanded(boolean expanded) { mExpanded = expanded; }

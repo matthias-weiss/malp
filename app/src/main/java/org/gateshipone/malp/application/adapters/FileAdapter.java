@@ -186,7 +186,7 @@ public class FileAdapter extends GenericSectionAdapter<MPDFileEntry> {
 
                 // This will prepare the view for fetching the image from the internet if not already saved in local database.
                 // Dummy MPDAlbum
-                MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum(), null);
+                MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum());
                 tmpAlbum.setMBID(track.getTrackAlbumMBID());
                 //((FileListItem) convertView).prepareArtworkFetching(ArtworkManager.getInstance(mContext.getApplicationContext()), tmpAlbum);
 

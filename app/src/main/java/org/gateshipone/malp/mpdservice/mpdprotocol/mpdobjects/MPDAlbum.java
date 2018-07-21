@@ -23,12 +23,16 @@
 package org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects;
 
 
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.LibraryItem;
 import org.gateshipone.malp.application.loaders.AlbumTracksLoader;
+import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseFileList;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
@@ -48,7 +52,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     /* Album properties */
     @NonNull
-    private String mName;
+    private String mAlbumName;
 
     /* Musicbrainz ID */
     @NonNull
@@ -56,7 +60,8 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     /* Artists */
     @NonNull
-    private MPDArtist mArtist;
+    private String mArtistName;
+    private String mArtistSortName;
 
     @NonNull
     private Date mDate;
@@ -67,6 +72,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     private boolean mExpanded = false;
     private List<LibraryItem> pTrackList;
     private MPDAlbum.TrackResponseHandler pTrackResponseHandler;
+    private boolean mUseArtistSort;
 
     private static class TrackResponseHandler extends MPDResponseFileList {
         private WeakReference<MPDAlbum> mAlbum;
@@ -93,21 +99,28 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         }
     }
 
-    public MPDAlbum(@NonNull String name, @NonNull MPDArtist artist) {
-        mName = name;
+    public MPDAlbum(@NonNull String name) {
+        mAlbumName = name;
         mMBID = "";
         mDate = new Date(0);
-        mArtist = artist;
+        mArtistName = "";
+        mArtistSortName = "";
         pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        mUseArtistSort = sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
     }
 
     /* Getters */
 
     protected MPDAlbum(Parcel in) {
-        mName = in.readString();
+        mAlbumName = in.readString();
         mMBID = in.readString();
+        mArtistName = in.readString();
+        mArtistSortName = in.readString();
         mImageFetching = in.readByte() != 0;
         mDate = (Date) in.readSerializable();
+        mUseArtistSort = in.readByte() != 0;
         pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
     }
 
@@ -125,7 +138,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     @NonNull
     public String getName() {
-        return mName;
+        return mAlbumName;
     }
 
     @NonNull
@@ -135,15 +148,19 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     @NonNull
     public String getArtistName() {
-        return mArtist.getArtistName();
+        return mArtistName;
     }
 
     public void setArtistName(String name) {
-        return;
+        mArtistName = name;
+    }
+
+    public void setArtistSortName(String name) {
+        mArtistSortName = name;
     }
 
     public String getArtistSortName() {
-        return mArtist.getArtistName();
+        return mArtistSortName;
     }
 
     public void setMBID(@NonNull String mbid) {
@@ -165,7 +182,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         }
 
         MPDAlbum album = (MPDAlbum) object;
-        return (mName.equals(album.mName)) && (mArtist.getArtistName().equals(album.getArtistName())) &&
+        return (mAlbumName.equals(album.mAlbumName)) && (mArtistName.equals(album.getArtistName())) &&
                 (mMBID.equals(album.mMBID)) && (mDate.equals(album.mDate));
     }
 
@@ -174,12 +191,12 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         if (another.equals(this)) {
             return 0;
         }
-        return mName.toLowerCase().compareTo(another.mName.toLowerCase());
+        return mAlbumName.toLowerCase().compareTo(another.mAlbumName.toLowerCase());
     }
 
     @Override
     public int hashCode() {
-        return (mName + mArtist.getArtistName() + mMBID).hashCode();
+        return (mAlbumName + mArtistName + mMBID).hashCode();
     }
 
     public synchronized void setFetching(boolean fetching) {
@@ -197,16 +214,18 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     @Override
     public String toString() {
-        return mName + "_" + mArtist.getArtistName() + "_" + mMBID + "_" + mDate;
+        return mAlbumName + "_" + mArtistName + "_" + mMBID + "_" + mDate;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
+        dest.writeString(mAlbumName);
         dest.writeString(mMBID);
+        dest.writeString(mArtistName);
+        dest.writeString(mArtistSortName);
         dest.writeByte((byte) (mImageFetching ? 1 : 0));
         dest.writeSerializable(mDate);
-        //dest.writeSerializable(mArtist);
+        dest.writeByte((byte) (mUseArtistSort ? 1 : 0));
     }
 
     public static class MPDAlbumDateComparator implements Comparator<MPDAlbum> {
@@ -236,7 +255,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     }
 
     public String getMainText() {
-        return mName;
+        return mAlbumName;
     }
 
     public String getPostfixText() {
@@ -254,18 +273,16 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     public List<LibraryItem> getKidItems() {
 
-        //if (mUseArtistSort && !mArtistSortName.isEmpty()) {
-            MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mName, mArtist.getArtistName(), null);
-        //} else {
-        //    MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mAlbumMBID);
-        //}
+        if (mUseArtistSort && !mArtistSortName.isEmpty()) {
+            MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistSortName, mMBID);
+        } else {
+            MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mMBID);
+        }
 
         return pTrackList;
     }
 
     public int getLevel(){ return MPDAlbum.VIEW_TYPE;}
-
-    public LibraryItem getParentItem() { return mArtist; }
 
     public boolean isExpanded() { return mExpanded;}
 

@@ -272,7 +272,7 @@ public class MainActivity extends GenericActivity
                     //}
                     return true;
                 case R.id.action_show_album:
-                    MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum(), null);
+                    MPDAlbum tmpAlbum = new MPDAlbum(track.getTrackAlbum());
                     // Set album artist
                     if (!track.getTrackAlbumArtist().isEmpty()) {
                         tmpAlbum.setArtistName(track.getTrackAlbumArtist());
