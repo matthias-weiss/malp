@@ -154,10 +154,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
     public void loadArtists() {
-        if(!mUseAlbumArtists) {
-            MPDQueryHandler.getArtistSort(pArtistResponseHandler);
-        } else {
+        if(mUseAlbumArtists) {
             MPDQueryHandler.getAlbumArtistSort(pArtistResponseHandler);
+        } else {
+            MPDQueryHandler.getArtistSort(pArtistResponseHandler);
         }
     }
 

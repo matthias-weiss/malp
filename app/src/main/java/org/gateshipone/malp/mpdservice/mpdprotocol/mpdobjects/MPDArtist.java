@@ -73,6 +73,7 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     public MPDArtist(@NonNull String name) {
         pArtistName = name;
+        pMBIDs = new ArrayList<>();
         pAlbumsResponseHandler = new MPDArtist.AlbumResponseHandler(this);
     }
 
