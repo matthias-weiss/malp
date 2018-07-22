@@ -32,15 +32,11 @@ import android.support.annotation.NonNull;
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.LibraryAdapter;
 import org.gateshipone.malp.application.adapters.LibraryItem;
-import org.gateshipone.malp.application.loaders.AlbumsLoader;
 import org.gateshipone.malp.application.utils.App;
-import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseAlbumList;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandler;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArtist>, Parcelable {
     /* Artist properties */
@@ -55,32 +51,12 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     public static final int      VIEW_TYPE = 0;
     private boolean              mExpanded = false;
-    private List<LibraryItem>    pAlbums;
-    private AlbumResponseHandler pAlbumsResponseHandler;
     private boolean              mUseArtistSort;
 
-    private static class AlbumResponseHandler extends MPDResponseAlbumList {
-        private WeakReference<MPDArtist> mArtist;
-
-        private AlbumResponseHandler(MPDArtist artist) {
-            mArtist = new WeakReference<>(artist);
-        }
-
-        @Override
-        public void handleAlbums(List<MPDAlbum> albumList) {
-            MPDArtist artist = mArtist.get();
-
-            if (artist != null) {
-                artist.setAlbumList(albumList);
-            }
-        }
-    }
 
     public MPDArtist(@NonNull String name) {
         pArtistName = name;
         pMBIDs = new ArrayList<>();
-        pAlbums = new ArrayList<>();
-        pAlbumsResponseHandler = new MPDArtist.AlbumResponseHandler(this);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         mUseArtistSort =  sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
@@ -213,11 +189,6 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
         return null;
     }
 
-    public void setAlbumList(List<MPDAlbum> albumList) {
-        pAlbums.clear();
-        pAlbums.addAll(albumList);
-    }
-
     public String getMainText() {
         return pArtistName;
     }
@@ -230,20 +201,16 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
         return null;
     }
 
-    public int getKidCount() {
-        return getKidItems().size();
-    }
 
+    public void getKidItems(MPDResponseHandler handler, int listPosition) {
 
-    public List<LibraryItem> getKidItems() {
+        LibraryAdapter.AlbumResponseHandler albumHandler = (LibraryAdapter.AlbumResponseHandler) handler;
 
         if (mUseArtistSort) {
-            MPDQueryHandler.getArtistSortAlbums(pAlbumsResponseHandler, pArtistName);
+            MPDQueryHandler.getArtistSortAlbums(albumHandler, pArtistName, listPosition);
         } else {
-            MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, pArtistName);
+            MPDQueryHandler.getArtistAlbums(albumHandler, pArtistName, listPosition);
         }
-
-        return pAlbums;
     }
 
     public int getLevel(){ return MPDArtist.VIEW_TYPE;}

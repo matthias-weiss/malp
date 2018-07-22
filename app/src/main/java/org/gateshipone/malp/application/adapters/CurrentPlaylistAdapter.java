@@ -428,7 +428,7 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
          * @param end       If a range was given to the request initially this contains the end of the window
          */
         @Override
-        public void handleTracks(List<MPDFileEntry> trackList, int start, int end) {
+        public void handleTracks(List<MPDFileEntry> trackList, int start, int end, int position) {
             // If the ranged playlist feature is disabled
             if (!mWindowEnabled) {
                 // Save the new playlist

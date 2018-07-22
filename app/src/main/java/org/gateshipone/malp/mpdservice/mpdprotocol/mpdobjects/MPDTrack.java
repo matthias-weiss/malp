@@ -28,9 +28,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import org.gateshipone.malp.application.adapters.LibraryItem;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandler;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents an MPDTrack. This is the same type for tracks and files.
@@ -152,7 +151,6 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
     private boolean pImageFetching;
 
     public static final int  VIEW_TYPE = 3;
-    public MPDAlbum          mAlbum;
     public boolean           mExpanded = false;
 
     /**
@@ -503,12 +501,7 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
         return Integer.toString(pTrackNumber);
     }
 
-    public int getKidCount() {
-        return 0;
-    }
-
-    public List<LibraryItem> getKidItems() {
-        return new ArrayList<>();
+    public void getKidItems(MPDResponseHandler handler, int listPosition) {
     }
 
     public int getLevel(){ return MPDTrack.VIEW_TYPE;}

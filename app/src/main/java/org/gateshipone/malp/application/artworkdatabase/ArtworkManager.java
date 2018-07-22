@@ -1064,7 +1064,7 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
             Log.v(TAG,"Try to get all tracks from MPD");
             MPDQueryHandler.getAllTracks(new MPDResponseFileList() {
                 @Override
-                public void handleTracks(List<MPDFileEntry> fileList, int windowstart, int windowend) {
+                public void handleTracks(List<MPDFileEntry> fileList, int windowstart, int windowend, int position) {
                     Log.v(TAG,"Received track count: " + fileList.size());
                     new ParseMPDTrackListTask().execute(fileList);
                 }
@@ -1074,7 +1074,7 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
             if (!mAlbumProvider.equals(mContext.getString((R.string.pref_artwork_provider_none_key)))) {
                 MPDQueryHandler.getAlbums(new MPDResponseAlbumList() {
                     @Override
-                    public void handleAlbums(List<MPDAlbum> albumList) {
+                    public void handleAlbums(List<MPDAlbum> albumList, int position) {
                         new ParseMPDAlbumListTask().execute(albumList);
                     }
                 });

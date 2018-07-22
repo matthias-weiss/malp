@@ -33,6 +33,7 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDFileEntry;
 public abstract class MPDResponseFileList extends MPDResponseHandler {
     public static final String EXTRA_WINDOW_START = "windowstart";
     public static final String EXTRA_WINDOW_END = "windowend";
+    public static final String EXTRA_LIBRARY_LIST_POSITION = "libraryListPosition";
 
     public MPDResponseFileList() {
 
@@ -47,18 +48,23 @@ public abstract class MPDResponseFileList extends MPDResponseHandler {
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
 
-        Bundle args = msg.getData();
         int windowStart = msg.getData().getInt(EXTRA_WINDOW_START);
-        int windowEnd = msg.getData().getInt(EXTRA_WINDOW_END);
+        int windowEnd   = msg.getData().getInt(EXTRA_WINDOW_END);
+        int position    = msg.getData().getInt(EXTRA_LIBRARY_LIST_POSITION);
 
         /* Call album response handler */
         List<MPDFileEntry> trackList = (List<MPDFileEntry>)msg.obj;
-        handleTracks(trackList, windowStart, windowEnd);
+        handleTracks(trackList, windowStart, windowEnd, position);
     }
 
-    public void sendFileList(List<MPDFileEntry> fileList) {
+    public void sendFileList(List<MPDFileEntry> fileList, int position) {
         Message responseMessage = this.obtainMessage();
         responseMessage.obj = fileList;
+
+        Bundle data = new Bundle();
+        data.putInt(EXTRA_LIBRARY_LIST_POSITION, position);
+        responseMessage.setData(data);
+
         sendMessage(responseMessage);
     }
 
@@ -78,5 +84,5 @@ public abstract class MPDResponseFileList extends MPDResponseHandler {
      * This can be used for updating lists of adapters and views.
      * @param fileList List of MPDTrack objects containing a list of mpds tracks response.
      */
-    abstract public void handleTracks(List<MPDFileEntry> fileList, int windowstart, int windowend);
+    abstract public void handleTracks(List<MPDFileEntry> fileList, int start, int end, int position);
 }

@@ -94,7 +94,7 @@ public class AlbumTracksLoader extends Loader<List<MPDFileEntry>> {
 
 
         @Override
-        public void handleTracks(List<MPDFileEntry> trackList, int start, int end) {
+        public void handleTracks(List<MPDFileEntry> trackList, int start, int end, int position) {
             AlbumTracksLoader loader = mAlbumTracksLoader.get();
 
             if (loader != null) {
@@ -130,9 +130,9 @@ public class AlbumTracksLoader extends Loader<List<MPDFileEntry>> {
             MPDQueryHandler.getAlbumTracks(pTrackResponseHandler, mAlbumName, mAlbumMBID);
         } else {
             if (mUseArtistSort && !mArtistSortName.isEmpty()) {
-                MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistSortName, mAlbumMBID);
+                MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistSortName, mAlbumMBID, -1);
             } else {
-                MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mAlbumMBID);
+                MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mAlbumMBID, -1);
             }
         }
     }

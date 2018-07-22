@@ -23,6 +23,7 @@
 package org.gateshipone.malp.mpdservice.handlers.responsehandler;
 
 
+import android.os.Bundle;
 import android.os.Message;
 
 import java.util.List;
@@ -34,8 +35,9 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
  */
 public abstract class MPDResponseAlbumList extends MPDResponseHandler {
 
-    public MPDResponseAlbumList() {
+    public static final String EXTRA_LIBRARY_LIST_POSITION = "libraryListPosition";
 
+    public MPDResponseAlbumList() {
     }
 
     /**
@@ -48,17 +50,24 @@ public abstract class MPDResponseAlbumList extends MPDResponseHandler {
         super.handleMessage(msg);
 
         /* Call album response handler */
-        List<MPDAlbum> albumList = (List<MPDAlbum>)msg.obj;
-        handleAlbums(albumList);
+        List<MPDAlbum> albumList = (List<MPDAlbum>) msg.obj;
+        int position = msg.getData().getInt(EXTRA_LIBRARY_LIST_POSITION);
+
+        handleAlbums(albumList, position);
     }
 
     /**
      * Sends a message to the receiving end of the receiver
      * @param albumList List to send
      */
-    public void sendAlbums(List<MPDAlbum> albumList) {
+    public void sendAlbums(List<MPDAlbum> albumList, int position) {
         Message message = obtainMessage();
         message.obj = albumList;
+
+        Bundle data = new Bundle();
+        data.putInt(EXTRA_LIBRARY_LIST_POSITION, position);
+        message.setData(data);
+
         sendMessage(message);
     }
 
@@ -68,5 +77,5 @@ public abstract class MPDResponseAlbumList extends MPDResponseHandler {
      * This can be used for updating lists of adapters and views.
      * @param albumList List of MPDAlbum objects containing a list of mpds album response.
      */
-    abstract public void handleAlbums(List<MPDAlbum> albumList);
+    abstract public void handleAlbums(List<MPDAlbum> albumList, int position);
 }

@@ -57,7 +57,7 @@ public class PlaylistsLoader extends Loader<List<MPDFileEntry>> {
         }
 
         @Override
-        public void handleTracks(List<MPDFileEntry> fileList, int start, int end) {
+        public void handleTracks(List<MPDFileEntry> fileList, int start, int end, int position) {
             PlaylistsLoader loader = mPlaylistsLoader.get();
 
             if (loader != null) {

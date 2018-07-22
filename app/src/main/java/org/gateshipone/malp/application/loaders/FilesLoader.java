@@ -64,7 +64,7 @@ public class FilesLoader extends Loader<List<MPDFileEntry>> {
         }
 
         @Override
-        public void handleTracks(List<MPDFileEntry> fileList, int start, int end) {
+        public void handleTracks(List<MPDFileEntry> fileList, int start, int end, int position) {
             FilesLoader loader = mFilesLoader.get();
 
             if (loader != null) {

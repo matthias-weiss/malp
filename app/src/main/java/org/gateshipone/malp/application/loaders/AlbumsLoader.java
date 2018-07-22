@@ -73,7 +73,7 @@ public class AlbumsLoader extends Loader<List<MPDAlbum>> {
         }
 
         @Override
-        public void handleAlbums(List<MPDAlbum> albumList) {
+        public void handleAlbums(List<MPDAlbum> albumList, int position) {
             AlbumsLoader loader = mAlbumsLoader.get();
 
             if (loader != null) {
@@ -107,9 +107,9 @@ public class AlbumsLoader extends Loader<List<MPDAlbum>> {
             }
         } else {
             if (!mUseArtistSort) {
-                MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, mArtistName);
+                MPDQueryHandler.getArtistAlbums(pAlbumsResponseHandler, mArtistName, -1);
             } else {
-                MPDQueryHandler.getArtistSortAlbums(pAlbumsResponseHandler, mArtistName);
+                MPDQueryHandler.getArtistSortAlbums(pAlbumsResponseHandler, mArtistName, -1);
             }
         }
     }

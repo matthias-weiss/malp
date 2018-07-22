@@ -22,7 +22,7 @@
 
 package org.gateshipone.malp.application.adapters;
 
-import java.util.List;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandler;
 
 public interface LibraryItem {
 
@@ -45,17 +45,10 @@ public interface LibraryItem {
     String getPostfixText();
 
     /**
-     * @return number of children
-     * @see #getKidItems()
+     * @param handler response handler to handle the result of the MPD query
+     * @param listPosition item position in the library RecyclerView
      */
-    int getKidCount();
-
-
-    /**
-     * @return array of children items or null
-     * @see #getKidCount()
-     */
-    List<LibraryItem> getKidItems();
+    void getKidItems(MPDResponseHandler handler, int listPosition);
 
     /**
      * Gets item level, i.e. how many ascendants it has

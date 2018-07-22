@@ -33,10 +33,13 @@ import android.widget.TextView;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.artworkdatabase.ArtworkManager;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseAlbumList;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseArtistList;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseFileList;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDArtist;
+import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDFileEntry;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 
 import java.lang.ref.WeakReference;
@@ -52,6 +55,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     private int     mListItemHeight;
 
     private MPDResponseArtistList pArtistResponseHandler;
+    private MPDResponseAlbumList  pAlbumResponseHandler;
+    private MPDResponseFileList   pTrackResponseHandler;
     private ArtworkManager        mArtworkManager;
 
     private final ArrayList<LibraryItem>    mList = new ArrayList<>();
@@ -62,12 +67,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
 
     public class ExpandedItem {
-        public LibraryItem               mItem;
-        public int                       mPosition;
+        public LibraryItem mItem;
+        public int         mPosition;
+        public int         mNrOfChildren;
 
-        public ExpandedItem(LibraryItem item, int position) {
-            mItem = item;
-            mPosition = position;
+        public ExpandedItem(LibraryItem item, int position, int nrOfChildren) {
+            mItem         = item;
+            mPosition     = position;
+            mNrOfChildren = nrOfChildren;
         }
     }
 
@@ -83,6 +90,48 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             LibraryAdapter adapter = mAdapter.get();
             if (adapter != null) {
                 adapter.updateArtists(artistList);
+            }
+        }
+    }
+
+    public static class AlbumResponseHandler extends MPDResponseAlbumList {
+        private WeakReference<LibraryAdapter> mAdapter;
+
+        private AlbumResponseHandler(LibraryAdapter adapter) {
+            mAdapter = new WeakReference<>(adapter);
+        }
+
+        @Override
+        public void handleAlbums(List<MPDAlbum> albumList, int position) {
+            LibraryAdapter adapter = mAdapter.get();
+
+            if (adapter != null) {
+                adapter.insertChildren(albumList, position);
+            }
+        }
+    }
+
+
+    public static class TrackResponseHandler extends MPDResponseFileList {
+        private WeakReference<LibraryAdapter> mAdapter;
+
+        private TrackResponseHandler(LibraryAdapter adapter) {
+            mAdapter = new WeakReference<>(adapter);
+        }
+
+        @Override
+        public void handleTracks(List<MPDFileEntry> fileList, int start, int end, int position) {
+            LibraryAdapter adapter = mAdapter.get();
+            List<MPDTrack> tracklist = new ArrayList<>();
+
+            for(MPDFileEntry file: fileList) {
+                if (file instanceof MPDTrack) {
+                    tracklist.add((MPDTrack)file);
+                }
+            }
+
+            if (adapter != null && tracklist.size() > 0) {
+                adapter.insertChildren(tracklist, position);
             }
         }
     }
@@ -142,6 +191,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         mListItemHeight = (int)context.getResources().getDimension(R.dimen.material_list_item_height);
 
         pArtistResponseHandler = new LibraryAdapter.ArtistResponseHandler(this);
+        pAlbumResponseHandler  = new LibraryAdapter.AlbumResponseHandler(this);
+        pTrackResponseHandler  = new LibraryAdapter.TrackResponseHandler(this);
 
         loadArtists();
 
@@ -272,23 +323,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             collapseChildren(exItem.mItem, exItem.mPosition);
         }
 
-        mExpanded.add(item.getLevel(), new ExpandedItem(item, position));
-
-        int kid_count = item.getKidCount();
-
-        if (kid_count > 0) {
-            mList.addAll(position + 1, item.getKidItems());
-
-            notifyItemRangeInserted(position + 1, kid_count);
+        switch (item.getViewType()) {
+            case MPDArtist.VIEW_TYPE:
+                item.getKidItems(pAlbumResponseHandler, position);
+                break;
+            case MPDAlbum.VIEW_TYPE:
+                item.getKidItems(pTrackResponseHandler, position);
+                break;
         }
-
-        item.setExpanded(true);
-
-        if (item.getViewType() != MPDArtist.VIEW_TYPE) {
-            showAdd2PlaylistButtons(position);
-            notifyItemChanged(position);
-        }
-
     }
 
     private void collapseChildren(LibraryItem item, int position) {
@@ -298,15 +340,13 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         }
 
         int remove_count = 0;
-        int kid_count = 0;
         ExpandedItem exItem;
 
         while (mExpanded.size() > item.getLevel()) {
             exItem       = mExpanded.remove(mExpanded.size() - 1);
-            kid_count    = exItem.mItem.getKidCount();
-            remove_count += kid_count;
-            if (kid_count > 0) {
-                mList.subList(exItem.mPosition + 1, exItem.mPosition + 1 + kid_count).clear();
+            if (exItem.mNrOfChildren > 0) {
+                remove_count += exItem.mNrOfChildren;
+                mList.subList(exItem.mPosition + 1, exItem.mPosition + 1 + exItem.mNrOfChildren).clear();
             }
             exItem.mItem.setExpanded(false);
 
@@ -339,4 +379,23 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         mList.addAll(artistList);
     }
 
+    public void insertChildren(List<? extends LibraryItem> childList, int position) {
+        LibraryItem item = mList.get(position);
+        int nrOfChildren = childList.size();
+
+        mExpanded.add(item.getLevel(), new ExpandedItem(item, position, nrOfChildren));
+
+        if (nrOfChildren > 0) {
+            mList.addAll(position + 1, childList);
+
+            notifyItemRangeInserted(position + 1, nrOfChildren);
+        }
+
+        item.setExpanded(true);
+
+        if (item.getViewType() != MPDArtist.VIEW_TYPE) {
+            showAdd2PlaylistButtons(position);
+            notifyItemChanged(position);
+        }
+    }
 }

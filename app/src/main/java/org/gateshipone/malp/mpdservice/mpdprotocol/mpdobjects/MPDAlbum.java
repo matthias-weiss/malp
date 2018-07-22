@@ -30,18 +30,13 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import org.gateshipone.malp.R;
+import org.gateshipone.malp.application.adapters.LibraryAdapter;
 import org.gateshipone.malp.application.adapters.LibraryItem;
-import org.gateshipone.malp.application.loaders.AlbumTracksLoader;
 import org.gateshipone.malp.application.utils.App;
-import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseFileList;
+import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandler;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 
 public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbum>, Parcelable {
 
@@ -70,34 +65,8 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     public static final int  VIEW_TYPE = 1;
     private boolean mExpanded = false;
-    private List<LibraryItem> pTrackList;
-    private MPDAlbum.TrackResponseHandler pTrackResponseHandler;
     private boolean mUseArtistSort;
 
-    private static class TrackResponseHandler extends MPDResponseFileList {
-        private WeakReference<MPDAlbum> mAlbum;
-
-        private TrackResponseHandler(MPDAlbum album) {
-            mAlbum = new WeakReference<>(album);
-        }
-
-
-        @Override
-        public void handleTracks(List<MPDFileEntry> fileList, int start, int end) {
-            MPDAlbum album = mAlbum.get();
-            List<MPDTrack> tracklist = new ArrayList<>();
-
-            for(MPDFileEntry file: fileList) {
-                if (file instanceof MPDTrack) {
-                    tracklist.add((MPDTrack)file);
-                }
-            }
-
-            if (album != null && tracklist.size() > 0) {
-                album.setTrackList(tracklist);
-            }
-        }
-    }
 
     public MPDAlbum(@NonNull String name) {
         mAlbumName = name;
@@ -105,7 +74,6 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         mDate = "";
         mArtistName = "";
         mArtistSortName = "";
-        pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         mUseArtistSort = sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
@@ -114,14 +82,13 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     /* Getters */
 
     protected MPDAlbum(Parcel in) {
-        mAlbumName = in.readString();
-        mMBID = in.readString();
-        mArtistName = in.readString();
+        mAlbumName      = in.readString();
+        mMBID           = in.readString();
+        mArtistName     = in.readString();
         mArtistSortName = in.readString();
-        mImageFetching = in.readByte() != 0;
-        mDate = in.readString();
-        mUseArtistSort = in.readByte() != 0;
-        pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
+        mImageFetching  = in.readByte() != 0;
+        mDate           = in.readString();
+        mUseArtistSort  = in.readByte() != 0;
     }
 
     public static final Creator<MPDAlbum> CREATOR = new Creator<MPDAlbum>() {
@@ -249,11 +216,6 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         return null;
     }
 
-    public void setTrackList(List<MPDTrack> trackList) {
-        pTrackList.clear();
-        pTrackList.addAll(trackList);
-    }
-
     public String getMainText() {
         return mAlbumName;
     }
@@ -266,20 +228,15 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         return null;
     }
 
-    public int getKidCount() {
-        return getKidItems().size();
-    }
+    public void getKidItems(MPDResponseHandler handler, int listPosition) {
 
-
-    public List<LibraryItem> getKidItems() {
+        LibraryAdapter.TrackResponseHandler albumHandler = (LibraryAdapter.TrackResponseHandler) handler;
 
         if (mUseArtistSort && !mArtistSortName.isEmpty()) {
-            MPDQueryHandler.getArtistSortAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistSortName, mMBID);
+            MPDQueryHandler.getArtistSortAlbumTracks(albumHandler, mAlbumName, mArtistSortName, mMBID, listPosition);
         } else {
-            MPDQueryHandler.getArtistAlbumTracks(pTrackResponseHandler, mAlbumName, mArtistName, mMBID);
+            MPDQueryHandler.getArtistAlbumTracks(albumHandler, mAlbumName, mArtistName, mMBID, listPosition);
         }
-
-        return pTrackList;
     }
 
     public int getLevel(){ return MPDAlbum.VIEW_TYPE;}

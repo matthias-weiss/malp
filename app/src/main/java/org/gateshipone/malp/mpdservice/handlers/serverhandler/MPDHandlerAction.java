@@ -144,6 +144,7 @@ public class MPDHandlerAction {
         EXTRA_OUTPUT_ID,
         EXTRA_SEARCH_TYPE,
         EXTRA_SORT_ORDER,
+        EXTRA_LIBRARY_LIST_POSITION,
     }
 
     /**

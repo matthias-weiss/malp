@@ -77,7 +77,7 @@ public class SearchResultLoader extends Loader<List<MPDFileEntry>> {
         }
 
         @Override
-        public void handleTracks(List<MPDFileEntry> trackList, int start, int end) {
+        public void handleTracks(List<MPDFileEntry> trackList, int start, int end, int position) {
             SearchResultLoader loader = mSearchResultLoader.get();
 
             if (loader != null) {
