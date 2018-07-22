@@ -63,12 +63,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public class ExpandedItem {
         public LibraryItem               mItem;
-        public LibraryAdapter.ViewHolder mHolder;
         public int                       mPosition;
 
-        public ExpandedItem(LibraryItem item, LibraryAdapter.ViewHolder holder, int position) {
+        public ExpandedItem(LibraryItem item, int position) {
             mItem = item;
-            mHolder = holder;
             mPosition = position;
         }
     }
@@ -210,22 +208,21 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.itemView.setLayoutParams(params);
 
         if (item.getViewType() != MPDArtist.VIEW_TYPE && item.isExpanded()) {
-            showAdd2PlaylistButtons(holder, position);
+            showAdd2PlaylistButtons(position);
         } else {
-            hideAdd2PlaylistButtons(holder, position);
+            hideAdd2PlaylistButtons(position);
         }
 
         holder.mItemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(mContext, "IT WORKS !!!", Toast.LENGTH_SHORT).show();
                 mRecyclerView.post(new Runnable() {
                     @Override
                     public void run() {
                         if (item.isExpanded()) {
-                            collapseChildren(item, holder, position);
+                            collapseChildren(item, position);
                         } else {
-                            expandChildren(item, holder, position);
+                            expandChildren(item, position);
                         }
                     }
                 });
@@ -234,7 +231,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     }
 
-    private void hideAdd2PlaylistButtons(LibraryAdapter.ViewHolder holder, final int position) {
+    private void hideAdd2PlaylistButtons(final int position) {
+        LibraryAdapter.ViewHolder holder = (LibraryAdapter.ViewHolder) mRecyclerView.findViewHolderForAdapterPosition(position);
+
+        if (holder == null) {
+            return;
+        }
 
         holder.mDivider.setVisibility(View.GONE);
         holder.mPlayReplace.setVisibility(View.GONE);
@@ -242,7 +244,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mPlayAppend.setVisibility(View.GONE);
     }
 
-    private void showAdd2PlaylistButtons(LibraryAdapter.ViewHolder holder, final int position) {
+    private void showAdd2PlaylistButtons(final int position) {
+        LibraryAdapter.ViewHolder holder = (LibraryAdapter.ViewHolder) mRecyclerView.findViewHolderForAdapterPosition(position);
+
+        if (holder == null) {
+            return;
+        }
 
         holder.mDivider.setVisibility(View.VISIBLE);
         holder.mPlayReplace.setVisibility(View.VISIBLE);
@@ -250,7 +257,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mPlayAppend.setVisibility(View.VISIBLE);
     }
 
-    private void expandChildren(LibraryItem item, LibraryAdapter.ViewHolder holder, int position) {
+    private void expandChildren(LibraryItem item, int position) {
 
         if(mRecyclerView == null) {
             return; // adapter detached
@@ -262,10 +269,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         // level; the index of elements in mExpanded also represents their level
         if (mExpanded.size() > item.getLevel()) {
             exItem = mExpanded.get(item.getLevel());
-            collapseChildren(exItem.mItem, exItem.mHolder, exItem.mPosition);
+            collapseChildren(exItem.mItem, exItem.mPosition);
         }
 
-        mExpanded.add(item.getLevel(), new ExpandedItem(item, holder, position));
+        mExpanded.add(item.getLevel(), new ExpandedItem(item, position));
 
         int kid_count = item.getKidCount();
 
@@ -278,13 +285,13 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         item.setExpanded(true);
 
         if (item.getViewType() != MPDArtist.VIEW_TYPE) {
-            showAdd2PlaylistButtons(holder, position);
+            showAdd2PlaylistButtons(position);
             notifyItemChanged(position);
         }
 
     }
 
-    private void collapseChildren(LibraryItem item, LibraryAdapter.ViewHolder holder, int position) {
+    private void collapseChildren(LibraryItem item, int position) {
 
         if (!item.isExpanded()) {
             return;
@@ -304,7 +311,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             exItem.mItem.setExpanded(false);
 
             if (exItem.mItem.getViewType() != MPDArtist.VIEW_TYPE) {
-                hideAdd2PlaylistButtons(exItem.mHolder, exItem.mPosition);
+                hideAdd2PlaylistButtons(exItem.mPosition);
                 notifyItemChanged(exItem.mPosition);
             }
 

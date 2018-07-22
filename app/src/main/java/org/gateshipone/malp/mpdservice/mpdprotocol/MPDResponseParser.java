@@ -85,12 +85,7 @@ class MPDResponseParser {
                 } else if (responseString.startsWith(MPDResponses.MPD_RESPONSE_DATE)) {
                     // Try to parse Date
                     String dateString = responseString.substring(MPDResponses.MPD_RESPONSE_DATE.length());
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy");
-                    try {
-                        tempAlbum.setDate(format.parse(dateString));
-                    } catch (ParseException e) {
-                        Log.w(TAG, "Error parsing date: " + dateString);
-                    }
+                    tempAlbum.setDate(dateString);
                 }
             }
             responseString = connection.readLine();

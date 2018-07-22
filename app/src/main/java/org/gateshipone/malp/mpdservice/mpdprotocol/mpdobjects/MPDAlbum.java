@@ -64,7 +64,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     private String mArtistSortName;
 
     @NonNull
-    private Date mDate;
+    private String mDate;
 
     private boolean mImageFetching;
 
@@ -102,7 +102,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     public MPDAlbum(@NonNull String name) {
         mAlbumName = name;
         mMBID = "";
-        mDate = new Date(0);
+        mDate = "";
         mArtistName = "";
         mArtistSortName = "";
         pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
@@ -119,7 +119,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         mArtistName = in.readString();
         mArtistSortName = in.readString();
         mImageFetching = in.readByte() != 0;
-        mDate = (Date) in.readSerializable();
+        mDate = in.readString();
         mUseArtistSort = in.readByte() != 0;
         pTrackResponseHandler = new MPDAlbum.TrackResponseHandler(this);
     }
@@ -167,11 +167,11 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         mMBID = mbid;
     }
 
-    public void setDate(@NonNull Date date) {
+    public void setDate(@NonNull String date) {
         mDate = date;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return mDate;
     }
 
@@ -224,7 +224,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         dest.writeString(mArtistName);
         dest.writeString(mArtistSortName);
         dest.writeByte((byte) (mImageFetching ? 1 : 0));
-        dest.writeSerializable(mDate);
+        dest.writeString(mDate);
         dest.writeByte((byte) (mUseArtistSort ? 1 : 0));
     }
 
@@ -259,7 +259,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     }
 
     public String getPostfixText() {
-        return mDate.toString();
+        return mDate;
     }
 
     public String getPrefixText() {
