@@ -150,7 +150,7 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
      */
     private boolean pImageFetching;
 
-    public static final int  VIEW_TYPE = 3;
+    public static final int  VIEW_TYPE = 2;
     public boolean           mExpanded = false;
 
     /**

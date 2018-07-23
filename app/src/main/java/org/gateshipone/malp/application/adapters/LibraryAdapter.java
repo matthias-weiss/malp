@@ -330,6 +330,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             case MPDAlbum.VIEW_TYPE:
                 item.getKidItems(pTrackResponseHandler, position);
                 break;
+            case MPDTrack.VIEW_TYPE:
+                showAdd2PlaylistButtons(position);
+                item.setExpanded(true);
+                mExpanded.add(item.getLevel(), new ExpandedItem(item, position, 0));
+                notifyItemChanged(position);
+                break;
         }
     }
 
@@ -343,7 +349,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         ExpandedItem exItem;
 
         while (mExpanded.size() > item.getLevel()) {
-            exItem       = mExpanded.remove(mExpanded.size() - 1);
+            exItem = mExpanded.remove(mExpanded.size() - 1);
             if (exItem.mNrOfChildren > 0) {
                 remove_count += exItem.mNrOfChildren;
                 mList.subList(exItem.mPosition + 1, exItem.mPosition + 1 + exItem.mNrOfChildren).clear();
