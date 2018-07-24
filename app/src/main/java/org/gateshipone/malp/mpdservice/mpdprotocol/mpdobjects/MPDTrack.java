@@ -491,9 +491,9 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
         int hours = temp / 60;
 
         if (hours != 0) {
-            return hours + ":" + minutes + ":" + seconds;
+            return String.format("%d:%02d:%02d", hours, minutes, seconds);
         } else {
-            return minutes + ":" + seconds;
+            return String.format("%d:%02d", minutes, seconds);
         }
     }
 
