@@ -266,6 +266,35 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             hideAdd2PlaylistButtons(holder);
         }
 
+        holder.mPlayReplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item instanceof MPDTrack) {
+                    MPDTrack track = (MPDTrack)item;
+                    MPDQueryHandler.clearPlaylist();
+                    MPDQueryHandler.playSong(track.getPath());
+                }
+            }
+        });
+        holder.mPlayInsertAfterCursor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item instanceof MPDTrack) {
+                    MPDTrack track = (MPDTrack)item;
+                    MPDQueryHandler.playSongNext(track.getPath());
+                }
+            }
+        });
+        holder.mPlayAppend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item instanceof MPDTrack) {
+                    MPDTrack track = (MPDTrack)item;
+                    MPDQueryHandler.addPath(track.getPath());
+                }
+            }
+        });
+
         holder.mItemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
