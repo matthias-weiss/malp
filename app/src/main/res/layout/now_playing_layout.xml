@@ -24,6 +24,7 @@
 <org.gateshipone.malp.application.views.NowPlayingView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/now_playing_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -73,10 +74,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:textColor="?attr/malp_color_text_accent"
-        app:layout_constraintBottom_toTopOf="@+id/now_playing_topMenuButton"
-        app:layout_constraintEnd_toEndOf="@+id/now_playing_seekBar" />
+        app:layout_constraintBottom_toBottomOf="@+id/now_playing_elapsedTime"
+        app:layout_constraintEnd_toEndOf="@+id/now_playing_seekBar"
+        app:layout_constraintTop_toTopOf="@+id/now_playing_elapsedTime" />
 
     <ImageView
         android:id="@+id/now_playing_topCover"
@@ -139,19 +143,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/now_playing_topCover"
         app:layout_constraintStart_toStartOf="@+id/now_playing_trackArtist" />
-
-    <ImageButton
-        android:id="@+id/now_playing_topMenuButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:background="?android:selectableItemBackground"
-        android:contentDescription="Open Menu"
-        android:scaleType="centerInside"
-        android:tint="?attr/malp_color_text_accent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/now_playing_topCover"
-        app:srcCompat="@drawable/ic_more_vert_24dp" />
 
     <ImageButton
         android:id="@+id/now_playing_bottomPreviousButton"

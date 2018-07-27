@@ -126,11 +126,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private BackgroundServiceConnection mBackgroundServiceConnection;
 
     /**
-     * Top buttons in the draggable header part.
-     */
-    private ImageButton mTopMenuButton;
-
-    /**
      * Buttons in the bottom part of the view
      */
     private ImageButton mBottomPreviousButton;
@@ -434,9 +429,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        // header buttons
-        mTopMenuButton = findViewById(R.id.now_playing_topMenuButton);
-
         // bottom buttons
         mBottomPreviousButton = findViewById(R.id.now_playing_bottomPreviousButton);
         mBottomPlayPauseButton = findViewById(R.id.now_playing_bottomPlayPauseButton);
@@ -491,10 +483,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mVolumePlus.setOnLongClickListener(mPlusListener);
         mVolumePlus.setOnTouchListener(mPlusListener);
 
-
-        // Add listener to top menu button
-        mTopMenuButton.setOnClickListener(this::showAdditionalOptionsMenu);
-
         // Add listener to bottom previous button
         mBottomPreviousButton.setOnClickListener(arg0 -> MPDCommandHandler.previousSong());
 
@@ -529,47 +517,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mUseEnglishWikipedia = sharedPref.getBoolean(getContext().getString(R.string.pref_use_english_wikipedia_key), getContext().getResources().getBoolean(R.bool.pref_use_english_wikipedia_default));
 
         mShowArtistImage = sharedPref.getBoolean(getContext().getString(R.string.pref_show_npv_artist_image_key), getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
-    }
-
-    /**
-     * Called to open the popup menu on the top right corner.
-     *
-     * @param v
-     */
-    private void showAdditionalOptionsMenu(View v) {
-        PopupMenu popupMenu = new PopupMenu(getContext(), v);
-        // Inflate the menu from a menu xml file
-        popupMenu.inflate(R.menu.popup_menu_nowplaying);
-        // Set the main NowPlayingView as a listener (directly implements callback)
-        popupMenu.setOnMenuItemClickListener(this);
-        // Real menu
-        Menu menu = popupMenu.getMenu();
-
-        // Set the checked menu item state if a MPDCurrentStatus is available
-        if (null != mLastStatus) {
-            MenuItem singlePlaybackItem = menu.findItem(R.id.action_toggle_single_mode);
-            singlePlaybackItem.setChecked(mLastStatus.getSinglePlayback() == 1);
-
-            MenuItem consumeItem = menu.findItem(R.id.action_toggle_consume_mode);
-            consumeItem.setChecked(mLastStatus.getConsume() == 1);
-        }
-
-        // Check if streaming is configured for the current server
-        boolean streamingEnabled = ConnectionManager.getInstance(getContext().getApplicationContext()).getStreamingEnabled();
-        MenuItem streamingStartStopItem = menu.findItem(R.id.action_start_streaming);
-
-        if (!streamingEnabled) {
-            streamingStartStopItem.setVisible(false);
-        } else {
-            if (mStreamingStatus == BackgroundService.STREAMING_STATUS.PLAYING || mStreamingStatus == BackgroundService.STREAMING_STATUS.BUFFERING) {
-                streamingStartStopItem.setTitle(getResources().getString(R.string.action_stop_streaming));
-            } else {
-                streamingStartStopItem.setTitle(getResources().getString(R.string.action_start_streaming));
-            }
-        }
-
-        // Open the menu itself
-        popupMenu.show();
     }
 
 

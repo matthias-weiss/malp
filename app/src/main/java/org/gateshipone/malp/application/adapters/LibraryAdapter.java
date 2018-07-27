@@ -273,6 +273,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     MPDTrack track = (MPDTrack)item;
                     MPDQueryHandler.clearPlaylist();
                     MPDQueryHandler.playSong(track.getPath());
+                } else if (item instanceof MPDAlbum) {
+                    MPDAlbum album = (MPDAlbum)item;
+                    MPDQueryHandler.playArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
                 }
             }
         });
