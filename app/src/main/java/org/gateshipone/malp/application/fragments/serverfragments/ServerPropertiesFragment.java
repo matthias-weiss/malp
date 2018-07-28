@@ -61,7 +61,7 @@ public class ServerPropertiesFragment extends Fragment implements TabLayout.OnTa
 
 
         // create tabs
-        TabLayout tabLayout = rootView.findViewById(R.id.my_music_tab_layout);
+        TabLayout tabLayout = rootView.findViewById(R.id.audio_source_tab_layout);
 
         //mViewPager = rootView.findViewById(R.id.my_music_viewpager);
         mTabAdapter = new ServerPropertiesTabAdapter(getChildFragmentManager());
