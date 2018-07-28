@@ -282,9 +282,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mPlayInsertAfterCursor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MPDTrack track;
+
                 if (item instanceof MPDTrack) {
-                    MPDTrack track = (MPDTrack)item;
+                    track = (MPDTrack)item;
                     MPDQueryHandler.playSongNext(track.getPath());
+                } else if (item instanceof MPDAlbum) {
+                    for (int i = (position + mExpanded.get(item.getLevel()).mNrOfChildren); i > position; i--) {
+                        track = (MPDTrack)mList.get(i);
+                        MPDQueryHandler.playSongNext(track.getPath());
+                    }
                 }
             }
         });
@@ -294,6 +301,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 if (item instanceof MPDTrack) {
                     MPDTrack track = (MPDTrack)item;
                     MPDQueryHandler.addPath(track.getPath());
+                } else if (item instanceof MPDAlbum) {
+                    MPDAlbum album = (MPDAlbum)item;
+                    MPDQueryHandler.addArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
                 }
             }
         });
@@ -353,8 +363,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 break;
             case MPDAlbum.VIEW_TYPE:
                 item.getKidItems(pTrackResponseHandler, position);
-                showAdd2PlaylistButtons(holder);
-                notifyItemChanged(position);
                 break;
             case MPDTrack.VIEW_TYPE:
                 item.setExpanded(true);
@@ -424,9 +432,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         item.setExpanded(true);
 
-/*        if (item.getViewType() != MPDArtist.VIEW_TYPE) {
-            showAdd2PlaylistButtons(position);
+        if (item.getViewType() == MPDAlbum.VIEW_TYPE) {
+            showAdd2PlaylistButtons(mExpanded.get(item.getLevel()).mHolder);
             notifyItemChanged(position);
-        }*/
+        }
     }
 }
