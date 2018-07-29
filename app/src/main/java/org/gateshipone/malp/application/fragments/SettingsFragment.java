@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
@@ -34,21 +35,26 @@ import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
 import org.gateshipone.malp.application.views.VolumeStepPreferenceDialog;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = SettingsFragment.class.getSimpleName();
 
     private FABFragmentCallback mFABCallback = null;
-    private OnArtworkSettingsRequestedCallback mArtworkCallback;
+    private OnSettingsFragmentRequestedCallback mSettingsFragmentCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        // add listener to open artwork settings
         Preference openArtwork = findPreference(getString(R.string.pref_artwork_settings_key));
         openArtwork.setOnPreferenceClickListener(preference -> {
-            mArtworkCallback.openArtworkSettings();
+            mSettingsFragmentCallback.openSettingsFragment("ArtworkSettingsFragment", new ArtworkSettingsFragment());
+            return true;
+        });
+
+        Preference openProfiles = findPreference(getString(R.string.pref_profiles_settings_key));
+        openProfiles.setOnPreferenceClickListener(preference -> {
+            mSettingsFragmentCallback.openSettingsFragment("ProfilesSettingsFragment", new ProfilesFragment());
             return true;
         });
 
@@ -78,7 +84,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mArtworkCallback = (OnArtworkSettingsRequestedCallback) context;
+            mSettingsFragmentCallback = (OnSettingsFragmentRequestedCallback) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnArtworkSettingsRequestedCallback");
         }
@@ -119,7 +125,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
     }
 
-    public interface OnArtworkSettingsRequestedCallback {
-        void openArtworkSettings();
+    public interface OnSettingsFragmentRequestedCallback {
+        void openSettingsFragment(String title, Fragment fragment);
     }
 }

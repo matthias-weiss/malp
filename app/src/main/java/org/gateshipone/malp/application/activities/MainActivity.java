@@ -31,11 +31,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.transition.Slide;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -43,14 +41,10 @@ import android.widget.TextView;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.CurrentPlaylistAdapter;
-import org.gateshipone.malp.application.fragments.ArtworkSettingsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
 import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.callbacks.AddPathToPlaylist;
-import org.gateshipone.malp.application.callbacks.ProfileManageCallbacks;
-import org.gateshipone.malp.application.fragments.EditProfileFragment;
-import org.gateshipone.malp.application.fragments.SettingsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
 import org.gateshipone.malp.application.fragments.serverfragments.SongDetailsDialog;
 import org.gateshipone.malp.application.utils.ThemeUtils;
@@ -63,12 +57,8 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDCurrentStatus;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDProfileManager;
-import org.gateshipone.malp.mpdservice.profilemanagement.MPDServerProfile;
 
-public class MainActivity extends GenericActivity
-        implements ProfileManageCallbacks,
-        SettingsFragment.OnArtworkSettingsRequestedCallback {
-
+public class MainActivity extends GenericActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -152,7 +142,6 @@ public class MainActivity extends GenericActivity
                     onBackPressed();
                 }
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -253,60 +242,6 @@ public class MainActivity extends GenericActivity
         return false;
     }
 
-/*    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        View coordinatorLayout = findViewById(R.id.main_coordinator_layout);
-        coordinatorLayout.setVisibility(View.VISIBLE);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        // clear backstack
-        fragmentManager.popBackStackImmediate("", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        Fragment fragment = null;
-        String fragmentTag = "";
-
-        if (id == R.id.nav_library) {
-            // Handle the camera action
-            fragment = new MyMusicTabsFragment();
-            fragmentTag = MyMusicTabsFragment.TAG;
-        } else if (id == R.id.nav_saved_playlists) {
-            fragment = new SavedPlaylistsFragment();
-            fragmentTag = SavedPlaylistsFragment.TAG;
-        } else if (id == R.id.nav_files) {
-            fragment = new FilesFragment();
-            fragmentTag = FilesFragment.TAG;
-
-            Bundle args = new Bundle();
-            args.putString(FilesFragment.EXTRA_FILENAME, "");
-
-        } else if (id == R.id.nav_search) {
-            fragment = new SearchFragment();
-            fragmentTag = SearchFragment.TAG;
-        } else if (id == R.id.nav_profiles) {
-            fragment = new ProfilesFragment();
-            fragmentTag = ProfilesFragment.TAG;
-        } else if (id == R.id.nav_app_settings) {
-            fragment = new SettingsFragment();
-            fragmentTag = SettingsFragment.TAG;
-        } else if (id == R.id.nav_server_properties) {
-            fragment = new ServerPropertiesFragment();
-            fragmentTag = ServerPropertiesFragment.TAG;
-        } else if (id == R.id.nav_information) {
-            fragment = new InformationSettingsFragment();
-            fragmentTag = InformationSettingsFragment.class.getSimpleName();
-        }
-
-        // Do the actual fragment transaction
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, fragmentTag);
-        transaction.commit();
-
-        return true;
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -380,39 +315,6 @@ public class MainActivity extends GenericActivity
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    @Override
-    public void editProfile(MPDServerProfile profile) {
-        if (null == profile) {
-            profile = new MPDServerProfile(getString(R.string.fragment_profile_default_name), true);
-            ConnectionManager.getInstance(getApplicationContext()
-            ).addProfile(profile, this);
-        }
-
-        // Create fragment and give it an argument for the selected article
-        EditProfileFragment newFragment = new EditProfileFragment();
-        Bundle args = new Bundle();
-        if (null != profile) {
-            args.putParcelable(EditProfileFragment.EXTRA_PROFILE, profile);
-        }
-
-
-        newFragment.setArguments(args);
-
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        newFragment.setEnterTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.START, getResources().getConfiguration().getLayoutDirection())));
-        newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
-        // Replace whatever is in the fragment_container view with this
-        // fragment,
-        // and add the transaction to the back stack so the user can navigate
-        // back
-        transaction.replace(R.id.main_activity_layout, newFragment, EditProfileFragment.TAG);
-        transaction.addToBackStack("EditProfileFragment");
-
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
     public void setNavbarHeader(String text) {
         TextView header = findViewById(R.id.navdrawer_header_text);
         if (header == null) {
@@ -423,46 +325,5 @@ public class MainActivity extends GenericActivity
             header.setText("");
         }
         header.setText(text);
-    }
-
-    @Override
-    public void openArtworkSettings() {
-        // Create fragment and give it an argument for the selected directory
-        ArtworkSettingsFragment newFragment = new ArtworkSettingsFragment();
-
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        newFragment.setEnterTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.START, getResources().getConfiguration().getLayoutDirection())));
-        newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
-
-        transaction.addToBackStack("ArtworkSettingsFragment");
-        transaction.replace(R.id.main_activity_layout, newFragment);
-
-        // Commit the transaction
-        transaction.commit();
-    }
-
-    private int getDefaultViewID() {
-        // Read default view preference
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultView = sharedPref.getString(getString(R.string.pref_start_view_key), getString(R.string.pref_view_default));
-
-        // the nav resource id to mark the right item in the nav drawer
-        int navId = -1;
-
-        if (defaultView.equals(getString(R.string.pref_view_my_music_artists_key))) {
-            navId = R.id.nav_library;
-        } else if (defaultView.equals(getString(R.string.pref_view_my_music_albums_key))) {
-            navId = R.id.nav_library;
-        } else if (defaultView.equals(getString(R.string.pref_view_playlists_key))) {
-            navId = R.id.nav_saved_playlists;
-        } else if (defaultView.equals(getString(R.string.pref_view_files_key))) {
-            navId = R.id.nav_files;
-        }
-
-        return navId;
     }
 }

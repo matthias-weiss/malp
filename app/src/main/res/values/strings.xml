@@ -115,6 +115,7 @@
     <string name="menu_artists">Artists</string>
     <string name="menu_artist">Artist</string>
     <string name="artwork_settings">Artwork settings</string>
+    <string name="profiles_settings">Profiles settings</string>
 
     <!-- seperator -->
     <string name="track_item_separator" translatable="false">" - "</string>
@@ -363,6 +364,7 @@
     <string name="preference_category_design">Design</string>
     <string name="preference_category_library">Library</string>
     <string name="preference_category_controls">Controls</string>
+    <string name="preference_category_profiles">Profiles</string>
     <string name="preference_category_other">Other</string>
 
     <!-- artwork preferences -->
