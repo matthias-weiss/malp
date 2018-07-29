@@ -24,59 +24,34 @@ package org.gateshipone.malp.application.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-//import android.support.v4.widget.DrawerLayout;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.adapters.CurrentPlaylistAdapter;
 import org.gateshipone.malp.application.fragments.ArtworkSettingsFragment;
-import org.gateshipone.malp.application.fragments.AudioSourceViewPager;
-import org.gateshipone.malp.application.fragments.InformationSettingsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.ServerPropertiesFragment;
 import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.callbacks.AddPathToPlaylist;
-import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
-import org.gateshipone.malp.application.callbacks.PlaylistCallback;
 import org.gateshipone.malp.application.callbacks.ProfileManageCallbacks;
 import org.gateshipone.malp.application.fragments.EditProfileFragment;
-import org.gateshipone.malp.application.fragments.ProfilesFragment;
 import org.gateshipone.malp.application.fragments.SettingsFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.AlbumTracksFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.AlbumsFragment;
-import org.gateshipone.malp.application.fragments.serverfragments.ArtistsFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
-import org.gateshipone.malp.application.fragments.serverfragments.FilesFragment;
 import org.gateshipone.malp.application.fragments.serverfragments.SongDetailsDialog;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.application.views.CurrentPlaylistView;
@@ -85,7 +60,6 @@ import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDStateMonitoringHandler;
 import org.gateshipone.malp.mpdservice.mpdprotocol.MPDException;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
-import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDArtist;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDCurrentStatus;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDProfileManager;
@@ -101,13 +75,6 @@ public class MainActivity extends GenericActivity
     public final static String MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW = "org.malp.requestedview";
     public final static String MAINACTIVITY_INTENT_EXTRA_REQUESTEDVIEW_NOWPLAYINGVIEW = "org.malp.requestedview.nowplaying";
 
-    private final static String MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_DRAG_STATUS = "MainActivity.NowPlayingDragStatus";
-    private final static String MAINACTIVITY_SAVED_INSTANCE_NOW_PLAYING_VIEW_SWITCHER_CURRENT_VIEW = "MainActivity.NowPlayingViewSwitcherCurrentView";
-
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private boolean mHeaderImageActive;
-
     private boolean mUseArtistSort;
 
     private View mDecorView;
@@ -120,15 +87,12 @@ public class MainActivity extends GenericActivity
 
         setContentView(R.layout.activity_main);
 
-        int navId = getDefaultViewID();
-
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mUseArtistSort = sharedPref.getBoolean(getString(R.string.pref_use_artist_sort_key), getResources().getBoolean(R.bool.pref_use_artist_sort_default));
 
         registerForContextMenu(findViewById(R.id.main_listview));
 
         if (MPDProfileManager.getInstance(this).getProfiles().size() == 0) {
-            navId = R.id.nav_profiles;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getResources().getString(R.string.welcome_dialog_title));
@@ -141,17 +105,11 @@ public class MainActivity extends GenericActivity
             dialog.show();
         }
 
-
         if (savedInstanceState == null) {
             Fragment audioSourceTabsFragment = new AudioSourceTabsFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.audio_sources_view, audioSourceTabsFragment).commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.audio_sources_view, audioSourceTabsFragment).commit();
         }
-        //Fragment fragment = new AudioSourceTabsFragment();
-
-        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //transaction.replace(R.id.fragment_container, fragment);
-        //transaction.commit();
 
         App.setContext(this);
 
@@ -192,14 +150,6 @@ public class MainActivity extends GenericActivity
             case android.R.id.home:
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     onBackPressed();
-                } else {
-                    // back stack empty so enable navigation drawer
-
-                    /* mDrawerToggle.setDrawerIndicatorEnabled(true);
-
-                    if (mDrawerToggle.onOptionsItemSelected(item)) {
-                        return true;
-                    } */
                 }
         }
 
@@ -362,8 +312,6 @@ public class MainActivity extends GenericActivity
         super.onResume();
         final NowPlayingView nowPlayingView = findViewById(R.id.now_playing_layout);
         if (nowPlayingView != null) {
-
-
             /*
              * Check if the activity got an extra in its intend to show the nowplayingview directly.
              * If yes then pre set the dragoffset of the draggable helper.
@@ -387,8 +335,6 @@ public class MainActivity extends GenericActivity
 
             nowPlayingView.onPause();
         }
-
-
     }
 
     @Override
@@ -403,7 +349,7 @@ public class MainActivity extends GenericActivity
 
     @Override
     protected void onMPDError(MPDException.MPDServerException e) {
-        View layout = findViewById(R.id.drawer_layout);
+        View layout = findViewById(R.id.main_activity_layout);
         if (layout != null) {
             String errorText = getString(R.string.snackbar_mpd_server_error_format,e.getErrorCode(), e.getCommandOffset(), e.getServerMessage());
             Snackbar sb = Snackbar.make(layout, errorText, Snackbar.LENGTH_LONG);
@@ -417,7 +363,7 @@ public class MainActivity extends GenericActivity
 
     @Override
     protected void onMPDConnectionError(MPDException.MPDConnectionException e) {
-        View layout = findViewById(R.id.drawer_layout);
+        View layout = findViewById(R.id.main_activity_layout);
         if (layout != null) {
             String errorText = getString(R.string.snackbar_mpd_connection_error_format,e.getError());
 
@@ -459,31 +405,12 @@ public class MainActivity extends GenericActivity
         // fragment,
         // and add the transaction to the back stack so the user can navigate
         // back
-        //transaction.replace(R.id.fragment_container, newFragment, EditProfileFragment.TAG);
+        transaction.replace(R.id.main_activity_layout, newFragment, EditProfileFragment.TAG);
         transaction.addToBackStack("EditProfileFragment");
 
 
         // Commit the transaction
         transaction.commit();
-    }
-
-
-
-    public void setupToolbarImage(Bitmap bm) {
-        ImageView collapsingImage = findViewById(R.id.collapsing_image);
-        if (collapsingImage != null) {
-            collapsingImage.setImageBitmap(bm);
-            
-            // FIXME DIRTY HACK: Manually fix the toolbar size to the screen width
-            //CollapsingToolbarLayout toolbar = findViewById(R.id.collapsing_toolbar);
-            //AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-
-            //params.height = getWindow().getDecorView().getMeasuredWidth();
-
-            // Always expand the toolbar to show the complete image
-            //AppBarLayout appbar = findViewById(R.id.appbar);
-            //appbar.setExpanded(true,false);
-        }
     }
 
     public void setNavbarHeader(String text) {
@@ -512,7 +439,7 @@ public class MainActivity extends GenericActivity
         newFragment.setExitTransition(new Slide(GravityCompat.getAbsoluteGravity(GravityCompat.END, getResources().getConfiguration().getLayoutDirection())));
 
         transaction.addToBackStack("ArtworkSettingsFragment");
-        //transaction.replace(R.id.fragment_container, newFragment);
+        transaction.replace(R.id.main_activity_layout, newFragment);
 
         // Commit the transaction
         transaction.commit();

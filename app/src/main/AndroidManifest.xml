@@ -52,6 +52,14 @@
             android:theme="@style/AppTheme.deepOrange"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name="org.gateshipone.malp.application.activities.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".application.activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="org.gateshipone.malp.application.activities.AboutActivity"
             android:label="About"
             android:parentActivityName=".application.activities.MainActivity">

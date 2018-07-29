@@ -1,27 +1,7 @@
-/*
- *  Copyright (C) 2018 Team Gateship-One
- *  (Hendrik Borghorst & Frederik Luetkes)
- *  
- *  The AUTHORS.md file contains a detailed contributors list:
- *  <https://github.com/gateship-one/malp/blob/master/AUTHORS.md>
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *  
- */
 
 package org.gateshipone.malp.application.fragments.serverfragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -31,8 +11,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import org.gateshipone.malp.R;
+import org.gateshipone.malp.application.activities.SettingsActivity;
 import org.gateshipone.malp.application.fragments.AudioSourceViewPager;
 
 import java.util.ArrayList;
@@ -64,7 +46,15 @@ public class AudioSourceTabsFragment extends Fragment {
         TabLayout tabLayout = rootView.findViewById(R.id.audio_source_tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
-        setHasOptionsMenu(true);
+        ImageButton showSettings = rootView.findViewById(R.id.show_settings_button);
+        showSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), SettingsActivity.class);
+                startActivity(i);
+            }
+        });
+        //setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -73,7 +63,6 @@ public class AudioSourceTabsFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
 
     private class AudioSourcePagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

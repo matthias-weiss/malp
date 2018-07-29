@@ -567,8 +567,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             mBackgroundServiceConnection = null;
         }
 
-        getContext().getApplicationContext().unregisterReceiver(mStreamingStatusReceiver);
-
         ArtworkManager.getInstance(getContext().getApplicationContext()).unregisterOnNewAlbumImageListener(this);
         ArtworkManager.getInstance(getContext().getApplicationContext()).unregisterOnNewArtistImageListener(this);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
