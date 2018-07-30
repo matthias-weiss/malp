@@ -179,6 +179,11 @@
     <string name="bitcount_unit">bits</string>
     <string name="channel_count_unit">channels</string>
 
+    <!-- Audio Source View values -->
+    <string name="audio_source_tab_library">Library</string>
+    <string name="audio_source_tab_webradio">Webradio</string>
+    <string name="audio_source_tab_podcasts">Podcasts</string>
+
     <!-- Server statistics text view values -->
     <string name="server_statistic_artists_count">Number of artists:</string>
     <string name="server_statistic_albums_count">Number of albums:</string>

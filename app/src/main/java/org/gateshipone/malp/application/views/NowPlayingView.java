@@ -465,8 +465,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
         mVolumeMinus = findViewById(R.id.volume_button_minus);
 
-        mVolumeStepSize = 3;
-
         mVolumeMinus.setOnClickListener(v -> MPDCommandHandler.decreaseVolume(mVolumeStepSize));
 
         mVolumePlus = findViewById(R.id.volume_button_plus);
@@ -519,38 +517,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mShowArtistImage = sharedPref.getBoolean(getContext().getString(R.string.pref_show_npv_artist_image_key), getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
     }
 
-
-    /**
-     * Called when a layout is requested from the graphics system.
-     *
-     * @param changed If the layout is changed (size, ...)
-     * @param l       Left position
-     * @param t       Top position
-     * @param r       Right position
-     * @param b       Bottom position
-     */
-/*    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // Calculate the maximal range that the view is allowed to be dragged
-
-        // New temporary top position, to fix the view at top or bottom later if state is idle.
-        int newTop = mTopPosition;
-
-
-        // Request the upper part of the NowPlayingView (header)
-*//*        mHeaderView.layout(
-                0,
-                newTop,
-                r,
-                newTop + mHeaderView.getMeasuredHeight());
-
-        // Request the lower part of the NowPlayingView (main part)
-        mMainView.layout(
-                0,
-                newTop + mHeaderView.getMeasuredHeight(),
-                r,
-                newTop + b);*//*
-    }*/
 
     /**
      * Stop the refresh timer when the view is not visible to the user anymore.
@@ -634,14 +600,10 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         switch (state) {
             case MPD_PLAYING:
                 mBottomPlayPauseButton.setImageResource(R.drawable.ic_pause_circle_fill_48dp);
-
-
                 break;
             case MPD_PAUSING:
             case MPD_STOPPED:
                 mBottomPlayPauseButton.setImageResource(R.drawable.ic_play_circle_fill_48dp);
-
-
                 break;
         }
 

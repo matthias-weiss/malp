@@ -21,6 +21,7 @@
         android:id="@+id/recycler_item_library_main_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/material_list_item_height"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"

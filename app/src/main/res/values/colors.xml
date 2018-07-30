@@ -26,10 +26,10 @@
     <color name="colorPrimaryDark_indigo">#303F9F</color>
     <color name="colorAccent_indigo">#FF1744</color>
     <color name="colorTextAccent_indigo">#FFFFFF</color>
+    <color name="colorTextBackgroundPrimary_indigo">#E3E3E3</color>
     <color name="colorTextBackgroundSecondary_indigo">#BBBBBB</color>
     <color name="colorBackground_indigo">#212121</color>
     <color name="colorBackgroundSelected_indigo">#424242</color>
-    <color name="colorTextBackgroundPrimary_indigo">#E3E3E3</color>
     <color name="colorNavheaderIcon_indigo">#000000</color>
 
     <color name="colorPrimary_orange">#f57c00</color>

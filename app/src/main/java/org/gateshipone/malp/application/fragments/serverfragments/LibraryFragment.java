@@ -30,8 +30,6 @@ public class LibraryFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
 
-    private boolean mUseList = false;
-
     private MPDAlbum.MPD_ALBUM_SORT_ORDER mAlbumSortOrder;
 
     @Override
@@ -39,11 +37,6 @@ public class LibraryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String libraryView           = sharedPref.getString(getString(R.string.pref_library_view_key), getString(R.string.pref_library_view_default));
-
-        if (libraryView.equals(getString(R.string.pref_library_view_list_key))) {
-            mUseList = true;
-        }
 
         mAlbumSortOrder = PreferenceHelper.getMPDAlbumSortOrder(sharedPref, getContext());
 

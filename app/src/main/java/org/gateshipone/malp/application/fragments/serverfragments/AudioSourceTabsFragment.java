@@ -37,9 +37,9 @@ public class AudioSourceTabsFragment extends Fragment {
         mViewPager = rootView.findViewById(R.id.audio_source_viewpager);
         mAudioSourcePagerAdapter = new AudioSourcePagerAdapter(getChildFragmentManager());
 
-        mAudioSourcePagerAdapter.addFragment(new LibraryFragment(), "Library");
-        //mAudioSourcePagerAdapter.addFragment(new WebradioFragment(), "Webradio");
-        //mAudioSourcePagerAdapter.addFragment(new PodcastFragment(), "Podcasts");
+        mAudioSourcePagerAdapter.addFragment(new LibraryFragment(), getString(R.string.audio_source_tab_library));
+        //mAudioSourcePagerAdapter.addFragment(new WebradioFragment(), getString(R.string.audio_source_tab_webradio));
+        //mAudioSourcePagerAdapter.addFragment(new PodcastFragment(), getString(R.string.audio_source_tab_podcasts));
 
         mViewPager.setAdapter(mAudioSourcePagerAdapter);
 
