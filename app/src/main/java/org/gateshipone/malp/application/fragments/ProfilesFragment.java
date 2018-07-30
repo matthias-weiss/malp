@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.List;
@@ -73,11 +74,18 @@ public class ProfilesFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.listview_layout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profiles, container, false);
+
+        ImageButton addProfileButton = rootView.findViewById(R.id.new_profile);
+        addProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.editProfile(null);
+            }
+        });
 
         // Get the main ListView of this fragment
-        mListView = rootView.findViewById(R.id.main_listview);
-
+        mListView = rootView.findViewById(R.id.profiles_listview);
 
         // Create the needed adapter for the ListView
         mAdapter = new ProfileAdapter(getActivity());
@@ -185,7 +193,7 @@ public class ProfilesFragment extends Fragment implements LoaderManager.LoaderCa
         try {
             mCallback = (ProfileManageCallbacks) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArtistSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement ProfileManageCallbacks");
         }
 
         // This makes sure that the container activity has implemented

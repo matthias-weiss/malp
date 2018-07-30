@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/new_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="?attr/malp_color_text_background_primary"
+        app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    <ListView
+        android:id="@+id/profiles_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?attr/malp_color_background_selected"
+        android:dividerHeight="@dimen/list_divider_size"
+        android:fastScrollAlwaysVisible="false"
+        android:fastScrollEnabled="true"
+        android:fastScrollStyle="?attr/colorAccent"
+        android:nestedScrollingEnabled="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollingCache="true" />
+
+</LinearLayout>

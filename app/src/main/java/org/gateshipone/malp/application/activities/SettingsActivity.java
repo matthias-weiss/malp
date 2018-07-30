@@ -10,6 +10,7 @@ import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.callbacks.ProfileManageCallbacks;
 import org.gateshipone.malp.application.fragments.EditProfileFragment;
 import org.gateshipone.malp.application.fragments.SettingsFragment;
+import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDServerProfile;
 
@@ -24,6 +25,15 @@ public class SettingsActivity extends AppCompatActivity
         setContentView(R.layout.activity_settings);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.settings_container, new SettingsFragment()).commit();
+
+        App.setContext(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        App.setContext(this);
     }
 
     @Override

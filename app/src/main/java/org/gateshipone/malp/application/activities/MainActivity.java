@@ -258,6 +258,9 @@ public class MainActivity extends GenericActivity {
             }
             nowPlayingView.onResume();
         }
+
+        App.setContext(this);
+
         hideSystemUI();
     }
 
