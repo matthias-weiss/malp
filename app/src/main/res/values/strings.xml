@@ -246,6 +246,7 @@
     <string name="preference_theme_item_light_green">Light Green</string>
     <string name="preference_theme_item_red">Red</string>
     <string name="preference_theme_item_oled_dark">OLED Dark</string>
+    <string name="preference_theme_item_deep_purple">Deep Purple</string>
 
     <string-array name="preference_odyssey_styles">
         <item>@string/preference_theme_item_indigo</item>
@@ -257,6 +258,7 @@
         <item>@string/preference_theme_item_light_green</item>
         <item>@string/preference_theme_item_red</item>
         <item>@string/preference_theme_item_oled_dark</item>
+        <item>@string/preference_theme_item_deep_purple</item>
     </string-array>
 
     <string name="preference_album_sort_order_title">Artist Albums sort order</string>

@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.gateshipone.malp.R;
@@ -47,6 +48,7 @@ public class FileListItem extends AbsImageListViewItem {
 
     private final boolean mIsSectionHeader;
 
+    protected RelativeLayout mItemRootView;
     protected TextView mTitleView;
     protected TextView mSeparator;
     protected TextView mAdditionalInfoView;
@@ -68,6 +70,7 @@ public class FileListItem extends AbsImageListViewItem {
     public FileListItem(Context context, boolean showIcon) {
         super(context, R.layout.listview_item_file, 0, 0, null);
 
+        mItemRootView = findViewById(R.id.item_root_view);
         mTitleView = findViewById(R.id.track_title);
         mAdditionalInfoView = findViewById(R.id.track_additional_information);
         mSeparator = findViewById(R.id.track_separator);
@@ -322,15 +325,23 @@ public class FileListItem extends AbsImageListViewItem {
      */
     public void setPlaying(boolean state) {
         if (state) {
-            int color = ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent);
+            int color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_accent3);
+            mItemRootView.setBackgroundColor(color);
+            color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent3);
             mTitleView.setTextColor(color);
             mNumberView.setTextColor(color);
             mSeparator.setTextColor(color);
+            mAdditionalInfoView.setTextColor(color);
+            mDurationView.setTextColor(color);
         } else {
-            int color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_background_primary);
+            int color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_background);
+            mItemRootView.setBackgroundColor(color);
+            color = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_on_background);
             mTitleView.setTextColor(color);
             mNumberView.setTextColor(color);
             mSeparator.setTextColor(color);
+            mAdditionalInfoView.setTextColor(color);
+            mDurationView.setTextColor(color);
         }
 
     }

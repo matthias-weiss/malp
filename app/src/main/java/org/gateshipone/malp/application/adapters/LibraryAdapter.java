@@ -23,6 +23,7 @@
 package org.gateshipone.malp.application.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +53,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     private boolean mUseAlbumArtists;
     private boolean mUseArtistSort;
-    private int     mListItemHeight;
 
     private MPDResponseArtistList pArtistResponseHandler;
     private MPDResponseAlbumList  pAlbumResponseHandler;
@@ -154,7 +154,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public ViewHolder(ConstraintLayout itemContainer, int viewType) {
             super(itemContainer);
 
-            mItemContainer = itemContainer;
+            mItemContainer = itemContainer.findViewById(R.id.recycler_item_library_item_container);
             //mImage = (ImageView) rowContainer.findViewById(R.id.row_image);
             mPrefixText = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_prefix_text);
             mMainText   = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_main_text);
@@ -172,11 +172,37 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             if (viewType != MPDTrack.VIEW_TYPE) {
                 mPrefixText.setVisibility(View.GONE);
             }
+            switch (viewType) {
+                case MPDArtist.VIEW_TYPE:
+                    setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+                    mPrefixText.setVisibility(View.GONE);
+                    mPostfixText.setVisibility(View.GONE);
+                    break;
+                case MPDAlbum.VIEW_TYPE:
+                    setItemColors( R.attr.malp_color_accent2, R.attr.malp_color_text_accent2);
+                    mPrefixText.setVisibility(View.GONE);
+                    mPostfixText.setVisibility(View.VISIBLE);
+                    break;
+                case MPDTrack.VIEW_TYPE:
+                    setItemColors(R.attr.malp_color_accent1, R.attr.malp_color_text_accent1);
+                    mPrefixText.setVisibility(View.VISIBLE);
+                    mPostfixText.setVisibility(View.VISIBLE);
+                    break;
+            }
 
             mDivider.setVisibility(View.GONE);
             mPlayReplace.setVisibility(View.GONE);
             mPlayInsertAfterCursor.setVisibility(View.GONE);
             mPlayAppend.setVisibility(View.GONE);
+        }
+
+        public void setItemColors(int backgroundColor, int textColor){
+            mItemContainer.setBackgroundColor(backgroundColor);
+            //mItemContainer.setBackgroundColor(Color.TRANSPARENT);
+            mPrefixText.setTextColor(textColor);
+            mMainText.setTextColor(textColor);
+            mMainText.setBackgroundColor(Color.TRANSPARENT);
+            mPostfixText.setTextColor(textColor);
         }
 
     }
@@ -189,8 +215,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         mLevelIndicatorWidth = 48;
         mUseAlbumArtists     = useAlbumArtists;
         mUseArtistSort       = useArtistSort;
-
-        mListItemHeight = (int)context.getResources().getDimension(R.dimen.material_list_item_height);
 
         pArtistResponseHandler = new LibraryAdapter.ArtistResponseHandler(this);
         pAlbumResponseHandler  = new LibraryAdapter.AlbumResponseHandler(this);
@@ -241,18 +265,25 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         TextView label = (TextView) holder.mItemContainer.findViewById(R.id.recycler_item_library_main_text);
         label.setText(item.getMainText());
 
-        if (item.getViewType() != MPDArtist.VIEW_TYPE) {
-            holder.mPostfixText.setVisibility(View.VISIBLE);
-            holder.mPostfixText.setText(item.getPostfixText());
-        } else {
-            holder.mPostfixText.setVisibility(View.GONE);
-        }
-
-        if (item.getViewType() == MPDTrack.VIEW_TYPE) {
-            holder.mPrefixText.setVisibility(View.VISIBLE);
-            holder.mPrefixText.setText(item.getPrefixText());
-        }  else {
-            holder.mPrefixText.setVisibility(View.GONE);
+        switch (item.getViewType()) {
+            case MPDArtist.VIEW_TYPE:
+                holder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+                holder.mPrefixText.setVisibility(View.GONE);
+                holder.mPostfixText.setVisibility(View.GONE);
+                break;
+            case MPDAlbum.VIEW_TYPE:
+                holder.setItemColors(R.attr.malp_color_accent2, R.attr.malp_color_text_accent2);
+                holder.mPrefixText.setVisibility(View.GONE);
+                holder.mPostfixText.setVisibility(View.VISIBLE);
+                holder.mPostfixText.setText(item.getPostfixText());
+                break;
+            case MPDTrack.VIEW_TYPE:
+                holder.setItemColors(R.attr.malp_color_accent1, R.attr.malp_color_text_accent1);
+                holder.mPrefixText.setVisibility(View.VISIBLE);
+                holder.mPrefixText.setText(item.getPrefixText());
+                holder.mPostfixText.setVisibility(View.VISIBLE);
+                holder.mPostfixText.setText(item.getPostfixText());
+                break;
         }
 
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
@@ -315,9 +346,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     @Override
                     public void run() {
                         if (item.isExpanded()) {
-                            collapseChildren(item, position);
+                            collapseItem(item, position);
                         } else {
-                            expandChildren(item, position, holder);
+                            expandItem(item, position, holder);
                         }
                     }
                 });
@@ -340,7 +371,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mPlayAppend.setVisibility(View.VISIBLE);
     }
 
-    private void expandChildren(LibraryItem item, int position, LibraryAdapter.ViewHolder holder) {
+    private void expandItem(LibraryItem item, int position, LibraryAdapter.ViewHolder holder) {
 
         if(mRecyclerView == null) {
             return; // adapter detached
@@ -352,7 +383,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         // level; the index of elements in mExpanded also represents their level
         if (mExpanded.size() > item.getLevel()) {
             exItem = mExpanded.get(item.getLevel());
-            collapseChildren(exItem.mItem, exItem.mPosition);
+            collapseItem(exItem.mItem, exItem.mPosition);
         }
 
         mExpanded.add(item.getLevel(), new ExpandedItem(item, holder, position, 0));
@@ -360,6 +391,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         switch (item.getViewType()) {
             case MPDArtist.VIEW_TYPE:
                 item.getKidItems(pAlbumResponseHandler, position);
+                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                notifyItemChanged(position);
                 break;
             case MPDAlbum.VIEW_TYPE:
                 item.getKidItems(pTrackResponseHandler, position);
@@ -372,7 +405,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         }
     }
 
-    private void collapseChildren(LibraryItem item, int position) {
+    private void collapseItem(LibraryItem item, int position) {
 
         if (!item.isExpanded()) {
             return;

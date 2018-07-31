@@ -112,6 +112,27 @@
     <color name="colorTextBackgroundPrimary_oledDark">#E3E3E3</color>
     <color name="colorNavheaderIcon_oledDark">#FFFFFF</color>
 
+
+    <color name="colorPrimary_deepPurple">#311B92</color>
+    <color name="colorPrimaryDark_deepPurple">#311B92</color>
+    <color name="colorOnPrimary_deepPurple">#EDE7F6</color>
+    <color name="colorAccent_deepPurple">#7E57C2</color>
+    <color name="colorAccent1_deepPurple">#7E57C2</color>
+    <color name="colorAccent2_deepPurple">#B39DDB</color>
+    <color name="colorAccent3_deepPurple">#D1C4E9</color>
+    <color name="colorTextAccent_deepPurple">#FFFFFF</color>
+    <color name="colorTextAccent1_deepPurple">#FFFFFF</color>
+    <color name="colorTextAccent2_deepPurple">#311B92</color>
+    <color name="colorTextAccent3_deepPurple">#311B92</color>
+    <color name="colorTextBackgroundPrimary_deepPurple">#E3E3E3</color>
+    <color name="colorTextBackgroundSecondary_deepPurple">#DDDDDD</color>
+    <color name="colorBackground_deepPurple">#EDE7F6</color>
+    <color name="colorBackgroundSelected_deepPurple">#282828</color>
+    <color name="colorTextOnBackground_deepPurple">#311B92</color>
+    <color name="colorNavheaderIcon_deepPurple">#FFFFFF</color>
+
+
+
     <color name="colorPrimary_light_indigo">#3F51B5</color>
     <color name="colorPrimaryDark_light_indigo">#303F9F</color>
     <color name="colorAccent_light_indigo">#FF1744</color>

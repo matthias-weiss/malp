@@ -227,6 +227,25 @@
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_oledDark</item>
     </style>
 
+    <style name="AppTheme.deepPurple" parent="AppTheme">
+        <item name="malp_color_primary">@color/colorPrimary_deepPurple</item>
+        <item name="malp_color_primary_dark">@color/colorPrimaryDark_deepPurple</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_deepPurple</item>
+        <item name="malp_color_accent">@color/colorAccent_deepPurple</item>
+        <item name="malp_color_accent1">@color/colorAccent1_deepPurple</item>
+        <item name="malp_color_accent2">@color/colorAccent2_deepPurple</item>
+        <item name="malp_color_accent3">@color/colorAccent3_deepPurple</item>
+        <item name="malp_color_background">@color/colorBackground_deepPurple</item>
+        <item name="malp_color_background_selected">@color/colorBackgroundSelected_deepPurple</item>
+        <item name="malp_color_text_on_background">@color/colorTextOnBackground_deepPurple</item>
+        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_deepPurple</item>
+        <item name="malp_color_text_accent">@color/colorTextAccent_deepPurple</item>
+        <item name="malp_color_text_accent1">@color/colorTextAccent1_deepPurple</item>
+        <item name="malp_color_text_accent2">@color/colorTextAccent2_deepPurple</item>
+        <item name="malp_color_text_accent3">@color/colorTextAccent3_deepPurple</item>
+        <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_deepPurple</item>
+        <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_deepPurple</item>
+    </style>
 
     <style name="AppTheme" parent="Theme.AppCompat">
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
