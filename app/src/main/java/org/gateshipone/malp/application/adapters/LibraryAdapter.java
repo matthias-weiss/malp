@@ -23,7 +23,11 @@
 package org.gateshipone.malp.application.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +38,7 @@ import android.widget.TextView;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.artworkdatabase.ArtworkManager;
+import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseAlbumList;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseArtistList;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseFileList;
@@ -140,27 +145,29 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public Context          mContext;
         public ConstraintLayout mItemContainer;
         //public ImageView        mImage;
         public TextView         mPrefixText;
         public TextView         mMainText;
         public TextView         mPostfixText;
 
-        public View             mDivider;
         public ImageButton      mPlayReplace;
         public ImageButton      mPlayInsertAfterCursor;
         public ImageButton      mPlayAppend;
 
-        public ViewHolder(ConstraintLayout itemContainer, int viewType) {
+        public ViewHolder(ConstraintLayout itemContainer, int viewType, Context context) {
             super(itemContainer);
 
+            mContext = context;
+
             mItemContainer = itemContainer.findViewById(R.id.recycler_item_library_item_container);
+
             //mImage = (ImageView) rowContainer.findViewById(R.id.row_image);
             mPrefixText = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_prefix_text);
             mMainText   = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_main_text);
             mPostfixText = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_postfix_text);
 
-            mDivider               = (View)        mItemContainer.findViewById(R.id.recycler_item_library_divider);
             mPlayReplace           = (ImageButton) mItemContainer.findViewById(R.id.recycler_item_library_play_replace);
             mPlayInsertAfterCursor = (ImageButton) mItemContainer.findViewById(R.id.recycler_item_library_play_insert_after_cursor);
             mPlayAppend            = (ImageButton) mItemContainer.findViewById(R.id.recycler_item_library_play_append);
@@ -179,30 +186,30 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     mPostfixText.setVisibility(View.GONE);
                     break;
                 case MPDAlbum.VIEW_TYPE:
-                    setItemColors( R.attr.malp_color_accent2, R.attr.malp_color_text_accent2);
+                    setItemColors( R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
                     mPrefixText.setVisibility(View.GONE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
                 case MPDTrack.VIEW_TYPE:
-                    setItemColors(R.attr.malp_color_accent1, R.attr.malp_color_text_accent1);
+                    setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
                     mPrefixText.setVisibility(View.VISIBLE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
             }
 
-            mDivider.setVisibility(View.GONE);
             mPlayReplace.setVisibility(View.GONE);
             mPlayInsertAfterCursor.setVisibility(View.GONE);
             mPlayAppend.setVisibility(View.GONE);
         }
 
         public void setItemColors(int backgroundColor, int textColor){
-            mItemContainer.setBackgroundColor(backgroundColor);
-            //mItemContainer.setBackgroundColor(Color.TRANSPARENT);
-            mPrefixText.setTextColor(textColor);
-            mMainText.setTextColor(textColor);
-            mMainText.setBackgroundColor(Color.TRANSPARENT);
-            mPostfixText.setTextColor(textColor);
+            int color = ThemeUtils.getThemeColor(mContext, backgroundColor);
+            mItemContainer.setBackgroundColor(color);
+
+            color = ThemeUtils.getThemeColor(mContext, textColor);
+            mPrefixText.setTextColor(color);
+            mMainText.setTextColor(color);
+            mPostfixText.setTextColor(color);
         }
 
     }
@@ -212,7 +219,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         mContext             = context;
         mRecyclerView        = recyclerView;
-        mLevelIndicatorWidth = 48;
+        mLevelIndicatorWidth = 96;
         mUseAlbumArtists     = useAlbumArtists;
         mUseArtistSort       = useArtistSort;
 
@@ -247,7 +254,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_item_library, parent, false);
 
-        LibraryAdapter.ViewHolder vh = new LibraryAdapter.ViewHolder(v, viewType);
+        LibraryAdapter.ViewHolder vh = new LibraryAdapter.ViewHolder(v, viewType, mContext);
 
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 vh.itemView.getLayoutParams();
@@ -262,29 +269,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         final LibraryItem item = mList.get(position);
 
-        TextView label = (TextView) holder.mItemContainer.findViewById(R.id.recycler_item_library_main_text);
-        label.setText(item.getMainText());
+        int height = holder.mPlayReplace.getDrawable().getBounds().height();
+        int width= holder.mPlayReplace.getDrawable().getBounds().width();
 
-        switch (item.getViewType()) {
-            case MPDArtist.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
-                holder.mPrefixText.setVisibility(View.GONE);
-                holder.mPostfixText.setVisibility(View.GONE);
-                break;
-            case MPDAlbum.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent2, R.attr.malp_color_text_accent2);
-                holder.mPrefixText.setVisibility(View.GONE);
-                holder.mPostfixText.setVisibility(View.VISIBLE);
-                holder.mPostfixText.setText(item.getPostfixText());
-                break;
-            case MPDTrack.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent1, R.attr.malp_color_text_accent1);
-                holder.mPrefixText.setVisibility(View.VISIBLE);
-                holder.mPrefixText.setText(item.getPrefixText());
-                holder.mPostfixText.setVisibility(View.VISIBLE);
-                holder.mPostfixText.setText(item.getPostfixText());
-                break;
-        }
 
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 holder.itemView.getLayoutParams();
@@ -297,47 +284,83 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             hideAdd2PlaylistButtons(holder);
         }
 
-        holder.mPlayReplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (item instanceof MPDTrack) {
-                    MPDTrack track = (MPDTrack)item;
-                    MPDQueryHandler.clearPlaylist();
-                    MPDQueryHandler.playSong(track.getPath());
-                } else if (item instanceof MPDAlbum) {
-                    MPDAlbum album = (MPDAlbum)item;
-                    MPDQueryHandler.playArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
-                }
-            }
-        });
-        holder.mPlayInsertAfterCursor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MPDTrack track;
+        holder.mMainText.setText(item.getMainText());
 
-                if (item instanceof MPDTrack) {
-                    track = (MPDTrack)item;
-                    MPDQueryHandler.playSongNext(track.getPath());
-                } else if (item instanceof MPDAlbum) {
-                    for (int i = (position + mExpanded.get(item.getLevel()).mNrOfChildren); i > position; i--) {
-                        track = (MPDTrack)mList.get(i);
+        switch (item.getViewType()) {
+            case MPDArtist.VIEW_TYPE:
+                if (item.isExpanded()) {
+                    holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                } else {
+                    holder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+                }
+                holder.mPrefixText.setVisibility(View.GONE);
+                holder.mPostfixText.setVisibility(View.GONE);
+                break;
+            case MPDAlbum.VIEW_TYPE:
+                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                holder.mPrefixText.setVisibility(View.GONE);
+                holder.mPostfixText.setVisibility(View.VISIBLE);
+                holder.mPostfixText.setText(item.getPostfixText());
+
+                holder.mPlayReplace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDAlbum album = (MPDAlbum)item;
+                        MPDQueryHandler.playArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
+                    }
+                });
+                holder.mPlayInsertAfterCursor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDTrack track;
+
+                        for (int i = (position + mExpanded.get(item.getLevel()).mNrOfChildren); i > position; i--) {
+                            track = (MPDTrack)mList.get(i);
+                            MPDQueryHandler.playSongNext(track.getPath());
+                        }
+                    }
+                });
+                holder.mPlayAppend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDAlbum album = (MPDAlbum)item;
+                        MPDQueryHandler.addArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
+                    }
+                });
+
+                break;
+            case MPDTrack.VIEW_TYPE:
+                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                holder.mPrefixText.setVisibility(View.VISIBLE);
+                holder.mPrefixText.setText(item.getPrefixText());
+                holder.mPostfixText.setVisibility(View.VISIBLE);
+                holder.mPostfixText.setText(item.getPostfixText());
+
+                holder.mPlayReplace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDTrack track = (MPDTrack)item;
+                        MPDQueryHandler.clearPlaylist();
+                        MPDQueryHandler.playSong(track.getPath());
+                    }
+                });
+                holder.mPlayInsertAfterCursor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDTrack track = (MPDTrack)item;
                         MPDQueryHandler.playSongNext(track.getPath());
                     }
-                }
-            }
-        });
-        holder.mPlayAppend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (item instanceof MPDTrack) {
-                    MPDTrack track = (MPDTrack)item;
-                    MPDQueryHandler.addPath(track.getPath());
-                } else if (item instanceof MPDAlbum) {
-                    MPDAlbum album = (MPDAlbum)item;
-                    MPDQueryHandler.addArtistAlbum(album.getName(), album.getArtistName(), album.getMBID());
-                }
-            }
-        });
+                });
+                holder.mPlayAppend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MPDTrack track = (MPDTrack)item;
+                        MPDQueryHandler.addPath(track.getPath());
+                    }
+                });
+
+                break;
+        }
 
         holder.mItemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,14 +381,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
     private void hideAdd2PlaylistButtons(LibraryAdapter.ViewHolder holder) {
-        holder.mDivider.setVisibility(View.GONE);
         holder.mPlayReplace.setVisibility(View.GONE);
         holder.mPlayInsertAfterCursor.setVisibility(View.GONE);
         holder.mPlayAppend.setVisibility(View.GONE);
     }
 
     private void showAdd2PlaylistButtons(LibraryAdapter.ViewHolder holder) {
-        holder.mDivider.setVisibility(View.VISIBLE);
         holder.mPlayReplace.setVisibility(View.VISIBLE);
         holder.mPlayInsertAfterCursor.setVisibility(View.VISIBLE);
         holder.mPlayAppend.setVisibility(View.VISIBLE);
@@ -391,7 +412,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         switch (item.getViewType()) {
             case MPDArtist.VIEW_TYPE:
                 item.getKidItems(pAlbumResponseHandler, position);
-                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
                 notifyItemChanged(position);
                 break;
             case MPDAlbum.VIEW_TYPE:
@@ -411,6 +431,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             return;
         }
 
+        if (item.getViewType() == MPDArtist.VIEW_TYPE) {
+            mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+            notifyItemChanged(position);
+        }
         int remove_count = 0;
         ExpandedItem exItem;
 
@@ -465,9 +489,15 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         item.setExpanded(true);
 
-        if (item.getViewType() == MPDAlbum.VIEW_TYPE) {
-            showAdd2PlaylistButtons(mExpanded.get(item.getLevel()).mHolder);
-            notifyItemChanged(position);
+        switch (item.getViewType()) {
+            case MPDAlbum.VIEW_TYPE:
+                showAdd2PlaylistButtons(mExpanded.get(item.getLevel()).mHolder);
+                notifyItemChanged(position);
+                break;
+            case MPDArtist.VIEW_TYPE:
+                mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                notifyItemChanged(position);
+                break;
         }
     }
 }

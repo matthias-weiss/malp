@@ -117,7 +117,7 @@
     <color name="colorPrimaryDark_deepPurple">#311B92</color>
     <color name="colorOnPrimary_deepPurple">#EDE7F6</color>
     <color name="colorAccent_deepPurple">#7E57C2</color>
-    <color name="colorAccent1_deepPurple">#7E57C2</color>
+    <color name="colorAccent1_deepPurple">#9575CD</color>
     <color name="colorAccent2_deepPurple">#B39DDB</color>
     <color name="colorAccent3_deepPurple">#D1C4E9</color>
     <color name="colorTextAccent_deepPurple">#FFFFFF</color>

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
-    android:id="@+id/recycler_item_library_item_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_item_library_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@android:color/transparent"
     android:clickable="true">
 
     <TextView
@@ -15,20 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:minHeight="@dimen/material_list_item_height"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_item_library_main_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/recycler_item_library_main_text" />
 
     <TextView
         android:id="@+id/recycler_item_library_main_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/material_list_item_height"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@android:color/transparent"
+        android:minHeight="@dimen/material_list_item_height"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toStartOf="@+id/recycler_item_library_postfix_text"
         app:layout_constraintStart_toEndOf="@+id/recycler_item_library_prefix_text"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,57 +37,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:minHeight="@dimen/material_list_item_height"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_item_library_main_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/recycler_item_library_divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text" />
+        app:layout_constraintTop_toTopOf="@+id/recycler_item_library_main_text" />
 
     <ImageButton
         android:id="@+id/recycler_item_library_play_replace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/recycler_item_library_main_text"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_divider"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        android:background="?attr/malp_color_accent3"
+        android:tint="?attr/malp_color_accent1"
+        app:layout_constraintEnd_toStartOf="@+id/recycler_item_library_play_insert_after_cursor"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
+        app:srcCompat="@drawable/ic_play_arrow_48dp" />
 
     <ImageButton
         android:id="@+id/recycler_item_library_play_append"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/recycler_item_library_main_text"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_divider"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:background="?attr/malp_color_accent3"
+        android:tint="?attr/malp_color_accent1"
+        app:layout_constraintStart_toEndOf="@+id/recycler_item_library_play_insert_after_cursor"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
+        app:srcCompat="@drawable/ic_append_after_last_48dp" />
 
     <ImageButton
         android:id="@+id/recycler_item_library_play_insert_after_cursor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="?attr/malp_color_accent3"
+        android:tint="?attr/malp_color_accent1"
         app:layout_constraintEnd_toStartOf="@+id/recycler_item_library_play_append"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/recycler_item_library_play_replace"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_divider"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
+        app:srcCompat="@drawable/ic_insert_after_current_48dp" />
+
+    <View
+        android:id="@+id/recycler_item_library_divider_bottom"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/malp_color_accent2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_play_append" />
 
 
 </android.support.constraint.ConstraintLayout>
