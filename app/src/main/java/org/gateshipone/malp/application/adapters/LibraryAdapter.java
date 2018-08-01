@@ -181,17 +181,17 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             }
             switch (viewType) {
                 case MPDArtist.VIEW_TYPE:
-                    setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+                    setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
                     mPrefixText.setVisibility(View.GONE);
                     mPostfixText.setVisibility(View.GONE);
                     break;
                 case MPDAlbum.VIEW_TYPE:
-                    setItemColors( R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                    setItemColors( R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                     mPrefixText.setVisibility(View.GONE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
                 case MPDTrack.VIEW_TYPE:
-                    setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                    setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                     mPrefixText.setVisibility(View.VISIBLE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
@@ -289,15 +289,15 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         switch (item.getViewType()) {
             case MPDArtist.VIEW_TYPE:
                 if (item.isExpanded()) {
-                    holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                    holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                 } else {
-                    holder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+                    holder.setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
                 }
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.GONE);
                 break;
             case MPDAlbum.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.VISIBLE);
                 holder.mPostfixText.setText(item.getPostfixText());
@@ -330,9 +330,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
                 break;
             case MPDTrack.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                 holder.mPrefixText.setVisibility(View.VISIBLE);
-                holder.mPrefixText.setText(item.getPrefixText());
+                holder.mPrefixText.setText(item.getPrefixText() + " - ");
                 holder.mPostfixText.setVisibility(View.VISIBLE);
                 holder.mPostfixText.setText(item.getPostfixText());
 
@@ -432,7 +432,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         }
 
         if (item.getViewType() == MPDArtist.VIEW_TYPE) {
-            mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_background, R.attr.malp_color_text_on_background);
+            mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
             notifyItemChanged(position);
         }
         int remove_count = 0;
@@ -495,7 +495,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 notifyItemChanged(position);
                 break;
             case MPDArtist.VIEW_TYPE:
-                mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_accent3, R.attr.malp_color_text_accent3);
+                mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                 notifyItemChanged(position);
                 break;
         }

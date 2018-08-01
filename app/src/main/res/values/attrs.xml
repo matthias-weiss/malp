@@ -24,24 +24,24 @@
 <resources>
     <declare-styleable name="AndroMPDColors">
         <attr name="malp_color_primary" format="reference|color"/>
-        <attr name="malp_color_primary_dark" format="reference|color"/>
         <attr name="malp_color_on_primary" format="reference|color"/>
         <attr name="malp_color_accent" format="reference|color"/>
-        <attr name="malp_color_accent1" format="reference|color"/>
-        <attr name="malp_color_accent2" format="reference|color"/>
-        <attr name="malp_color_accent3" format="reference|color"/>
+        <attr name="malp_color_on_accent" format="reference|color"/>
+        <attr name="malp_color_surface" format="reference|color"/>
+        <attr name="malp_color_on_surface" format="reference|color"/>
         <attr name="malp_color_background" format="reference|color"/>
-        <attr name="malp_color_background_selected" format="reference|color"/>
-        <attr name="malp_color_text_on_background" format="reference|color"/>
+        <attr name="malp_color_outline" format="reference|color"/>
+
         <attr name="malp_color_text_accent" format="reference|color"/>
-        <attr name="malp_color_text_accent1" format="reference|color"/>
-        <attr name="malp_color_text_accent2" format="reference|color"/>
-        <attr name="malp_color_text_accent3" format="reference|color"/>
         <attr name="malp_color_text_background_secondary" format="reference|color"/>
         <attr name="malp_color_text_background_primary" format="reference|color"/>
         <attr name="malp_color_navheader_icon" format="reference|color"/>
         <attr name="malp_cover_background" format="reference|color"/>
         <attr name="malp_grid_gradient" format="reference"/>
         <attr name="malp_navdrawer_theme" format="reference"/>
+        <attr name="malp_color_primary_dark" format="reference|color"/>
+        <attr name="malp_color_background_selected" format="reference|color"/>
+        <attr name="malp_color_text_on_background" format="reference|color"/>
+
     </declare-styleable>
 </resources>
