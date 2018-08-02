@@ -45,6 +45,8 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         DATE
     }
 
+    public static final int  VIEW_TYPE = 1;
+
     /* Album properties */
     @NonNull
     private String mAlbumName;
@@ -63,10 +65,10 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
     private boolean mImageFetching;
 
-    public static final int  VIEW_TYPE = 1;
     private boolean mExpanded = false;
     private boolean mUseArtistSort;
 
+    private LibraryAdapter.ViewHolder mHolder;
 
     public MPDAlbum(@NonNull String name) {
         mAlbumName = name;
@@ -77,6 +79,8 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         mUseArtistSort = sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
+
+        mHolder = null;
     }
 
     /* Getters */
@@ -89,6 +93,7 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
         mImageFetching  = in.readByte() != 0;
         mDate           = in.readString();
         mUseArtistSort  = in.readByte() != 0;
+        mHolder         = null;
     }
 
     public static final Creator<MPDAlbum> CREATOR = new Creator<MPDAlbum>() {
@@ -246,4 +251,8 @@ public class MPDAlbum implements LibraryItem, MPDGenericItem, Comparable<MPDAlbu
     public void setExpanded(boolean expanded) { mExpanded = expanded; }
 
     public int getViewType() { return MPDAlbum.VIEW_TYPE; }
+
+    public void setViewHolder(LibraryAdapter.ViewHolder holder) { mHolder = holder; }
+
+    public LibraryAdapter.ViewHolder getViewHolder() { return mHolder; }
 }

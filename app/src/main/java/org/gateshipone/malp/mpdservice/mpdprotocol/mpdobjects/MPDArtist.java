@@ -39,6 +39,9 @@ import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDQueryHandler;
 import java.util.ArrayList;
 
 public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArtist>, Parcelable {
+
+    public static final int      VIEW_TYPE = 0;
+
     /* Artist properties */
     @NonNull
     private String pArtistName;
@@ -49,10 +52,10 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
     private boolean mImageFetching;
 
-    public static final int      VIEW_TYPE = 0;
-    private boolean              mExpanded = false;
-    private boolean              mUseArtistSort;
+    private boolean mExpanded = false;
+    private boolean mUseArtistSort;
 
+    private LibraryAdapter.ViewHolder mHolder;
 
     public MPDArtist(@NonNull String name) {
         pArtistName = name;
@@ -60,12 +63,14 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         mUseArtistSort =  sharedPref.getBoolean(App.getContext().getString(R.string.pref_use_artist_sort_key), App.getContext().getResources().getBoolean(R.bool.pref_use_artist_sort_default));
+        mHolder = null;
     }
 
     protected MPDArtist(Parcel in) {
         pArtistName = in.readString();
         pMBIDs = in.createStringArrayList();
         mImageFetching = in.readByte() != 0;
+        mHolder = null;
     }
 
     public static final Creator<MPDArtist> CREATOR = new Creator<MPDArtist>() {
@@ -220,4 +225,8 @@ public class MPDArtist implements LibraryItem, MPDGenericItem, Comparable<MPDArt
     public void setExpanded(boolean expanded) { mExpanded = expanded; }
 
     public int getViewType() { return MPDArtist.VIEW_TYPE; }
+
+    public void setViewHolder(LibraryAdapter.ViewHolder holder) { mHolder = holder; }
+
+    public LibraryAdapter.ViewHolder getViewHolder() { return mHolder; }
 }

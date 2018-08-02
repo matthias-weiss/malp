@@ -73,13 +73,11 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public class ExpandedItem {
         public LibraryItem        mItem;
-        LibraryAdapter.ViewHolder mHolder;
         public int                mPosition;
         public int                mNrOfChildren;
 
         public ExpandedItem(LibraryItem item, LibraryAdapter.ViewHolder holder, int position, int nrOfChildren) {
             mItem         = item;
-            mHolder       = holder;
             mPosition     = position;
             mNrOfChildren = nrOfChildren;
         }
@@ -269,9 +267,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         final LibraryItem item = mList.get(position);
 
-        int height = holder.mPlayReplace.getDrawable().getBounds().height();
-        int width= holder.mPlayReplace.getDrawable().getBounds().width();
-
+        item.setViewHolder(holder);
 
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 holder.itemView.getLayoutParams();
@@ -432,7 +428,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         }
 
         if (item.getViewType() == MPDArtist.VIEW_TYPE) {
-            mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
+            item.getViewHolder().setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
             notifyItemChanged(position);
         }
         int remove_count = 0;
@@ -447,7 +443,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             exItem.mItem.setExpanded(false);
 
             if (exItem.mItem.getViewType() != MPDArtist.VIEW_TYPE) {
-                hideAdd2PlaylistButtons(exItem.mHolder);
+                hideAdd2PlaylistButtons(exItem.mItem.getViewHolder());
                 notifyItemChanged(exItem.mPosition);
             }
 
@@ -491,11 +487,11 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         switch (item.getViewType()) {
             case MPDAlbum.VIEW_TYPE:
-                showAdd2PlaylistButtons(mExpanded.get(item.getLevel()).mHolder);
+                showAdd2PlaylistButtons(item.getViewHolder());
                 notifyItemChanged(position);
                 break;
             case MPDArtist.VIEW_TYPE:
-                mExpanded.get(item.getLevel()).mHolder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                item.getViewHolder().setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
                 notifyItemChanged(position);
                 break;
         }

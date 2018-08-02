@@ -27,6 +27,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import org.gateshipone.malp.application.adapters.LibraryAdapter;
 import org.gateshipone.malp.application.adapters.LibraryItem;
 import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandler;
 
@@ -38,6 +39,7 @@ import org.gateshipone.malp.mpdservice.handlers.responsehandler.MPDResponseHandl
  */
 public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
 
+    public static final int  VIEW_TYPE = 2;
 
     /**
      * Title of the song
@@ -150,8 +152,9 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
      */
     private boolean pImageFetching;
 
-    public static final int  VIEW_TYPE = 2;
-    public boolean           mExpanded = false;
+    private boolean mExpanded = false;
+
+    private LibraryAdapter.ViewHolder mHolder;
 
     /**
      * Create empty MPDTrack (track). Fill it with setter methods during
@@ -180,6 +183,8 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
         pLength = 0;
 
         pImageFetching = false;
+
+        mHolder = null;
     }
 
 
@@ -204,6 +209,7 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
         pSongPosition = in.readInt();
         pSongID = in.readInt();
         pImageFetching = in.readByte() != 0;
+        mHolder = null;
     }
 
 
@@ -511,4 +517,8 @@ public class MPDTrack extends MPDFileEntry implements LibraryItem, Parcelable {
     public void setExpanded(boolean expanded) { mExpanded = expanded; }
 
     public int getViewType() { return MPDTrack.VIEW_TYPE; }
+
+    public void setViewHolder(LibraryAdapter.ViewHolder holder) { mHolder = holder; }
+
+    public LibraryAdapter.ViewHolder getViewHolder() { return mHolder; }
 }

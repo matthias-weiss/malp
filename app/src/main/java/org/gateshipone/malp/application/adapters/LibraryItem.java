@@ -73,4 +73,16 @@ public interface LibraryItem {
      * @return integer signifying Artist, Album or Track item
      */
     int getViewType();
+
+    /**
+     * Sets the view holder for this list item
+     * @param holder new ViewHolder for that item
+     */
+    void setViewHolder(LibraryAdapter.ViewHolder holder);
+
+    /**
+     * Gets the view holder for this list item
+     * @return ViewHolder of the item
+     */
+    LibraryAdapter.ViewHolder getViewHolder();
 }
