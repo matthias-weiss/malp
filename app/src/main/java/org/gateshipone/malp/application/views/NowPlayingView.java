@@ -26,14 +26,10 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -42,8 +38,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,18 +48,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.gateshipone.malp.R;
-import org.gateshipone.malp.application.activities.FanartActivity;
 import org.gateshipone.malp.application.artworkdatabase.ArtworkManager;
 import org.gateshipone.malp.application.background.BackgroundService;
 import org.gateshipone.malp.application.background.BackgroundServiceConnection;
-import org.gateshipone.malp.application.callbacks.OnSaveDialogListener;
 import org.gateshipone.malp.application.fragments.TextDialog;
-import org.gateshipone.malp.application.fragments.serverfragments.ChoosePlaylistDialog;
 import org.gateshipone.malp.application.utils.CoverBitmapLoader;
 import org.gateshipone.malp.application.utils.FormatHelper;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.application.utils.VolumeButtonLongClickListener;
-import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.mpdservice.handlers.MPDConnectionStateChangeHandler;
 import org.gateshipone.malp.mpdservice.handlers.MPDStatusChangeHandler;
 import org.gateshipone.malp.mpdservice.handlers.serverhandler.MPDCommandHandler;
@@ -78,9 +68,8 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDCurrentStatus;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
 
 import java.lang.ref.WeakReference;
-import java.util.Locale;
 
-public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenuItemClickListener, ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
+public class NowPlayingView extends ConstraintLayout implements ArtworkManager.onNewAlbumImageListener, ArtworkManager.onNewArtistImageListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = NowPlayingView.class.getSimpleName();
@@ -88,11 +77,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private ServerStatusListener mStateListener;
 
     private ServerConnectionListener mConnectionStateListener;
-
-    /**
-     * Absolute pixel position of upper layout bound
-     */
-    private int mTopPosition;
 
     /**
      * Flag whether the views switches between album cover and artist image
@@ -121,8 +105,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      */
     private CoverBitmapLoader mCoverLoader = null;
 
-    private StreamingStatusReceiver mStreamingStatusReceiver;
-
     private BackgroundServiceConnection mBackgroundServiceConnection;
 
     /**
@@ -136,8 +118,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
      * Seekbar used for seeking and informing the user of the current playback position.
      */
     private SeekBar mPositionSeekbar;
-
-    //private ImageView mVolumeIconButtons;
 
     private TextView mVolumeText;
 
@@ -161,8 +141,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
     private MPDCurrentStatus mLastStatus;
     private MPDTrack mLastTrack;
 
-    private boolean mUseEnglishWikipedia;
-
     public NowPlayingView(Context context) {
         this(context, null, 0);
     }
@@ -179,157 +157,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mLastTrack = new MPDTrack("");
     }
 
-    /**
-     * Menu click listener. This method gets called when the user selects an item of the popup menu (right top corner).
-     *
-     * @param item MenuItem that was clicked.
-     * @return Returns true if the item was handled by this method. False otherwise.
-     */
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_clear_playlist:
-                final AlertDialog.Builder removeListBuilder = new AlertDialog.Builder(getContext());
-                removeListBuilder.setTitle(getContext().getString(R.string.action_delete_playlist));
-                removeListBuilder.setMessage(getContext().getString(R.string.dialog_message_delete_current_playlist));
-                removeListBuilder.setPositiveButton(R.string.dialog_action_yes, (dialog, which) -> MPDQueryHandler.clearPlaylist());
-                removeListBuilder.setNegativeButton(R.string.dialog_action_no, (dialog, which) -> {
-
-                });
-                removeListBuilder.create().show();
-                break;
-            case R.id.action_shuffle_playlist: {
-                final AlertDialog.Builder shuffleListBuilder = new AlertDialog.Builder(getContext());
-                shuffleListBuilder.setTitle(getContext().getString(R.string.action_shuffle_playlist));
-                shuffleListBuilder.setMessage(getContext().getString(R.string.dialog_message_shuffle_current_playlist));
-                shuffleListBuilder.setPositiveButton(R.string.dialog_action_yes, (dialog, which) -> MPDQueryHandler.shufflePlaylist());
-                shuffleListBuilder.setNegativeButton(R.string.dialog_action_no, (dialog, which) -> {
-                });
-                shuffleListBuilder.create().show();
-            }
-                break;
-            case R.id.action_save_playlist:
-                OnSaveDialogListener plDialogCallback = new OnSaveDialogListener() {
-                    @Override
-                    public void onSaveObject(final String title) {
-                        AlertDialog.Builder overWriteBuilder = new AlertDialog.Builder(getContext());
-                        overWriteBuilder.setTitle(getContext().getString(R.string.action_overwrite_playlist));
-                        overWriteBuilder.setMessage(getContext().getString(R.string.dialog_message_overwrite_playlist) + ' ' + title + '?');
-                        overWriteBuilder.setPositiveButton(R.string.dialog_action_yes, (dialog, which) -> {
-                            MPDQueryHandler.removePlaylist(title);
-                            MPDQueryHandler.savePlaylist(title);
-                        });
-                        overWriteBuilder.setNegativeButton(R.string.dialog_action_no, (dialog, which) -> {
-
-                        });
-                        overWriteBuilder.create().show();
-
-                    }
-
-                    @Override
-                    public void onCreateNewObject() {
-                        // open dialog in order to save the current playlist as a playlist in the mediastore
-                        TextDialog textDialog = new TextDialog();
-                        Bundle args = new Bundle();
-                        args.putString(TextDialog.EXTRA_DIALOG_TITLE, getResources().getString(R.string.dialog_save_playlist));
-                        args.putString(TextDialog.EXTRA_DIALOG_TEXT, getResources().getString(R.string.default_playlist_title));
-
-                        textDialog.setCallback(MPDQueryHandler::savePlaylist);
-                        textDialog.setArguments(args);
-                        textDialog.show(((AppCompatActivity) getContext()).getSupportFragmentManager(), "SavePLTextDialog");
-                    }
-                };
-
-                // open dialog in order to save the current playlist as a playlist in the mediastore
-                ChoosePlaylistDialog choosePlaylistDialog = new ChoosePlaylistDialog();
-                Bundle args = new Bundle();
-                args.putBoolean(ChoosePlaylistDialog.EXTRA_SHOW_NEW_ENTRY, true);
-
-                choosePlaylistDialog.setCallback(plDialogCallback);
-                choosePlaylistDialog.setArguments(args);
-                choosePlaylistDialog.show(((AppCompatActivity) getContext()).getSupportFragmentManager(), "ChoosePlaylistDialog");
-                break;
-            case R.id.action_add_url:
-                TextDialog addURLDialog = new TextDialog();
-                addURLDialog.setCallback(MPDQueryHandler::addPath);
-                Bundle textDialogArgs = new Bundle();
-                textDialogArgs.putString(TextDialog.EXTRA_DIALOG_TEXT, "http://...");
-                textDialogArgs.putString(TextDialog.EXTRA_DIALOG_TITLE, getResources().getString(R.string.action_add_url));
-                addURLDialog.setArguments(textDialogArgs);
-                addURLDialog.show(((AppCompatActivity) getContext()).getSupportFragmentManager(), "AddURLDialog");
-                break;
-            case R.id.action_jump_to_current:
-                mPlaylistView.jumpToCurrentSong();
-                break;
-            case R.id.action_toggle_single_mode:
-                if (null != mLastStatus) {
-                    if (mLastStatus.getSinglePlayback() == 0) {
-                        MPDCommandHandler.setSingle(true);
-                    } else {
-                        MPDCommandHandler.setSingle(false);
-                    }
-                }
-                break;
-            case R.id.action_toggle_consume_mode:
-                if (null != mLastStatus) {
-                    if (mLastStatus.getConsume() == 0) {
-                        MPDCommandHandler.setConsume(true);
-                    } else {
-                        MPDCommandHandler.setConsume(false);
-                    }
-                }
-                break;
-            case R.id.action_open_fanart:
-                Intent intent = new Intent(getContext(), FanartActivity.class);
-                getContext().startActivity(intent);
-                return true;
-            case R.id.action_wikipedia_album:
-                Intent albumIntent = new Intent(Intent.ACTION_VIEW);
-                //albumIntent.setData(Uri.parse("https://" + Locale.getDefault().getLanguage() + ".wikipedia.org/wiki/index.php?search=" + mLastTrack.getTrackAlbum() + "&title=Special:Search&go=Go"));
-                if (mUseEnglishWikipedia) {
-                    albumIntent.setData(Uri.parse("https://en.wikipedia.org/wiki/" + mLastTrack.getTrackAlbum()));
-                } else {
-                    albumIntent.setData(Uri.parse("https://" + Locale.getDefault().getLanguage() + ".wikipedia.org/wiki/" + mLastTrack.getTrackAlbum()));
-                }
-                getContext().startActivity(albumIntent);
-                return true;
-            case R.id.action_wikipedia_artist:
-                Intent artistIntent = new Intent(Intent.ACTION_VIEW);
-                //artistIntent.setData(Uri.parse("https://" + Locale.getDefault().getLanguage() + ".wikipedia.org/wiki/index.php?search=" + mLastTrack.getTrackAlbumArtist() + "&title=Special:Search&go=Go"));
-                if (mUseEnglishWikipedia) {
-                    artistIntent.setData(Uri.parse("https://en.wikipedia.org/wiki/" + mLastTrack.getTrackArtist()));
-                } else {
-                    artistIntent.setData(Uri.parse("https://" + Locale.getDefault().getLanguage() + ".wikipedia.org/wiki/" + mLastTrack.getTrackArtist()));
-                }
-                getContext().startActivity(artistIntent);
-                return true;
-            case R.id.action_start_streaming: {
-                if (mStreamingStatus == BackgroundService.STREAMING_STATUS.PLAYING || mStreamingStatus == BackgroundService.STREAMING_STATUS.BUFFERING) {
-                    try {
-                        mBackgroundServiceConnection.getService().stopStreamingPlayback();
-                    } catch (RemoteException e) {
-
-                    }
-                } else {
-                    try {
-                        mBackgroundServiceConnection.getService().startStreamingPlayback();
-                    } catch (RemoteException e) {
-
-                    }
-                }
-                return true;
-            }
-            case R.id.action_share_current_song: {
-                shareCurrentTrack();
-                return true;
-            }
-            default:
-                return false;
-        }
-        return false;
-    }
-
-
     @Override
     public void newAlbumImage(MPDAlbum album) {
         if (mLastTrack.getTrackAlbum().equals(album.getName())) {
@@ -339,11 +166,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getContext().getString(R.string.pref_volume_controls_key))) {
-            setVolumeControlSetting();
-        } else if (key.equals(getContext().getString(R.string.pref_use_english_wikipedia_key))) {
-            mUseEnglishWikipedia = sharedPreferences.getBoolean(key, getContext().getResources().getBoolean(R.bool.pref_use_english_wikipedia_default));
-        } else if (key.equals(getContext().getString(R.string.pref_show_npv_artist_image_key))) {
+        if (key.equals(getContext().getString(R.string.pref_show_npv_artist_image_key))) {
             mShowArtistImage = sharedPreferences.getBoolean(key, getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
 
             // Show artist image if artwork is requested
@@ -361,7 +184,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
 
     private void setVolumeControlSetting() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String volumeControlView = sharedPref.getString(getContext().getString(R.string.pref_volume_controls_key), getContext().getString(R.string.pref_volume_control_view_default));
 
         mVolumeStepSize = sharedPref.getInt(getContext().getString(R.string.pref_volume_steps_key), getResources().getInteger(R.integer.pref_volume_steps_default));
         mPlusListener.setVolumeStepSize(mVolumeStepSize);
@@ -373,52 +195,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         if (mShowArtistImage && mLastTrack.getTrackArtist().equals(artist.getArtistName())) {
             //mCoverLoader.getArtistImage(artist, false, mCoverImage.getWidth(), mCoverImage.getHeight());
         }
-    }
-
-
-
-
-    /**
-     * Handles touch inputs to some views, to make sure, the ViewDragHelper is called.
-     *
-     * @param ev Touch input event
-     * @return True if handled by this view or false otherwise
-     */
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        // Call the drag helper
-        //mDragHelper.processTouchEvent(ev);
-
-        // Get the position of the new touch event
-        final float x = ev.getX();
-        final float y = ev.getY();
-
-        // Check if the position lies in the bounding box of the header view (which is draggable)
-        //boolean isHeaderViewUnder = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
-        boolean isHeaderViewUnder = true;
-        // Check if drag is handled by the helper, or the header or mainview. If not notify the system that input is not yet handled.
-        //return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mMainView, (int) x, (int) y);
-        return true;
-    }
-
-
-    /**
-     * Checks if an input to coordinates lay within a View
-     *
-     * @param view View to check with
-     * @param x    x value of the input
-     * @param y    y value of the input
-     * @return
-     */
-    private boolean isViewHit(View view, int x, int y) {
-        int[] viewLocation = new int[2];
-        view.getLocationOnScreen(viewLocation);
-        int[] parentLocation = new int[2];
-        this.getLocationOnScreen(parentLocation);
-        int screenX = parentLocation[0] + x;
-        int screenY = parentLocation[1] + y;
-        return screenX >= viewLocation[0] && screenX < viewLocation[0] + view.getWidth() &&
-                screenY >= viewLocation[1] && screenY < viewLocation[1] + view.getHeight();
     }
 
     /**
@@ -490,11 +266,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         // Add listener to bottom next button
         mBottomNextButton.setOnClickListener(arg0 -> MPDCommandHandler.nextSong());
 
-/*        mCoverImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FanartActivity.class);
-            getContext().startActivity(intent);
-        });
-        mCoverImage.setVisibility(INVISIBLE);*/
+        //mCoverImage.setVisibility(INVISIBLE);
 
         mCoverLoader = new CoverBitmapLoader(getContext(), new CoverReceiverClass());
 
@@ -511,8 +283,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
         setVolumeControlSetting();
-
-        mUseEnglishWikipedia = sharedPref.getBoolean(getContext().getString(R.string.pref_use_english_wikipedia_key), getContext().getResources().getBoolean(R.bool.pref_use_english_wikipedia_default));
 
         mShowArtistImage = sharedPref.getBoolean(getContext().getString(R.string.pref_show_npv_artist_image_key), getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
     }
@@ -560,10 +330,7 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
             mTrackAlbum.setSelected(true);
         }
 
-/*        if (mStreamingStatusReceiver == null) {
-            mStreamingStatusReceiver = new StreamingStatusReceiver();
-        }
-
+/*
         if (null == mBackgroundServiceConnection) {
             mBackgroundServiceConnection = new BackgroundServiceConnection(getContext().getApplicationContext(), new BackgroundServiceConnectionListener());
         }
@@ -586,8 +353,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
         setVolumeControlSetting();
-
-        mUseEnglishWikipedia = sharedPref.getBoolean(getContext().getString(R.string.pref_use_english_wikipedia_key), getContext().getResources().getBoolean(R.bool.pref_use_english_wikipedia_default));
 
         mShowArtistImage = sharedPref.getBoolean(getContext().getString(R.string.pref_show_npv_artist_image_key), getContext().getResources().getBoolean(R.bool.pref_show_npv_artist_image_default));
     }
@@ -674,29 +439,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         mLastTrack = track;
 
     }
-
-
-    /**
-     * Simple sharing for the current track.
-     * <p>
-     * This will only work if the track can be found in the mediastore.
-     */
-    private void shareCurrentTrack() {
-        if (null == mLastTrack) {
-            return;
-        }
-        String sharingText = getContext().getString(R.string.sharing_song_details, mLastTrack.getTrackTitle(), mLastTrack.getTrackArtist(), mLastTrack.getTrackAlbum());
-
-        // set up intent for sharing
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, sharingText);
-        shareIntent.setType("text/plain");
-
-        // start sharing
-        getContext().startActivity(Intent.createChooser(shareIntent, getContext().getString(R.string.dialog_share_song_details)));
-    }
-
 
 
     private class ServerStatusListener extends MPDStatusChangeHandler {
@@ -803,19 +545,6 @@ public class NowPlayingView extends ConstraintLayout implements PopupMenu.OnMenu
         }
     }
 
-    /**
-     * Receives stream playback status updates. When stream playback is started the status
-     * is necessary to show the right menu item.
-     */
-    private class StreamingStatusReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(BackgroundService.ACTION_STREAMING_STATUS_CHANGED)) {
-                mStreamingStatus = BackgroundService.STREAMING_STATUS.values()[intent.getIntExtra(BackgroundService.INTENT_EXTRA_STREAMING_STATUS, 0)];
-            }
-        }
-    }
 
     /**
      * Private class to handle when a {@link android.content.ServiceConnection} to the {@link BackgroundService}

@@ -50,18 +50,4 @@ public class PreferenceHelper {
         // Default value
         return MPDAlbum.MPD_ALBUM_SORT_ORDER.TITLE;
     }
-
-    public static LIBRARY_TRACK_CLICK_ACTION getClickAction(SharedPreferences prefs, Context context) {
-        String clickActionPref = prefs.getString(context.getString(R.string.pref_library_click_action_key), context.getString(R.string.pref_library_click_action_default));
-        if (clickActionPref.equals(context.getString(R.string.pref_library_click_action_details_key))) {
-            return LIBRARY_TRACK_CLICK_ACTION.ACTION_SHOW_DETAILS;
-        } else if (clickActionPref.equals(context.getString(R.string.pref_library_click_action_add_key))) {
-            return LIBRARY_TRACK_CLICK_ACTION.ACTION_ADD_SONG;
-        } else if (clickActionPref.equals(context.getString(R.string.pref_library_click_action_play_key))) {
-            return LIBRARY_TRACK_CLICK_ACTION.ACTION_PLAY_SONG;
-        } else if (clickActionPref.equals(context.getString(R.string.pref_library_click_action_play_next_key))) {
-            return LIBRARY_TRACK_CLICK_ACTION.ACTION_PLAY_SONG_NEXT;
-        }
-        return LIBRARY_TRACK_CLICK_ACTION.ACTION_ADD_SONG;
-    }
 }

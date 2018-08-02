@@ -196,52 +196,7 @@
         <item>@string/preference_theme_item_oled_dark</item>
     </string-array>
 
-    <string name="preference_dark_theme_title">ダークテーマ</string>
-    <string name="preference_dark_theme_message">ダークテーマを使用する</string>
-
-    <string name="preference_default_view_title">デフォルトビュー</string>
-    <string name="preference_default_view_message">デフォルトビューを選択</string>
-    <string name="preference_default_view_summary">アプリケーションのデフォルトビューを選択します。</string>
-
-    <string name="preference_default_view_my_music_artists">アーティスト</string>
-    <string name="preference_default_view_my_music_albums">アルバム</string>
-    <string name="preference_default_view_my_music_playlists">プレイリスト</string>
-    <string name="preference_default_view_my_music_files">ファイル</string>
-
-    <string-array name="preference_default_views">
-        <item>@string/preference_default_view_my_music_artists</item>
-        <item>@string/preference_default_view_my_music_albums</item>
-        <item>@string/preference_default_view_my_music_playlists</item>
-        <item>@string/preference_default_view_my_music_files</item>
-    </string-array>
-
-    <string name="preference_library_view_title">ライブラリービューを選択</string>
-    <string name="preference_library_view_message">ライブラリービューを選択</string>
-    <string name="preference_library_view_summary">アルバムとアーティストで使用するビューの種類を選択します</string>
-
-    <string name="preference_library_view_list">リスト</string>
-    <string name="preference_library_view_grid">グリッド</string>
-
-    <string-array name="preference_library_view">
-        <item>@string/preference_library_view_list</item>
-        <item>@string/preference_library_view_grid</item>
-    </string-array>
-
     <string name="preference_use_album_artists_title">アルバムアーティストタグを使用する</string>
-
-    <string name="preference_volume_control_title">ボリュームコントロールビューを選択</string>
-    <string name="preference_volume_control_message">ボリュームコントロールビューを選択</string>
-    <string name="preference_volume_control_summary">音楽再生のボリュームをコントロールするために使用するビューの種類を選択します</string>
-
-    <string name="preference_volume_control_off">オフ</string>
-    <string name="preference_volume_control_seekbar">スライダー</string>
-    <string name="preference_volume_control_buttons">ボタン</string>
-
-    <string-array name="preference_volume_control">
-        <item>@string/preference_volume_control_off</item>
-        <item>@string/preference_volume_control_seekbar</item>
-        <item>@string/preference_volume_control_buttons</item>
-    </string-array>
 
     <string name="preference_generic_hardware_keys_title">ハードウェアボタンを使用する</string>
     <string name="preference_generic_hardware_keys_text">デバイスのハードウェアボタンを使用して再生をコントロールします。</string>

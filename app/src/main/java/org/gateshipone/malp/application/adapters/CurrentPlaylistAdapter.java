@@ -63,7 +63,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * This decreases the memory footprint because the adapter is able to clear unneeded list blocks when
  * not longer needed (e.g. the user scrolled away)
  */
-public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements ArtworkManager.onNewAlbumImageListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements ArtworkManager.onNewAlbumImageListener {
     /**
      * States of list blocks.
      */
@@ -166,8 +166,6 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
      */
     private boolean mWindowEnabled = true;
 
-    private boolean mSectionsEnabled = true;
-
     private ArtworkManager mArtworkManager;
 
 
@@ -197,7 +195,6 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
 
         // Check if sections should be shown
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        mSectionsEnabled = sharedPref.getBoolean(mContext.getString(R.string.pref_show_playlist_sections_key), mContext.getResources().getBoolean(R.bool.pref_show_playlist_sections_default));
     }
 
     /**
@@ -231,27 +228,7 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
      */
     @Override
     public int getItemViewType(int position) {
-        // If playlist sections are disabled, just return track type here
-        if(!mSectionsEnabled) {
-            return VIEW_TYPES.TYPE_TRACK_ITEM.ordinal();
-        }
-        // Get MPDTrack at the given index used for this item.
-        MPDTrack track = getTrack(position);
-        boolean newAlbum = false;
-
-        // Check if the track was available in local data set already (or is currently fetching)
-        if (track != null) {
-            MPDTrack previousTrack;
-            if (position > 0) {
-                previousTrack = getTrack(position - 1);
-                if (previousTrack != null) {
-                    newAlbum = !previousTrack.getTrackAlbum().equals(track.getTrackAlbum());
-                }
-            } else {
-                return VIEW_TYPES.TYPE_SECTION_TRACK_ITEM.ordinal();
-            }
-        }
-        return newAlbum ? VIEW_TYPES.TYPE_SECTION_TRACK_ITEM.ordinal() :VIEW_TYPES.TYPE_TRACK_ITEM.ordinal();
+        return VIEW_TYPES.TYPE_TRACK_ITEM.ordinal();
     }
 
     /**
@@ -534,9 +511,6 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
         updatePlaylist();
         mStateListener.onNewStatusReady(MPDStateMonitoringHandler.getHandler().getLastStatus());
         ArtworkManager.getInstance(mContext.getApplicationContext()).registerOnNewAlbumImageListener(this);
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        sharedPref.registerOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -549,9 +523,6 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
 
         mPlaylist = null;
         ArtworkManager.getInstance(mContext.getApplicationContext()).unregisterOnNewAlbumImageListener(this);
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        sharedPref.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -709,11 +680,5 @@ public class CurrentPlaylistAdapter extends ScrollSpeedAdapter implements Artwor
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(mContext.getString(R.string.pref_show_playlist_sections_key))) {
-            mSectionsEnabled = sharedPreferences.getBoolean(mContext.getString(R.string.pref_show_playlist_sections_key), mContext.getResources().getBoolean(R.bool.pref_show_playlist_sections_default));
-            notifyDataSetInvalidated();
-        }
-    }
+
 }

@@ -78,9 +78,6 @@
     <string name="action_add_url">Agregar URL</string>
     <string name="action_show_albums_from_here">Mostrar discos en esta carpeta</string>
 
-    <string name="action_wikipedia_album">Abrir disco</string>
-    <string name="action_wikipedia_artist">Abrir artista</string>
-
     <!-- Menu entries -->
     <string name="menu_library">Biblioteca</string>
     <string name="menu_settings">Configuración</string>
@@ -198,46 +195,17 @@
 
     <string name="preference_album_sort_order_name">Nombre</string>
     <string name="preference_album_sort_order_year">Año</string>
-    <string name="preference_dark_theme_title">Tema oscuro</string>
-    <string name="preference_dark_theme_message">Usar un tema oscuro</string>
 
     <string name="preference_show_artist_image_title">Mostrar imagen del artista</string>
     <string name="preference_show_artist_image_text">Alternar entre la cubierta del disco y una imagen del artista en la vista de la canción sonando</string>#
 
-    <string name="preference_default_view_title">Vista por default</string>
-    <string name="preference_default_view_message">Seleccionar la vista por default</string>
-    <string name="preference_default_view_summary">Seleccionar la vista por default de la aplicación.</string>
-
-    <string name="preference_default_view_my_music_artists">Artistas</string>
-    <string name="preference_default_view_my_music_albums">Discos</string>
-    <string name="preference_default_view_my_music_playlists">Listas</string>
-    <string name="preference_default_view_my_music_files">Archivos</string>
-
-    <string name="preference_library_view_title">Seleccione vista de biblioteca</string>
-    <string name="preference_library_view_message">Seleccione vista de biblioteca</string>
-    <string name="preference_library_view_summary">Seleccione el tipo de vista a usar para discos y artistas</string>
-
-    <string name="preference_library_view_list">Lista</string>
-    <string name="preference_library_view_grid">Cuadrícula</string>
-
     <string name="preference_use_album_artists_title">Usar etiqueta DiscoArtista</string>
-
-    <string name="preference_volume_control_title">Seleccione vista del control de volúmen</string>
-    <string name="preference_volume_control_message">Seleccione vista del control de volúmen</string>
-    <string name="preference_volume_control_summary">Seleccione el tipo de vista a usar para controlar el volúmen</string>
-
-    <string name="preference_volume_control_off">Apagado</string>
-    <string name="preference_volume_control_seekbar">Deslizador</string>
-    <string name="preference_volume_control_buttons">Botones</string>
 
     <string name="preference_generic_hardware_keys_title">Usar botones de hardware</string>
     <string name="preference_generic_hardware_keys_text">Usar botonoes de hardware para control la reproducción.</string>
 
     <string name="preference_show_notification_title">Mostrar notificación</string>
     <string name="preference_show_notification_text">Mostrar una notificación al salir de la interfaz principal de usuario.</string>
-
-    <string name="preference_use_english_wikipedia_title">Usar Wikipedia en inglés</string>
-    <string name="preference_use_english_wikipedia_text">Usar Wikipedia versión inglés version para encontrar páginas</string>
 
     <string name="preference_category_design">Diseño</string>
     <string name="preference_category_library">Biblioteca</string>

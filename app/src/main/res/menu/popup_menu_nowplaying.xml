@@ -78,15 +78,4 @@
         android:orderInCategory="8"
         android:title="@string/action_start_streaming"
         app:showAsAction="never" />
-    <item android:title="@string/action_wikipedia"
-        android:orderInCategory="100">
-        <menu>
-            <item
-                android:id="@+id/action_wikipedia_album"
-                android:title="@string/action_wikipedia_album" />
-            <item
-                android:id="@+id/action_wikipedia_artist"
-                android:title="@string/action_wikipedia_artist" />
-        </menu>
-    </item>
 </menu>

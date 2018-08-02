@@ -22,15 +22,9 @@
 
 <resources>
     <string name="pref_theme_key" translatable="false">pref_theme</string>
-    <string name="pref_dark_theme_key" translatable="false">pref_dark_theme</string>
-    <string name="pref_library_view_key" translatable="false">pref_library_view</string>
-    <string name="pref_start_view_key" translatable="false">pref_start_view</string>
     <string name="pref_profiles_settings_key" translatable="false">pref_profiles_settings</string>
     <string name="pref_artwork_settings_key" translatable="false">pref_artwork_settings</string>
     <string name="pref_volume_steps_dialog_key" translatable="false">pref_volume_steps_dialog</string>
-    <string name="pref_library_click_action_key" translatable="false">pref_library_click_action_key</string>
-    <string name="pref_volume_controls_key" translatable="false">pref_volume_controls_key</string>
-
 
     <string name="pref_keep_display_on_key" translatable="false">pref_keep_display_on_key</string>
     <bool name="pref_keep_display_on_default">false</bool>
@@ -43,15 +37,6 @@
 
     <string name="pref_use_artist_sort_key" translatable="false">pref_use_artist_sort_key</string>
     <bool name="pref_use_artist_sort_default" translatable="false">false</bool>
-
-    <string name="pref_use_tags_in_filebrowser_key" translatable="false">pref_use_tags_in_filebrowser_key</string>
-    <bool name="pref_use_tags_in_filebrowser_default" translatable="false">true</bool>
-
-    <string name="pref_use_english_wikipedia_key" translatable="false">pref_use_english_wikipedia_key</string>
-    <bool name="pref_use_english_wikipedia_default" translatable="false">false</bool>
-
-    <string name="pref_show_playlist_sections_key" translatable="false">pref_show_playlist_sections_key</string>
-    <bool name="pref_show_playlist_sections_default" translatable="false">true</bool>
 
     <string name="pref_show_npv_artist_image_key" translatable="false">pref_show_npv_artist_image</string>
     <bool name="pref_show_npv_artist_image_default" translatable="false">true</bool>
@@ -90,53 +75,6 @@
     <string name="pref_artist_albums_sort_name_key" translatable="false">name</string>
     <string name="pref_artist_albums_sort_year_key" translatable="false">year</string>
     <string name="pref_artist_albums_sort_default" translatable="false">@string/pref_artist_albums_sort_name_key</string>
-
-    <string name="pref_view_my_music_artists_key" translatable="false">my_music_artists</string>
-    <string name="pref_view_my_music_albums_key" translatable="false">my_music_albums</string>
-    <string name="pref_view_playlists_key" translatable="false">playlists</string>
-    <string name="pref_view_files_key" translatable="false">files</string>
-    <string name="pref_view_default" translatable="false">@string/pref_view_my_music_albums_key</string>
-
-    <string-array name="preference_default_view_values" translatable="false">
-        <item>@string/pref_view_my_music_artists_key</item>
-        <item>@string/pref_view_my_music_albums_key</item>
-        <item>@string/pref_view_playlists_key</item>
-        <item>@string/pref_view_files_key</item>
-    </string-array>
-
-
-    <string name="pref_library_view_list_key" translatable="false">library_view_list_key</string>
-    <string name="pref_library_view_grid_key" translatable="false">library_view_grid_key</string>
-    <string name="pref_library_view_default" translatable="false">@string/pref_library_view_grid_key</string>
-
-    <string-array name="preference_library_view_values" translatable="false">
-        <item>@string/pref_library_view_list_key</item>
-        <item>@string/pref_library_view_grid_key</item>
-    </string-array>
-
-    <string name="pref_library_click_action_details_key" translatable="false">library_click_action_details</string>
-    <string name="pref_library_click_action_add_key" translatable="false">library_click_action_add</string>
-    <string name="pref_library_click_action_play_key" translatable="false">library_click_action_play</string>
-    <string name="pref_library_click_action_play_next_key" translatable="false">library_click_action_play_next</string>
-    <string name="pref_library_click_action_default" translatable="false">@string/pref_library_click_action_add_key</string>
-
-    <string-array name="preference_library_click_action_values" translatable="false">
-        <item>@string/pref_library_click_action_details_key</item>
-        <item>@string/pref_library_click_action_add_key</item>
-        <item>@string/pref_library_click_action_play_key</item>
-        <item>@string/pref_library_click_action_play_next_key</item>
-    </string-array>
-
-    <string name="pref_volume_control_view_off_key" translatable="false">volume_control_off_key</string>
-    <string name="pref_volume_control_view_seekbar_key" translatable="false">volume_control_seekbar_key</string>
-    <string name="pref_volume_control_view_buttons_key" translatable="false">volume_control_buttons_key</string>
-    <string name="pref_volume_control_view_default" translatable="false">@string/pref_volume_control_view_seekbar_key</string>
-
-    <string-array name="preference_volume_control_values" translatable="false">
-        <item>@string/pref_volume_control_view_off_key</item>
-        <item>@string/pref_volume_control_view_seekbar_key</item>
-        <item>@string/pref_volume_control_view_buttons_key</item>
-    </string-array>
 
     <string-array name="preference_album_sort_orders_values" translatable="false">
         <item>@string/pref_artist_albums_sort_name_key</item>
