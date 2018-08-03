@@ -58,6 +58,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return true;
         });
 
+        Preference openAbout = findPreference(getString(R.string.pref_about_settings_key));
+        openAbout.setOnPreferenceClickListener(preference -> {
+            mSettingsFragmentCallback.openSettingsFragment("AboutSettingsFragment", new AboutFragment());
+            return true;
+        });
+
+
         Preference openVolumeStepDialog = findPreference(getString(R.string.pref_volume_steps_dialog_key));
         openVolumeStepDialog.setOnPreferenceClickListener(preference -> {
             VolumeStepPreferenceDialog dialog = new VolumeStepPreferenceDialog();

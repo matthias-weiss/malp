@@ -40,6 +40,7 @@ import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
 
 
 public class ArtworkSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     private FABFragmentCallback mFABCallback = null;
 
     /**

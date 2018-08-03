@@ -20,82 +20,66 @@
  *
  */
 
-package org.gateshipone.malp.application.activities;
+package org.gateshipone.malp.application.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.gateshipone.malp.R;
-import org.gateshipone.malp.application.fragments.LicensesDialog;
-import org.gateshipone.malp.application.utils.ThemeUtils;
-import org.gateshipone.malp.mpdservice.mpdprotocol.MPDException;
+import org.gateshipone.malp.application.activities.ContributorsActivity;
 
-public class AboutActivity extends GenericActivity {
+public class AboutFragment extends Fragment {
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-
-        getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this,R.attr.malp_color_primary_dark));
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_about, container, false);
 
         String versionName = "";
         // get version from manifest
         try {
-            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            versionName = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        ((TextView)findViewById(R.id.activity_about_version)).setText(versionName);
+        ((TextView)rootView.findViewById(R.id.activity_about_version)).setText(versionName);
 
-        findViewById(R.id.button_contributors).setOnClickListener(view -> {
-            Intent myIntent = new Intent(AboutActivity.this, ContributorsActivity.class);
+        rootView.findViewById(R.id.button_contributors).setOnClickListener(view -> {
+            Intent myIntent = new Intent(getContext(), ContributorsActivity.class);
 
             startActivity(myIntent);
         });
 
-        findViewById(R.id.logo_musicbrainz).setOnClickListener(view -> {
+        rootView.findViewById(R.id.logo_musicbrainz).setOnClickListener(view -> {
             Intent urlIntent = new Intent(Intent.ACTION_VIEW);
             urlIntent.setData(Uri.parse(getResources().getString(R.string.url_musicbrainz)));
             startActivity(urlIntent);
         });
 
-        findViewById(R.id.logo_lastfm).setOnClickListener(view -> {
+        rootView.findViewById(R.id.logo_lastfm).setOnClickListener(view -> {
             Intent urlIntent = new Intent(Intent.ACTION_VIEW);
             urlIntent.setData(Uri.parse(getResources().getString(R.string.url_lastfm)));
             startActivity(urlIntent);
         });
 
-        findViewById(R.id.logo_fanarttv).setOnClickListener(view -> {
+        rootView.findViewById(R.id.logo_fanarttv).setOnClickListener(view -> {
             Intent urlIntent = new Intent(Intent.ACTION_VIEW);
             urlIntent.setData(Uri.parse(getResources().getString(R.string.url_fanarttv)));
             startActivity(urlIntent);
         });
 
-        findViewById(R.id.thirdparty_licenses).setOnClickListener(view -> LicensesDialog.newInstance().show(getFragmentManager(), LicensesDialog.class.getSimpleName()));
+        rootView.findViewById(R.id.thirdparty_licenses).setOnClickListener(view -> LicensesDialog.newInstance().show(getFragmentManager(), LicensesDialog.class.getSimpleName()));
+
+        return rootView;
     }
 
-    @Override
-    protected void onConnected() {
-
-    }
-
-    @Override
-    protected void onDisconnected() {
-
-    }
-
-    @Override
-    protected void onMPDError(MPDException.MPDServerException e) {
-
-    }
-
-    @Override
-    protected void onMPDConnectionError(MPDException.MPDConnectionException e) {
-
-    }
 }

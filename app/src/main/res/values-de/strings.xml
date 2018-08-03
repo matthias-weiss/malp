@@ -194,7 +194,8 @@
     <string name="preference_category_controls">Steuerung</string>
     <string name="preference_category_design">Design</string>
     <string name="preference_category_library">Bibliothek</string>
-    <string name="preference_category_other">Andere</string>
+    <string name="preference_category_artwork">Bildmaterial</string>
+    <string name="preference_category_infos">Informationen</string>
     <string name="contributor_translator_japanese">Japanische Übersetzung</string>
     <string name="contributors_title">Mitwirkende</string>
     <string name="server_statistic_malp_server_info">Serverfunktionen:</string>

@@ -57,7 +57,10 @@ import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDProfileManager;
 import org.gateshipone.malp.mpdservice.profilemanagement.MPDServerProfile;
 
-public class ProfilesFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<MPDServerProfile>>, AbsListView.OnItemClickListener, Observer{
+public class ProfilesFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<List<MPDServerProfile>>,
+                   AbsListView.OnItemClickListener,
+                   Observer {
     public final static String TAG = ProfilesFragment.class.getSimpleName();
     /**
      * Main ListView of this fragment
