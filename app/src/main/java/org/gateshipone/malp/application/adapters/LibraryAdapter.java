@@ -76,7 +76,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public int                mPosition;
         public int                mNrOfChildren;
 
-        public ExpandedItem(LibraryItem item, LibraryAdapter.ViewHolder holder, int position, int nrOfChildren) {
+        public ExpandedItem(LibraryItem item, int position, int nrOfChildren) {
             mItem         = item;
             mPosition     = position;
             mNrOfChildren = nrOfChildren;
@@ -367,7 +367,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                         if (item.isExpanded()) {
                             collapseItem(item, position);
                         } else {
-                            expandItem(item, position, holder);
+                            expandItem(item, holder);
                         }
                     }
                 });
@@ -388,7 +388,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mPlayAppend.setVisibility(View.VISIBLE);
     }
 
-    private void expandItem(LibraryItem item, int position, LibraryAdapter.ViewHolder holder) {
+    private void expandItem(LibraryItem item, LibraryAdapter.ViewHolder holder) {
 
         if(mRecyclerView == null) {
             return; // adapter detached
@@ -403,7 +403,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             collapseItem(exItem.mItem, exItem.mPosition);
         }
 
-        mExpanded.add(item.getLevel(), new ExpandedItem(item, holder, position, 0));
+        int position = mList.indexOf(item);
+
+        mExpanded.add(item.getLevel(), new ExpandedItem(item, position, 0));
 
         switch (item.getViewType()) {
             case MPDArtist.VIEW_TYPE:
