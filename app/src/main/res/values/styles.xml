@@ -167,11 +167,6 @@
         <item name="malp_cover_background">#111111</item>
     </style>
 
-
-    <style name="AppTheme.AppBarOverlay" parent="AppTheme">
-        <item name="android:textColorSecondary">?attr/malp_color_text_accent</item>
-    </style>
-
     <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="colorPrimary">?attr/malp_color_accent</item>
         <item name="android:textColor">?attr/malp_color_text_background_primary</item>

@@ -27,6 +27,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -180,17 +181,17 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             }
             switch (viewType) {
                 case MPDArtist.VIEW_TYPE:
-                    setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
+                    setItemColors(MPDArtist.VIEW_TYPE, false);
                     mPrefixText.setVisibility(View.GONE);
                     mPostfixText.setVisibility(View.GONE);
                     break;
                 case MPDAlbum.VIEW_TYPE:
-                    setItemColors( R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                    setItemColors(MPDAlbum.VIEW_TYPE, false);
                     mPrefixText.setVisibility(View.GONE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
                 case MPDTrack.VIEW_TYPE:
-                    setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                    setItemColors(MPDTrack.VIEW_TYPE, false);
                     mImage.setVisibility(View.GONE);
                     mPrefixText.setVisibility(View.VISIBLE);
                     mPostfixText.setVisibility(View.VISIBLE);
@@ -202,16 +203,48 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             mPlayAppend.setVisibility(View.GONE);
         }
 
-        public void setItemColors(int backgroundColor, int textColor){
-            int color = ThemeUtils.getThemeColor(mContext, backgroundColor);
-            mItemContainer.setBackgroundColor(color);
-            mImage.setBackgroundColor(color);
+        public void setItemColors(int viewType, boolean expanded){
+            int backgroundColor = 0;
+            int textColor = 0;
+            Typeface font = null;
+            float fontSize = 0f;
 
-            color = ThemeUtils.getThemeColor(mContext, textColor);
-            mImage.setColorFilter(color);
-            mPrefixText.setTextColor(color);
-            mMainText.setTextColor(color);
-            mPostfixText.setTextColor(color);
+            switch(viewType) {
+                case MPDArtist.VIEW_TYPE:
+                    if (expanded) {
+                        backgroundColor = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_accent);
+                        textColor       = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_on_accent);
+                    } else {
+                        backgroundColor = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_surface);
+                        textColor       = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_on_surface);
+                    }
+                    font            = Typeface.create("serif", Typeface.NORMAL);
+                    break;
+                case MPDAlbum.VIEW_TYPE:
+                    backgroundColor = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_accent);
+                    textColor       = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_on_accent);
+                    font            = Typeface.create("serif-medium", Typeface.ITALIC);
+                    break;
+                case MPDTrack.VIEW_TYPE:
+                    backgroundColor = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_accent);
+                    textColor       = ThemeUtils.getThemeColor(mContext, R.attr.malp_color_on_accent);
+                    font            = Typeface.create("monospace", Typeface.BOLD);
+                    break;
+            }
+
+            mItemContainer.setBackgroundColor(backgroundColor);
+
+            mImage.setBackgroundColor(backgroundColor);
+            mImage.setColorFilter(textColor);
+
+            mPrefixText.setTextColor(textColor);
+            mPrefixText.setTypeface(font);
+
+            mMainText.setTextColor(textColor);
+            mMainText.setTypeface(font);
+
+            mPostfixText.setTextColor(textColor);
+            mPostfixText.setTypeface(font);
         }
 
     }
@@ -289,16 +322,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         switch (item.getViewType()) {
             case MPDArtist.VIEW_TYPE:
                 if (item.isExpanded()) {
-                    holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                    holder.setItemColors(MPDArtist.VIEW_TYPE, true);
                 } else {
-                    holder.setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
+                    holder.setItemColors(MPDArtist.VIEW_TYPE, false);
                 }
                 holder.mImage.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.GONE);
                 break;
             case MPDAlbum.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                holder.setItemColors(MPDAlbum.VIEW_TYPE, false);
                 holder.mImage.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.VISIBLE);
@@ -332,7 +365,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
                 break;
             case MPDTrack.VIEW_TYPE:
-                holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                holder.setItemColors(MPDTrack.VIEW_TYPE, false);
                 holder.mImage.setVisibility(View.GONE);
                 holder.mPrefixText.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setText(item.getPrefixText() + " - ");
@@ -437,7 +470,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         }
 
         if (item.getViewType() == MPDArtist.VIEW_TYPE) {
-            item.getViewHolder().setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
+            item.getViewHolder().setItemColors(MPDArtist.VIEW_TYPE, false);
             notifyItemChanged(position);
         }
         int remove_count = 0;
@@ -500,7 +533,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 notifyItemChanged(position);
                 break;
             case MPDArtist.VIEW_TYPE:
-                item.getViewHolder().setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                item.getViewHolder().setItemColors(MPDArtist.VIEW_TYPE, true);
                 notifyItemChanged(position);
                 break;
         }

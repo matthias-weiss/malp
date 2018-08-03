@@ -38,4 +38,11 @@ public class ThemeUtils {
         context.getTheme().resolveAttribute(attributeColor, value, true);
         return value.data;
     }
+
+    public static float getFontSize(final Context context, final int fontStyle) {
+        float size = context.getResources().getDimensionPixelSize(fontStyle)
+                / context.getResources().getDisplayMetrics().density;
+
+        return size;
+    }
 }

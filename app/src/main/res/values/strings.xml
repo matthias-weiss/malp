@@ -26,8 +26,6 @@
     <string name="authors" translatable="false">Hendrik Borghorst</string>
     <string name="team" translatable="false">Team Gateship One</string>
 
-
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -399,4 +397,5 @@
 
     <!-- Thirdparty Licenses dialog -->
     <string name="thirdparty_licenses_dialog_title">Third Party Licenses</string>
+
 </resources>

@@ -44,7 +44,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:minHeight="@dimen/material_list_item_height"
@@ -79,18 +78,6 @@
         app:srcCompat="@drawable/ic_play_arrow_48dp" />
 
     <ImageButton
-        android:id="@+id/recycler_item_library_play_append"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/malp_color_accent"
-        android:tint="?attr/malp_color_outline"
-        app:layout_constraintStart_toEndOf="@+id/recycler_item_library_play_insert_after_cursor"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
-        app:srcCompat="@drawable/ic_append_after_last_48dp" />
-
-    <ImageButton
         android:id="@+id/recycler_item_library_play_insert_after_cursor"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -103,6 +90,18 @@
         app:layout_constraintStart_toEndOf="@+id/recycler_item_library_play_replace"
         app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
         app:srcCompat="@drawable/ic_insert_after_current_48dp" />
+
+    <ImageButton
+        android:id="@+id/recycler_item_library_play_append"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/malp_color_accent"
+        android:tint="?attr/malp_color_outline"
+        app:layout_constraintStart_toEndOf="@+id/recycler_item_library_play_insert_after_cursor"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_item_library_main_text"
+        app:srcCompat="@drawable/ic_append_after_last_48dp" />
 
     <View
         android:id="@+id/recycler_item_library_divider_bottom"
