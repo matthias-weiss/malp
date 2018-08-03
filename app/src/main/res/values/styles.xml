@@ -29,7 +29,6 @@
         <item name="malp_color_accent">@color/colorAccent_indigo</item>
         <item name="malp_color_background">@color/colorBackground_indigo</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_indigo</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_indigo</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_indigo</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_indigo</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_indigo</item>
@@ -41,7 +40,6 @@
         <item name="malp_color_accent">@color/colorAccent_orange</item>
         <item name="malp_color_background">@color/colorBackground_orange</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_orange</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_orange</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_orange</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_orange</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_orange</item>
@@ -53,7 +51,6 @@
         <item name="malp_color_accent">@color/colorAccent_deepOrange</item>
         <item name="malp_color_background">@color/colorBackground_deepOrange</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_deepOrange</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_deepOrange</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_deepOrange</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_deepOrange</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_deepOrange</item>
@@ -65,7 +62,6 @@
         <item name="malp_color_accent">@color/colorAccent_blue</item>
         <item name="malp_color_background">@color/colorBackground_blue</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_blue</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_blue</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_blue</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_blue</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_blue</item>
@@ -77,7 +73,6 @@
         <item name="malp_color_accent">@color/colorAccent_darkGrey</item>
         <item name="malp_color_background">@color/colorBackground_darkGrey</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_darkGrey</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_darkGrey</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_darkGrey</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_darkGrey</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_darkGrey</item>
@@ -89,7 +84,6 @@
         <item name="malp_color_accent">@color/colorAccent_brown</item>
         <item name="malp_color_background">@color/colorBackground_brown</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_brown</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_brown</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_brown</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_brown</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_brown</item>
@@ -101,7 +95,6 @@
         <item name="malp_color_accent">@color/colorAccent_lightGreen</item>
         <item name="malp_color_background">@color/colorBackground_lightGreen</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_lightGreen</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_lightGreen</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_lightGreen</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_lightGreen</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_lightGreen</item>
@@ -113,7 +106,6 @@
         <item name="malp_color_accent">@color/colorAccent_red</item>
         <item name="malp_color_background">@color/colorBackground_red</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_red</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_red</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_red</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_red</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_red</item>
@@ -125,7 +117,6 @@
         <item name="malp_color_accent">@color/colorAccent_oledDark</item>
         <item name="malp_color_background">@color/colorBackground_oledDark</item>
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_oledDark</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_oledDark</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_oledDark</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_oledDark</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_oledDark</item>
@@ -143,7 +134,6 @@
 
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_deepPurple</item>
         <item name="malp_color_text_on_background">@color/colorTextOnBackground_deepPurple</item>
-        <item name="malp_color_navheader_icon">@color/colorNavheaderIcon_deepPurple</item>
         <item name="malp_color_text_accent">@color/colorTextAccent_deepPurple</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_deepPurple</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_deepPurple</item>

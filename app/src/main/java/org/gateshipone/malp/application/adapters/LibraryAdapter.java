@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.gateshipone.malp.R;
@@ -145,7 +146,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         public Context          mContext;
         public ConstraintLayout mItemContainer;
-        //public ImageView        mImage;
+        public ImageView        mImage;
         public TextView         mPrefixText;
         public TextView         mMainText;
         public TextView         mPostfixText;
@@ -161,10 +162,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
             mItemContainer = itemContainer.findViewById(R.id.recycler_item_library_item_container);
 
-            //mImage = (ImageView) rowContainer.findViewById(R.id.row_image);
-            mPrefixText = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_prefix_text);
-            mMainText   = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_main_text);
-            mPostfixText = (TextView) mItemContainer.findViewById(R.id.recycler_item_library_postfix_text);
+            mImage       = (ImageView) mItemContainer.findViewById(R.id.recycler_item_library_image);
+            mPrefixText  = (TextView)  mItemContainer.findViewById(R.id.recycler_item_library_prefix_text);
+            mMainText    = (TextView)  mItemContainer.findViewById(R.id.recycler_item_library_main_text);
+            mPostfixText = (TextView)  mItemContainer.findViewById(R.id.recycler_item_library_postfix_text);
 
             mPlayReplace           = (ImageButton) mItemContainer.findViewById(R.id.recycler_item_library_play_replace);
             mPlayInsertAfterCursor = (ImageButton) mItemContainer.findViewById(R.id.recycler_item_library_play_insert_after_cursor);
@@ -190,6 +191,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     break;
                 case MPDTrack.VIEW_TYPE:
                     setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                    mImage.setVisibility(View.GONE);
                     mPrefixText.setVisibility(View.VISIBLE);
                     mPostfixText.setVisibility(View.VISIBLE);
                     break;
@@ -203,8 +205,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public void setItemColors(int backgroundColor, int textColor){
             int color = ThemeUtils.getThemeColor(mContext, backgroundColor);
             mItemContainer.setBackgroundColor(color);
+            mImage.setBackgroundColor(color);
 
             color = ThemeUtils.getThemeColor(mContext, textColor);
+            mImage.setColorFilter(color);
             mPrefixText.setTextColor(color);
             mMainText.setTextColor(color);
             mPostfixText.setTextColor(color);
@@ -289,11 +293,13 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 } else {
                     holder.setItemColors(R.attr.malp_color_surface, R.attr.malp_color_on_surface);
                 }
+                holder.mImage.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.GONE);
                 break;
             case MPDAlbum.VIEW_TYPE:
                 holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                holder.mImage.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setVisibility(View.GONE);
                 holder.mPostfixText.setVisibility(View.VISIBLE);
                 holder.mPostfixText.setText(item.getPostfixText());
@@ -327,6 +333,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 break;
             case MPDTrack.VIEW_TYPE:
                 holder.setItemColors(R.attr.malp_color_accent, R.attr.malp_color_on_accent);
+                holder.mImage.setVisibility(View.GONE);
                 holder.mPrefixText.setVisibility(View.VISIBLE);
                 holder.mPrefixText.setText(item.getPrefixText() + " - ");
                 holder.mPostfixText.setVisibility(View.VISIBLE);
