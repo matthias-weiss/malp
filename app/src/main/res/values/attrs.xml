@@ -32,11 +32,9 @@
         <attr name="malp_color_background" format="reference|color"/>
         <attr name="malp_color_outline" format="reference|color"/>
 
-        <attr name="malp_color_text_accent" format="reference|color"/>
         <attr name="malp_color_text_background_secondary" format="reference|color"/>
         <attr name="malp_color_text_background_primary" format="reference|color"/>
         <attr name="malp_cover_background" format="reference|color"/>
-        <attr name="malp_color_primary_dark" format="reference|color"/>
         <attr name="malp_color_background_selected" format="reference|color"/>
         <attr name="malp_color_text_on_background" format="reference|color"/>
 

@@ -38,6 +38,7 @@ import android.view.WindowManager;
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.background.BackgroundService;
 import org.gateshipone.malp.application.background.BackgroundServiceConnection;
+import org.gateshipone.malp.application.utils.App;
 import org.gateshipone.malp.application.utils.HardwareKeyHandler;
 import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.mpdservice.handlers.MPDConnectionErrorHandler;
@@ -73,6 +74,8 @@ public abstract class GenericActivity extends AppCompatActivity implements Share
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        App.setContext(this);
+
         // Read theme preference
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String themePref = sharedPref.getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default));
@@ -85,14 +88,16 @@ public abstract class GenericActivity extends AppCompatActivity implements Share
             setTheme(R.style.AppTheme_deepOrange);
         } else if (themePref.equals(getString(R.string.pref_blue_key))) {
             setTheme(R.style.AppTheme_blue);
-        } else if (themePref.equals(getString(R.string.pref_darkgrey_key))) {
-            setTheme(R.style.AppTheme_darkGrey);
+        } else if (themePref.equals(getString(R.string.pref_bluegrey_key))) {
+            setTheme(R.style.AppTheme_blueGrey);
         } else if (themePref.equals(getString(R.string.pref_brown_key))) {
             setTheme(R.style.AppTheme_brown);
         } else if (themePref.equals(getString(R.string.pref_lightgreen_key))) {
             setTheme(R.style.AppTheme_lightGreen);
         } else if (themePref.equals(getString(R.string.pref_red_key))) {
             setTheme(R.style.AppTheme_red);
+        } else if (themePref.equals(getString(R.string.pref_grey_key))) {
+            setTheme(R.style.AppTheme_grey);
         } else if (themePref.equals(getString(R.string.pref_deeppurple_key))) {
             setTheme(R.style.AppTheme_deepPurple);
         }
@@ -103,6 +108,8 @@ public abstract class GenericActivity extends AppCompatActivity implements Share
     @Override
     protected void onResume() {
         super.onResume();
+
+        App.setContext(this);
 
         // Add error listener
         MPDStateMonitoringHandler.getHandler().addErrorListener(mErrorListener);

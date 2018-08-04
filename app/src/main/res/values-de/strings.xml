@@ -90,11 +90,14 @@
     <string name="preference_launch_about">Über</string>
     <string name="preference_theme_item_blue">Blue</string>
     <string name="preference_theme_item_brown">Brown</string>
-    <string name="preference_theme_item_dark_grey">Dunkles Grau</string>
+    <string name="preference_theme_item_blue_grey">Blaugrau</string>
     <string name="preference_theme_item_deep_orange">Dunkles Orange</string>
     <string name="preference_theme_item_indigo">Indigo</string>
     <string name="preference_theme_item_light_green">Helles Grün</string>
     <string name="preference_theme_item_orange">Orange</string>
+    <string name="preference_theme_item_red">Rot</string>
+    <string name="preference_theme_item_grey">Grau</string>
+    <string name="preference_theme_item_deep_purple">Dunkles Violett</string>
     <string name="preference_theme_message">Design auswählen</string>
     <string name="preference_theme_summary">Wählen Sie ein Design für diese Anwendung.</string>
     <string name="preference_theme_title">Design</string>
@@ -175,8 +178,6 @@
     <string name="provider_off">Aus</string>
     <string name="preference_generic_hardware_keys_title">Geräteknöpfe verwenden</string>
     <string name="preference_generic_hardware_keys_text">Die Verwendung der Geräteknöpfe zur Steuerung der Wiedergabe erlauben</string>
-    <string name="preference_theme_item_red">Rot</string>
-    <string name="preference_theme_item_oled_dark">OLED (dunkel)</string>
     <string name="preference_use_album_artists_text">Verwende das AlbumArtist-Tag zur Erstellung der Interpretenliste (Diese Methode is eventuell langsamer und führt in manchen Fällen zu fehlerhaften Interpretenbildern).</string>
     <string name="preference_use_album_artists_title">AlbumArtist-Tag verwenden</string>
     <string name="widget_connect">Verbinden</string>

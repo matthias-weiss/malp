@@ -22,95 +22,140 @@
   -->
 
 <resources>
-    <color name="colorPrimary_indigo">#3F51B5</color>
-    <color name="colorPrimaryDark_indigo">#303F9F</color>
-    <color name="colorAccent_indigo">#FF1744</color>
-    <color name="colorTextAccent_indigo">#FFFFFF</color>
+    <color name="colorPrimary_indigo">#1A237E</color>
+    <color name="colorOnPrimary_indigo">#E8EAF6</color>
+    <color name="colorAccent_indigo">#9FA8DA</color>
+    <color name="colorOnAccent_indigo">#1A237E</color>
+    <color name="colorSurface_indigo">#C5CAE9</color>
+    <color name="colorOnSurface_indigo">#3F51B5</color>
+    <color name="colorBackground_indigo">#E8EAF6</color>
+    <color name="colorOutline_indigo">#7986CB</color>
+
     <color name="colorTextBackgroundPrimary_indigo">#E3E3E3</color>
     <color name="colorTextBackgroundSecondary_indigo">#BBBBBB</color>
-    <color name="colorBackground_indigo">#212121</color>
     <color name="colorBackgroundSelected_indigo">#424242</color>
     <color name="colorNavheaderIcon_indigo">#000000</color>
 
-    <color name="colorPrimary_orange">#f57c00</color>
-    <color name="colorPrimaryDark_orange">#e65100</color>
-    <color name="colorAccent_orange">#2979ff</color>
-    <color name="colorTextAccent_orange">#FFFFFF</color>
+
+    <color name="colorPrimary_orange">#E65100</color>
+    <color name="colorOnPrimary_orange">#FFF3E0</color>
+    <color name="colorAccent_orange">#FFCC80</color>
+    <color name="colorOnAccent_orange">#E65100</color>
+    <color name="colorSurface_orange">#FFE0B2</color>
+    <color name="colorOnSurface_orange">#FF9800</color>
+    <color name="colorBackground_orange">#FFF3E0</color>
+    <color name="colorOutline_orange">#FFB74D</color>
+
     <color name="colorTextBackgroundSecondary_orange">#BBBBBB</color>
-    <color name="colorBackground_orange">#212121</color>
     <color name="colorBackgroundSelected_orange">#424242</color>
     <color name="colorTextBackgroundPrimary_orange">#E3E3E3</color>
     <color name="colorNavheaderIcon_orange">#000000</color>
 
-    <color name="colorPrimary_deepOrange">#e64a19</color>
-    <color name="colorPrimaryDark_deepOrange">#bf360c</color>
-    <color name="colorAccent_deepOrange">#2979ff</color>
-    <color name="colorTextAccent_deepOrange">#FFFFFF</color>
+
+    <color name="colorPrimary_deepOrange">#BF360C</color>
+    <color name="colorOnPrimary_deepOrange">#FBE9E7</color>
+    <color name="colorAccent_deepOrange">#FFAB91</color>
+    <color name="colorOnAccent_deepOrange">#BF360C</color>
+    <color name="colorSurface_deepOrange">#FFCCBC</color>
+    <color name="colorOnSurface_deepOrange">#FF5722</color>
+    <color name="colorBackground_deepOrange">#FBE9E7</color>
+    <color name="colorOutline_deepOrange">#FF8A65</color>
+
     <color name="colorTextBackgroundSecondary_deepOrange">#BBBBBB</color>
-    <color name="colorBackground_deepOrange">#212121</color>
     <color name="colorBackgroundSelected_deepOrange">#424242</color>
     <color name="colorTextBackgroundPrimary_deepOrange">#E3E3E3</color>
     <color name="colorNavheaderIcon_deepOrange">#000000</color>
 
-    <color name="colorPrimary_blue">#1976d2</color>
-    <color name="colorPrimaryDark_blue">#0d47a1</color>
-    <color name="colorAccent_blue">#f50057</color>
-    <color name="colorTextAccent_blue">#FFFFFF</color>
+
+
+    <color name="colorPrimary_blue">#0D47A1</color>
+    <color name="colorOnPrimary_blue">#E3F2FD</color>
+    <color name="colorAccent_blue">#90CAF9</color>
+    <color name="colorOnAccent_blue">#0D47A1</color>
+    <color name="colorSurface_blue">#BBDEFB</color>
+    <color name="colorOnSurface_blue">#2196F3</color>
+    <color name="colorBackground_blue">#E3F2FD</color>
+    <color name="colorOutline_blue">#64B5F6</color>
+
     <color name="colorTextBackgroundSecondary_blue">#BBBBBB</color>
-    <color name="colorBackground_blue">#212121</color>
     <color name="colorBackgroundSelected_blue">#424242</color>
     <color name="colorTextBackgroundPrimary_blue">#E3E3E3</color>
     <color name="colorNavheaderIcon_blue">#000000</color>
 
-    <color name="colorPrimary_darkGrey">#323232</color>
-    <color name="colorPrimaryDark_darkGrey">#212121</color>
-    <color name="colorAccent_darkGrey">#2962ff</color>
-    <color name="colorTextAccent_darkGrey">#FFFFFF</color>
-    <color name="colorTextBackgroundSecondary_darkGrey">#BBBBBB</color>
-    <color name="colorBackground_darkGrey">#212121</color>
-    <color name="colorBackgroundSelected_darkGrey">#424242</color>
-    <color name="colorTextBackgroundPrimary_darkGrey">#E3E3E3</color>
-    <color name="colorNavheaderIcon_darkGrey">#000000</color>
 
-    <color name="colorPrimary_brown">#795548</color>
-    <color name="colorPrimaryDark_brown">#5d4037</color>
-    <color name="colorAccent_brown">#ff6d00</color>
-    <color name="colorTextAccent_brown">#FFFFFF</color>
+    <color name="colorPrimary_blueGrey">#263238</color>
+    <color name="colorOnPrimary_blueGrey">#ECEFF1</color>
+    <color name="colorAccent_blueGrey">#B0BEC5</color>
+    <color name="colorOnAccent_blueGrey">#263238</color>
+    <color name="colorSurface_blueGrey">#CFD8DC</color>
+    <color name="colorOnSurface_blueGrey">#607D8B</color>
+    <color name="colorBackground_blueGrey">#ECEFF1</color>
+    <color name="colorOutline_blueGrey">#90A4AE</color>
+
+    <color name="colorTextBackgroundSecondary_blueGrey">#BBBBBB</color>
+    <color name="colorBackgroundSelected_blueGrey">#424242</color>
+    <color name="colorTextBackgroundPrimary_blueGrey">#E3E3E3</color>
+    <color name="colorNavheaderIcon_blueGrey">#000000</color>
+
+
+    <color name="colorPrimary_brown">#3E2723</color>
+    <color name="colorOnPrimary_brown">#EFEBE9</color>
+    <color name="colorAccent_brown">#BCAAA4</color>
+    <color name="colorOnAccent_brown">#3E2723</color>
+    <color name="colorSurface_brown">#D7CCC8</color>
+    <color name="colorOnSurface_brown">#795548</color>
+    <color name="colorBackground_brown">#EFEBE9</color>
+    <color name="colorOutline_brown">#A1887F</color>
+
     <color name="colorTextBackgroundSecondary_brown">#BBBBBB</color>
-    <color name="colorBackground_brown">#212121</color>
     <color name="colorBackgroundSelected_brown">#424242</color>
     <color name="colorTextBackgroundPrimary_brown">#E3E3E3</color>
     <color name="colorNavheaderIcon_brown">#000000</color>
 
-    <color name="colorPrimary_lightGreen">#689f38</color>
-    <color name="colorPrimaryDark_lightGreen">#33691e</color>
-    <color name="colorAccent_lightGreen">#ff5252</color>
-    <color name="colorTextAccent_lightGreen">#FFFFFF</color>
+
+    <color name="colorPrimary_lightGreen">#33691E</color>
+    <color name="colorOnPrimary_lightGreen">#F1F8E9</color>
+    <color name="colorAccent_lightGreen">#C5E1A5</color>
+    <color name="colorOnAccent_lightGreen">#33691E</color>
+    <color name="colorSurface_lightGreen">#DCEDC8</color>
+    <color name="colorOnSurface_lightGreen">#8BC34A</color>
+    <color name="colorBackground_lightGreen">#F1F8E9</color>
+    <color name="colorOutline_lightGreen">#AED581</color>
+
     <color name="colorTextBackgroundSecondary_lightGreen">#BBBBBB</color>
-    <color name="colorBackground_lightGreen">#212121</color>
     <color name="colorBackgroundSelected_lightGreen">#424242</color>
     <color name="colorTextBackgroundPrimary_lightGreen">#E3E3E3</color>
     <color name="colorNavheaderIcon_lightGreen">#000000</color>
 
-    <color name="colorPrimary_red">#d32f2f</color>
-    <color name="colorPrimaryDark_red">#b71c1c</color>
-    <color name="colorAccent_red">#2979ff</color>
-    <color name="colorTextAccent_red">#FFFFFF</color>
+
+    <color name="colorPrimary_red">#B71C1C</color>
+    <color name="colorOnPrimary_red">#FFEBEE</color>
+    <color name="colorAccent_red">#EF9A9A</color>
+    <color name="colorOnAccent_red">#B71C1C</color>
+    <color name="colorSurface_red">#FFCDD2</color>
+    <color name="colorOnSurface_red">#F44336</color>
+    <color name="colorBackground_red">#FFEBEE</color>
+    <color name="colorOutline_red">#E57373</color>
+
     <color name="colorTextBackgroundSecondary_red">#BBBBBB</color>
-    <color name="colorBackground_red">#212121</color>
     <color name="colorBackgroundSelected_red">#424242</color>
     <color name="colorTextBackgroundPrimary_red">#E3E3E3</color>
     <color name="colorNavheaderIcon_red">#000000</color>
 
-    <color name="colorPrimary_oledDark">#000000</color>
-    <color name="colorPrimaryDark_oledDark">#000000</color>
-    <color name="colorAccent_oledDark">#00CC00</color>
-    <color name="colorTextAccent_oledDark">#FFFFFF</color>
-    <color name="colorTextBackgroundSecondary_oledDark">#DDDDDD</color>
-    <color name="colorBackground_oledDark">#111111</color>
-    <color name="colorBackgroundSelected_oledDark">#282828</color>
-    <color name="colorTextBackgroundPrimary_oledDark">#E3E3E3</color>
-    <color name="colorNavheaderIcon_oledDark">#FFFFFF</color>
+
+    <color name="colorPrimary_grey">#212121</color>
+    <color name="colorOnPrimary_grey">#FAFAFA</color>
+    <color name="colorAccent_grey">#EEEEEE</color>
+    <color name="colorOnAccent_grey">#212121</color>
+    <color name="colorSurface_grey">#F5F5F5</color>
+    <color name="colorOnSurface_grey">#9E9E9E</color>
+    <color name="colorBackground_grey">#FAFAFA</color>
+    <color name="colorOutline_grey">#E0E0E0</color>
+
+    <color name="colorTextBackgroundSecondary_grey">#BBBBBB</color>
+    <color name="colorBackgroundSelected_grey">#424242</color>
+    <color name="colorTextBackgroundPrimary_grey">#E3E3E3</color>
+    <color name="colorNavheaderIcon_grey">#000000</color>
 
 
     <color name="colorPrimary_deepPurple">#311B92</color>
@@ -122,13 +167,10 @@
     <color name="colorBackground_deepPurple">#EDE7F6</color>
     <color name="colorOutline_deepPurple">#9575CD</color>
 
-    <color name="colorTextAccent_deepPurple">#FFFFFF</color>
     <color name="colorTextBackgroundPrimary_deepPurple">#282828</color>
     <color name="colorTextBackgroundSecondary_deepPurple">#282828</color>
     <color name="colorBackgroundSelected_deepPurple">#282828</color>
-    <color name="colorTextOnBackground_deepPurple">#311B92</color>
     <color name="colorNavheaderIcon_deepPurple">#FFFFFF</color>
-    <color name="colorPrimaryDark_deepPurple">#311B92</color>
 
 
     <color name="colorIconBackground">#fd9600</color>

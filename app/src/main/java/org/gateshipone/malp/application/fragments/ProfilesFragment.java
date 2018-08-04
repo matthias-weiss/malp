@@ -157,7 +157,7 @@ public class ProfilesFragment extends Fragment
         menuInflater.inflate(R.menu.fragment_menu_profiles, menu);
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_on_primary);
 
         Drawable drawable = menu.findItem(R.id.action_add).getIcon();
         drawable = DrawableCompat.wrap(drawable);

@@ -215,11 +215,10 @@
     <string name="preference_theme_item_orange">오렌지</string>
     <string name="preference_theme_item_deep_orange">짙은 오렌지</string>
     <string name="preference_theme_item_blue">파랑</string>
-    <string name="preference_theme_item_dark_grey">짙은 잿빛</string>
+    <string name="preference_theme_item_blue_grey">짙은 잿빛</string>
     <string name="preference_theme_item_brown">구릿빛</string>
     <string name="preference_theme_item_light_green">옅은 초록빛</string>
     <string name="preference_theme_item_red">빨강</string>
-    <string name="preference_theme_item_oled_dark">어두운 OLED</string>
 
     <string name="preference_album_sort_order_title">연주자 음반 정렬 순서</string>
     <string name="preference_album_sort_order_message">순서</string>

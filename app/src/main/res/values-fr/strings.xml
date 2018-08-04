@@ -175,11 +175,10 @@
     <string name="preference_theme_item_orange">Orange</string>
     <string name="preference_theme_item_deep_orange">Orange foncé</string>
     <string name="preference_theme_item_blue">Bleu</string>
-    <string name="preference_theme_item_dark_grey">Gris foncé</string>
+    <string name="preference_theme_item_blue_grey">Gris foncé</string>
     <string name="preference_theme_item_brown">Marron</string>
     <string name="preference_theme_item_light_green">Vert clair</string>
     <string name="preference_theme_item_red">Rouge</string>
-    <string name="preference_theme_item_oled_dark">Noir OLED</string>
     <string-array name="preference_odyssey_styles">
         <item>@string/preference_theme_item_indigo</item>
         <item>@string/preference_theme_item_orange</item>

@@ -236,11 +236,11 @@
     <string name="preference_theme_item_orange">Orange</string>
     <string name="preference_theme_item_deep_orange">Deep Orange</string>
     <string name="preference_theme_item_blue">Blue</string>
-    <string name="preference_theme_item_dark_grey">Dark Grey</string>
+    <string name="preference_theme_item_blue_grey">Blue Grey</string>
     <string name="preference_theme_item_brown">Brown</string>
     <string name="preference_theme_item_light_green">Light Green</string>
     <string name="preference_theme_item_red">Red</string>
-    <string name="preference_theme_item_oled_dark">OLED Dark</string>
+    <string name="preference_theme_item_grey">Grey</string>
     <string name="preference_theme_item_deep_purple">Deep Purple</string>
 
     <string-array name="preference_odyssey_styles">
@@ -248,11 +248,11 @@
         <item>@string/preference_theme_item_orange</item>
         <item>@string/preference_theme_item_deep_orange</item>
         <item>@string/preference_theme_item_blue</item>
-        <item>@string/preference_theme_item_dark_grey</item>
+        <item>@string/preference_theme_item_blue_grey</item>
         <item>@string/preference_theme_item_brown</item>
         <item>@string/preference_theme_item_light_green</item>
         <item>@string/preference_theme_item_red</item>
-        <item>@string/preference_theme_item_oled_dark</item>
+        <item>@string/preference_theme_item_grey</item>
         <item>@string/preference_theme_item_deep_purple</item>
     </string-array>
 

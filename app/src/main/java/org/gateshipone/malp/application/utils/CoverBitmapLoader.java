@@ -31,6 +31,7 @@ import org.gateshipone.malp.application.artworkdatabase.ImageNotFoundException;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDAlbum;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDArtist;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDTrack;
+import org.gateshipone.malp.application.utils.App;
 
 public class CoverBitmapLoader {
     private static final String TAG = CoverBitmapLoader.class.getSimpleName();
@@ -40,6 +41,7 @@ public class CoverBitmapLoader {
     public CoverBitmapLoader(Context context, CoverBitmapListener listener) {
         mContext = context;
         mListener = listener;
+        App.setContext(context);
     }
 
     /**

@@ -178,22 +178,20 @@
     <string name="preference_theme_item_orange">オレンジ</string>
     <string name="preference_theme_item_deep_orange">ディープオレンジ</string>
     <string name="preference_theme_item_blue">青</string>
-    <string name="preference_theme_item_dark_grey">ダークグレー</string>
+    <string name="preference_theme_item_blue_grey">ダークグレー</string>
     <string name="preference_theme_item_brown">茶</string>
     <string name="preference_theme_item_light_green">ライトグリーン</string>
     <string name="preference_theme_item_red">赤</string>
-    <string name="preference_theme_item_oled_dark">OLED ダーク</string>
 
     <string-array name="preference_odyssey_styles">
         <item>@string/preference_theme_item_indigo</item>
         <item>@string/preference_theme_item_orange</item>
         <item>@string/preference_theme_item_deep_orange</item>
         <item>@string/preference_theme_item_blue</item>
-        <item>@string/preference_theme_item_dark_grey</item>
+        <item>@string/preference_theme_item_blue_grey</item>
         <item>@string/preference_theme_item_brown</item>
         <item>@string/preference_theme_item_light_green</item>
         <item>@string/preference_theme_item_red</item>
-        <item>@string/preference_theme_item_oled_dark</item>
     </string-array>
 
     <string name="preference_use_album_artists_title">アルバムアーティストタグを使用する</string>

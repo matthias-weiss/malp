@@ -183,11 +183,11 @@
     <string name="preference_theme_item_orange">Anaranjado</string>
     <string name="preference_theme_item_deep_orange">Anaranjado profundo</string>
     <string name="preference_theme_item_blue">Azúl</string>
-    <string name="preference_theme_item_dark_grey">Gris oscuro</string>
+    <string name="preference_theme_item_blue_grey">Gris azúl</string>
     <string name="preference_theme_item_brown">Café</string>
     <string name="preference_theme_item_light_green">Verde claro</string>
     <string name="preference_theme_item_red">Rojo</string>
-    <string name="preference_theme_item_oled_dark">OLED Oscuro</string>
+    <string name="preference_theme_item_grey">Gris</string>
 
     <string name="preference_album_sort_order_title">Ordenamiento por discos del artista</string>
     <string name="preference_album_sort_order_message">Ordenar por</string>

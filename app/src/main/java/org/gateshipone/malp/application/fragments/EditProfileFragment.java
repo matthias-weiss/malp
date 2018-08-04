@@ -329,7 +329,7 @@ public class EditProfileFragment extends Fragment {
         menuInflater.inflate(R.menu.fragment_menu_edit_profile, menu);
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_on_primary);
 
         Drawable drawable = menu.findItem(R.id.action_save).getIcon();
         drawable = DrawableCompat.wrap(drawable);

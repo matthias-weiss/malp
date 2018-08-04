@@ -47,7 +47,7 @@ public class ContributorsActivity extends GenericActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contributors);
 
-        getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_primary_dark));
+        getWindow().setStatusBarColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_primary));
 
         ListView contributors = findViewById(R.id.contributors_listview);
 

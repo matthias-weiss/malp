@@ -35,8 +35,6 @@ import android.widget.TextView;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.fragments.serverfragments.AudioSourceTabsFragment;
-import org.gateshipone.malp.application.utils.App;
-import org.gateshipone.malp.mpdservice.ConnectionManager;
 import org.gateshipone.malp.application.utils.ThemeUtils;
 import org.gateshipone.malp.application.views.NowPlayingView;
 import org.gateshipone.malp.mpdservice.mpdprotocol.MPDException;
@@ -85,8 +83,6 @@ public class MainActivity extends GenericActivity {
             transaction.add(R.id.audio_sources_view, audioSourceTabsFragment).commit();
         }
 
-        App.setContext(this);
-
         hideSystemUI();
     }
 
@@ -120,8 +116,6 @@ public class MainActivity extends GenericActivity {
             nowPlayingView.onResume();
         }
 
-        App.setContext(this);
-
         hideSystemUI();
     }
 
@@ -153,7 +147,7 @@ public class MainActivity extends GenericActivity {
 
             // style the snackbar text
             TextView sbText = sb.getView().findViewById(android.support.design.R.id.snackbar_text);
-            sbText.setTextColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_text_accent));
+            sbText.setTextColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_on_primary));
             sb.show();
         }
     }
@@ -168,7 +162,7 @@ public class MainActivity extends GenericActivity {
 
             // style the snackbar text
             TextView sbText = sb.getView().findViewById(android.support.design.R.id.snackbar_text);
-            sbText.setTextColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_text_accent));
+            sbText.setTextColor(ThemeUtils.getThemeColor(this, R.attr.malp_color_on_primary));
             sb.show();
         }
     }

@@ -25,101 +25,137 @@
     <!-- Color themes -->
     <style name="AppTheme.indigo" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_indigo</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_indigo</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_indigo</item>
+        <item name="malp_color_surface">@color/colorSurface_indigo</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_indigo</item>
         <item name="malp_color_accent">@color/colorAccent_indigo</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_indigo</item>
         <item name="malp_color_background">@color/colorBackground_indigo</item>
+        <item name="malp_color_outline">@color/colorOutline_indigo</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_indigo</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_indigo</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_indigo</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_indigo</item>
     </style>
 
     <style name="AppTheme.orange" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_orange</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_orange</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_orange</item>
+        <item name="malp_color_surface">@color/colorSurface_orange</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_orange</item>
         <item name="malp_color_accent">@color/colorAccent_orange</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_orange</item>
         <item name="malp_color_background">@color/colorBackground_orange</item>
+        <item name="malp_color_outline">@color/colorOutline_orange</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_orange</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_orange</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_orange</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_orange</item>
     </style>
 
     <style name="AppTheme.deepOrange" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_deepOrange</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_deepOrange</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_deepOrange</item>
+        <item name="malp_color_surface">@color/colorSurface_deepOrange</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_deepOrange</item>
         <item name="malp_color_accent">@color/colorAccent_deepOrange</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_deepOrange</item>
         <item name="malp_color_background">@color/colorBackground_deepOrange</item>
+        <item name="malp_color_outline">@color/colorOutline_deepOrange</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_deepOrange</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_deepOrange</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_deepOrange</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_deepOrange</item>
     </style>
 
     <style name="AppTheme.blue" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_blue</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_blue</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_blue</item>
+        <item name="malp_color_surface">@color/colorSurface_blue</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_blue</item>
         <item name="malp_color_accent">@color/colorAccent_blue</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_blue</item>
         <item name="malp_color_background">@color/colorBackground_blue</item>
+        <item name="malp_color_outline">@color/colorOutline_blue</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_blue</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_blue</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_blue</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_blue</item>
     </style>
 
-    <style name="AppTheme.darkGrey" parent="AppTheme">
-        <item name="malp_color_primary">@color/colorPrimary_darkGrey</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_darkGrey</item>
-        <item name="malp_color_accent">@color/colorAccent_darkGrey</item>
-        <item name="malp_color_background">@color/colorBackground_darkGrey</item>
-        <item name="malp_color_background_selected">@color/colorBackgroundSelected_darkGrey</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_darkGrey</item>
-        <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_darkGrey</item>
-        <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_darkGrey</item>
+    <style name="AppTheme.blueGrey" parent="AppTheme">
+        <item name="malp_color_primary">@color/colorPrimary_blueGrey</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_blueGrey</item>
+        <item name="malp_color_surface">@color/colorSurface_blueGrey</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_blueGrey</item>
+        <item name="malp_color_accent">@color/colorAccent_blueGrey</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_blueGrey</item>
+        <item name="malp_color_background">@color/colorBackground_blueGrey</item>
+        <item name="malp_color_outline">@color/colorOutline_blueGrey</item>
+
+        <item name="malp_color_background_selected">@color/colorBackgroundSelected_blueGrey</item>
+        <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_blueGrey</item>
+        <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_blueGrey</item>
     </style>
 
     <style name="AppTheme.brown" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_brown</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_brown</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_brown</item>
+        <item name="malp_color_surface">@color/colorSurface_brown</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_brown</item>
         <item name="malp_color_accent">@color/colorAccent_brown</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_brown</item>
         <item name="malp_color_background">@color/colorBackground_brown</item>
+        <item name="malp_color_outline">@color/colorOutline_brown</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_brown</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_brown</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_brown</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_brown</item>
     </style>
 
     <style name="AppTheme.lightGreen" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_lightGreen</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_lightGreen</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_lightGreen</item>
+        <item name="malp_color_surface">@color/colorSurface_lightGreen</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_lightGreen</item>
         <item name="malp_color_accent">@color/colorAccent_lightGreen</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_lightGreen</item>
         <item name="malp_color_background">@color/colorBackground_lightGreen</item>
+        <item name="malp_color_outline">@color/colorOutline_lightGreen</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_lightGreen</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_lightGreen</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_lightGreen</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_lightGreen</item>
     </style>
 
     <style name="AppTheme.red" parent="AppTheme">
         <item name="malp_color_primary">@color/colorPrimary_red</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_red</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_red</item>
+        <item name="malp_color_surface">@color/colorSurface_red</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_red</item>
         <item name="malp_color_accent">@color/colorAccent_red</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_red</item>
         <item name="malp_color_background">@color/colorBackground_red</item>
+        <item name="malp_color_outline">@color/colorOutline_red</item>
+
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_red</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_red</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_red</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_red</item>
     </style>
 
-    <style name="AppTheme.oledDark" parent="AppTheme">
-        <item name="malp_color_primary">@color/colorPrimary_oledDark</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_oledDark</item>
-        <item name="malp_color_accent">@color/colorAccent_oledDark</item>
-        <item name="malp_color_background">@color/colorBackground_oledDark</item>
-        <item name="malp_color_background_selected">@color/colorBackgroundSelected_oledDark</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_oledDark</item>
-        <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_oledDark</item>
-        <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_oledDark</item>
+    <style name="AppTheme.grey" parent="AppTheme">
+        <item name="malp_color_primary">@color/colorPrimary_grey</item>
+        <item name="malp_color_on_primary">@color/colorOnPrimary_grey</item>
+        <item name="malp_color_surface">@color/colorSurface_grey</item>
+        <item name="malp_color_on_surface">@color/colorOnSurface_grey</item>
+        <item name="malp_color_accent">@color/colorAccent_grey</item>
+        <item name="malp_color_on_accent">@color/colorOnAccent_grey</item>
+        <item name="malp_color_background">@color/colorBackground_grey</item>
+        <item name="malp_color_outline">@color/colorOutline_grey</item>
+
+        <item name="malp_color_background_selected">@color/colorBackgroundSelected_grey</item>
+        <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_grey</item>
+        <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_grey</item>
     </style>
 
     <style name="AppTheme.deepPurple" parent="AppTheme">
@@ -133,11 +169,8 @@
         <item name="malp_color_outline">@color/colorOutline_deepPurple</item>
 
         <item name="malp_color_background_selected">@color/colorBackgroundSelected_deepPurple</item>
-        <item name="malp_color_text_on_background">@color/colorTextOnBackground_deepPurple</item>
-        <item name="malp_color_text_accent">@color/colorTextAccent_deepPurple</item>
         <item name="malp_color_text_background_primary">@color/colorTextBackgroundPrimary_deepPurple</item>
         <item name="malp_color_text_background_secondary">@color/colorTextBackgroundSecondary_deepPurple</item>
-        <item name="malp_color_primary_dark">@color/colorPrimaryDark_deepPurple</item>
 
     </style>
 
@@ -152,15 +185,13 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- malp color values -->
-        <item name="colorPrimaryDark">?attr/malp_color_primary_dark</item>
         <item name="colorAccent">?attr/malp_color_accent</item>
         <item name="colorPrimary">?attr/malp_color_primary</item>
-        <item name="android:colorPrimaryDark">?attr/malp_color_primary_dark</item>
         <item name="android:colorAccent">?attr/malp_color_accent</item>
         <item name="android:colorPrimary">?attr/malp_color_primary</item>
-        <item name="android:colorBackground">?attr/malp_color_background</item>
+        <item name="android:colorBackground">?attr/malp_color_primary</item>
         <item name="android:colorPressedHighlight">?attr/malp_color_background_selected</item>
-        <item name="android:textColorPrimary">?attr/malp_color_text_accent</item>
+        <item name="android:textColorPrimary">?attr/malp_color_on_primary</item>
         <item name="android:textColorSecondary">?attr/malp_color_text_background_secondary</item>
         <item name="android:textColorTertiary">?attr/malp_color_text_background_secondary</item>
         <item name="android:textColor">?attr/malp_color_text_background_primary</item>
@@ -168,9 +199,9 @@
     </style>
 
     <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="colorPrimary">?attr/malp_color_accent</item>
-        <item name="android:textColor">?attr/malp_color_text_background_primary</item>
-        <item name="android:textColorPrimary">?attr/malp_color_text_background_primary</item>
+        <item name="colorPrimary">?attr/malp_color_primary</item>
+        <item name="android:textColor">?attr/malp_color_on_primary</item>
+        <item name="android:textColorPrimary">?attr/malp_color_on_primary</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -183,7 +214,7 @@
         <item name="android:textColorPrimary">?attr/malp_color_text_background_primary</item>
         <item name="android:textColorSecondary">?attr/malp_color_text_background_secondary</item>
         <item name="android:textColorTertiary">?attr/malp_color_text_background_secondary</item>
-        <item name="android:windowBackground">?attr/malp_color_background</item>
+        <item name="android:windowBackground">?attr/malp_color_primary</item>
         <item name="colorAccent">?attr/malp_color_accent</item>
     </style>
 

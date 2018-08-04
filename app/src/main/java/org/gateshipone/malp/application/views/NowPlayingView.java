@@ -408,7 +408,7 @@ public class NowPlayingView extends ConstraintLayout implements ArtworkManager.o
 
         if (null == mLastTrack || !track.getTrackAlbum().equals(mLastTrack.getTrackAlbum()) || !track.getTrackAlbumMBID().equals(mLastTrack.getTrackAlbumMBID())) {
             // get tint color
-            int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_background_primary);
+            int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_on_primary);
 
             Drawable drawable = getResources().getDrawable(R.drawable.cover_placeholder, null);
             drawable = DrawableCompat.wrap(drawable);
@@ -417,7 +417,7 @@ public class NowPlayingView extends ConstraintLayout implements ArtworkManager.o
             // Show the placeholder image until the cover fetch process finishes
             //mCoverImage.clearAlbumImage();
 
-            tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_text_accent);
+            tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.malp_color_on_primary);
 
             drawable = getResources().getDrawable(R.drawable.cover_placeholder_128dp, null);
             drawable = DrawableCompat.wrap(drawable);

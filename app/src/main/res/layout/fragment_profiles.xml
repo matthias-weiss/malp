@@ -11,7 +11,7 @@
         android:id="@+id/new_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="?attr/malp_color_text_background_primary"
+        android:tint="?attr/malp_color_on_primary"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
     <ListView
@@ -22,7 +22,7 @@
         android:dividerHeight="@dimen/list_divider_size"
         android:fastScrollAlwaysVisible="false"
         android:fastScrollEnabled="true"
-        android:fastScrollStyle="?attr/colorAccent"
+        android:fastScrollStyle="?attr/malp_color_accent"
         android:nestedScrollingEnabled="true"
         android:scrollbarStyle="outsideOverlay"
         android:scrollingCache="true" />
